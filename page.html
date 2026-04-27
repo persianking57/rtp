@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="mainTitle">Sayfa | VIP</title>
+    <link id="siteFavicon" rel="shortcut icon" href="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        :root { --gold: #ffaa00; --box-width: 1200px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: transparent; color: white; min-height: 100vh; display: flex; flex-direction: column; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; background: rgba(0,0,0,0.5); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,170,0,0.1); position: sticky; top:0; z-index: 100;}
+        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-img { width: 38px; height: 38px; filter: drop-shadow(0 0 5px var(--gold)); }
+        .logo-text { font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 30px; list-style: none; font-size: 13px; font-weight: 800; color: #888; align-items:center;}
+        .nav-links li { display:flex; align-items:center; transition:0.3s;}
+        .nav-links li a { color: inherit; text-decoration: none; transition: 0.3s; display:flex; align-items:center;}
+        .nav-links li a:hover { color: var(--gold); }
+        .nav-toggle { display:none; width:46px; height:46px; border:none; border-radius:14px; background:rgba(255,255,255,0.06); color:#fff; align-items:center; justify-content:center; cursor:pointer; font-size:18px; }
+        .page-banner { text-align: center; padding: 70px 20px 30px 20px; position: relative; }
+        .page-banner img { filter: drop-shadow(0 0 25px var(--gold)); margin-bottom: 25px; }
+        .page-banner h1 { font-size: 46px; font-weight: 900; color: #fff; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 0 5px 20px rgba(0,0,0,0.6); }
+        .banner-line { width: 70px; height: 4px; background: var(--gold); margin: 0 auto; border-radius: 10px; box-shadow: 0 0 15px var(--gold); }
+        .page-container { max-width: var(--box-width); margin: 40px auto 80px auto; background: rgba(20, 20, 25, 0.8); padding: 60px 70px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1); backdrop-filter: blur(25px); flex: 1; width: 92%; }
+        .ql-editor { font-family: 'Segoe UI', sans-serif; font-size: 18px; line-height: 1.9; color: #d4d4d4; padding: 0 !important; }
+        .ql-editor h1, .ql-editor h2, .ql-editor h3 { color: var(--gold); margin-top: 35px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; font-weight: 800;}
+        .ql-editor img { max-width: 100%; border-radius: 20px; margin: 25px 0; box-shadow: 0 15px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        .ql-editor iframe.ql-video { width: 100%; height: 500px; border-radius: 20px; border: 2px solid #333; margin: 30px 0; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .ql-editor a { color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); transition: 0.3s; padding-bottom: 2px; }
+        .ql-editor a:hover { color: #fff; border-color: #fff; }
+        .ql-editor blockquote { border-left: 4px solid var(--gold); margin-left: 0; font-style: italic; color: #aaa; background: rgba(0,0,0,0.3); padding: 20px 25px; border-radius: 0 15px 15px 0; font-size: 17px;}
+        .ql-editor ul, .ql-editor ol { padding-left: 20px; margin-bottom: 20px; }
+        .ql-editor li { margin-bottom: 10px; }
+        
+        .live-dot { display: inline-block; width: 8px; height: 8px; background: #ff4444; border-radius: 50%; margin-left: 6px; box-shadow: 0 0 8px #ff4444; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); } }
+
+        .wp-btn { position:fixed; bottom:120px; right:25px; background:#25D366; color:#fff; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:35px; box-shadow:0 10px 20px rgba(0,0,0,0.5); z-index:9999; text-decoration:none; transition:0.3s; }
+        .wp-btn:hover { transform:scale(1.1); }
+        .chat-btn { position:fixed; bottom:200px; right:25px; background:var(--gold); color:#000; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:30px; box-shadow:0 10px 20px rgba(0,0,0,0.5); z-index:9999; cursor:pointer; transition:0.3s; }
+        .chat-btn:hover { transform:scale(1.1); }
+        .chat-window { position:fixed; bottom:100px; right:35px; width:350px; background:#111118; border-radius:20px; border:1px solid var(--gold); box-shadow:0 20px 50px rgba(0,0,0,0.8); z-index:10000; display:none; flex-direction:column; overflow:hidden; }
+        .chat-header { background:var(--gold); color:#000; padding:15px; font-weight:900; display:flex; justify-content:space-between; align-items:center; }
+        .chat-body { padding:15px; height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; background:#050507; position:relative;}
+        .chat-input-area { padding:15px; background:#111118; display:flex; gap:10px; border-top:1px solid #333; flex-direction:column; }
+        .chat-msg { max-width:80%; padding:10px 15px; border-radius:15px; font-size:13px; line-height:1.4; }
+        .msg-user { background:var(--gold); color:#000; align-self:flex-end; border-bottom-right-radius:2px; }
+        .msg-admin { background:#333; color:#fff; align-self:flex-start; border-bottom-left-radius:2px; }
+
+        .typing-indicator { font-size:11px; color:var(--gold); padding:5px 15px; background:#0a0a0c; display:none; text-align:left; font-style:italic;}
+
+        footer { background: #0a0a0c; padding: 50px 6% 80px 6%; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
+        .copyright { width: 100%; text-align: center; margin-top: 40px; color: #444; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+        .page-custom-layer { position:absolute; top:0; left:0; width:100%; pointer-events:none; z-index:40; }
+        .page-custom-element { position:absolute; pointer-events:auto; }
+        .page-custom-text { padding:10px 12px; color:#fff; font-weight:800; text-shadow:0 2px 12px rgba(0,0,0,0.45); }
+        .page-custom-button { display:inline-flex; align-items:center; justify-content:center; padding:14px 18px; border-radius:14px; font-weight:900; text-decoration:none; }
+        .page-custom-input { width:100%; padding:14px 16px; border-radius:14px; border:1px solid #2f3440; background:rgba(11,13,19,0.92); color:#f1f3f8; }
+        @media (max-width: 980px) {
+            nav { padding: 16px 20px; flex-wrap: wrap; gap: 14px; }
+            .nav-toggle { display:flex; }
+            .nav-links { display:none; width:100%; flex-direction:column; align-items:stretch; gap:8px; padding-top:12px; }
+            .nav-links.open { display:flex; }
+            .nav-links li, .nav-links li a { width:100%; }
+            .nav-links li a { padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.04); }
+            .page-container { padding: 40px 28px; width: calc(100% - 32px); }
+            footer { padding: 40px 20px 90px 20px; }
+            .chat-window { right:12px; width:calc(100vw - 24px); max-width:420px; }
+            .chat-btn, .wp-btn { right:12px; }
+        }
+        @media (max-width: 768px) { .page-container { padding: 35px 25px; border-radius: 25px; } .page-banner h1 { font-size: 36px; } .ql-editor iframe.ql-video { height: 250px; } }
+        @media (max-width: 640px) {
+            .logo-text { font-size:22px; }
+            .page-banner { padding-top: 46px; }
+            .page-banner h1 { font-size: clamp(30px, 9vw, 36px); }
+            .page-container { padding: 26px 18px; width: calc(100% - 20px); }
+            .chat-window { bottom:84px; }
+            .chat-btn { bottom:154px; }
+            .wp-btn { bottom:84px; }
+        }
+        @media (max-width: 430px) {
+            nav { padding: 12px 14px; }
+            .logo-img { width: 30px; height: 30px; }
+            .logo-text { font-size:18px; letter-spacing:1px; }
+            .nav-toggle { width:40px; height:40px; border-radius:12px; font-size:15px; }
+            .nav-links li a { padding:10px 12px; font-size:12px; }
+            .page-banner { padding: 26px 12px 16px 12px; }
+            .page-banner img { max-width: 78px; max-height: 78px; margin-bottom: 12px; }
+            .page-banner h1 { font-size: clamp(22px, 8vw, 28px); margin-bottom: 10px; }
+            .banner-line { width: 44px; height: 3px; }
+            .page-container { padding: 18px 14px; width: calc(100% - 12px); margin: 16px auto 36px auto; border-radius: 18px; }
+            .ql-editor { font-size: 13px; line-height: 1.65; }
+            .ql-editor h1, .ql-editor h2, .ql-editor h3 { margin-top: 20px; margin-bottom: 10px; padding-bottom: 8px; }
+            .ql-editor blockquote { padding: 14px 14px 14px 16px; border-radius: 0 12px 12px 0; font-size: 13px; }
+            .ql-editor iframe.ql-video { height: 190px; border-radius: 14px; margin: 16px 0; }
+            footer { padding: 28px 12px 90px 12px; }
+            .chat-btn { width:48px; height:48px; right:8px; bottom:120px; font-size:22px; }
+            .wp-btn { width:46px; height:46px; right:8px; bottom:62px; font-size:26px; }
+            .chat-window { right:8px; bottom:58px; width:calc(100vw - 16px); border-radius:16px; }
+            .chat-header, .chat-input-area { padding:11px; }
+            .chat-body { padding:11px; height:min(34vh,230px); gap:8px; }
+            .chat-msg { font-size:12px; padding:9px 11px; }
+        }
+        @media (max-width: 375px) {
+            .page-banner h1 { font-size: 20px; }
+            .page-container { padding: 16px 12px; }
+        }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="logo-area" onclick="trackClick('Logo: Ana Sayfa')"><img id="logoImg" class="logo-img"><span id="logoTxt" class="logo-text"></span></a>
+    <ul class="nav-links" id="nav-links"></ul>
+    <button id="navToggle" class="nav-toggle" type="button" onclick="toggleSiteNav()" aria-label="Menüyü aç" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+</nav>
+
+<div class="page-banner">
+    <img id="pImg" src="">
+    <h1 id="pTitle">Yükleniyor...</h1>
+    <div class="banner-line"></div>
+</div>
+
+<div class="page-container">
+    <div class="ql-snow"><div class="ql-editor" id="pContent"></div></div>
+</div>
+
+<footer id="footerBox">
+    <div class="footer-content"></div>
+    <div class="copyright" id="fCopyText"></div>
+</footer>
+
+<a id="wpLink" href="#" target="_blank" class="wp-btn" style="display:none;" onclick="trackClick('WhatsApp Yönlendirme')"><i class="fa-brands fa-whatsapp"></i></a>
+<div id="chatBtn" class="chat-btn" onclick="toggleChat(); trackClick('Canlı Destek Açıldı');" style="display:none;"><i class="fa-solid fa-comment-dots"></i></div>
+
+<div id="chatWindow" class="chat-window">
+    <div class="chat-header"><span><i class="fa-solid fa-headset"></i> <span id="chatTitleName">Canlı Destek</span></span> <i class="fa-solid fa-xmark" onclick="toggleChat()" style="cursor:pointer;"></i></div>
+    <div class="chat-body" id="chatBody"></div>
+    <div id="typingIndicator" class="typing-indicator"><span id="agentTypingName">Müşteri Temsilcisi</span> yazıyor...</div>
+    
+    <div class="chat-input-area" id="chatAuthArea">
+        <input id="chatName" placeholder="Adınız Soyadınız" required style="padding:10px; margin-bottom:5px; background:#000; border:1px solid #333; color:#fff; border-radius:5px;">
+        <input id="chatPhone" type="tel" placeholder="Telefon Numaranız" required style="padding:10px; margin-bottom:5px; background:#000; border:1px solid #333; color:#fff; border-radius:5px;">
+        <input id="chatSubject" placeholder="Konu Nedir?" required style="padding:10px; margin-bottom:5px; background:#000; border:1px solid #333; color:#fff; border-radius:5px;">
+        <button onclick="startChat()" style="background:var(--gold); border:none; padding:10px; cursor:pointer; font-weight:bold; border-radius:5px; color:#000;">Bağlan</button>
+    </div>
+    
+    <div class="chat-input-area" id="chatMsgArea" style="display:none; flex-direction:row;">
+        <input id="chatInput" placeholder="Mesajınız..." style="padding:10px; flex:1; background:#000; border:1px solid #333; color:#fff; margin:0; border-radius:5px;">
+        <button onclick="sendChatMsg()" style="background:var(--gold); border:none; padding:0 15px; cursor:pointer; border-radius:5px; margin-left:5px; color:#000;"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+    <div class="chat-input-area" id="chatCloseActionArea" style="display:none; padding-top:0;">
+        <button onclick="closeVisitorChat()" style="background:#2a2d35; border:none; color:#fff; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold; width:100%;">GÖRÜŞMEYİ SONLANDIR</button>
+    </div>
+
+    <div class="chat-input-area" id="chatClosedArea" style="display:none; flex-direction:column;">
+        <div style="color:#ff4444; font-weight:bold; text-align:center; padding:5px;">Görüşme sonlandırıldı.</div>
+        <button onclick="resetChat()" style="background:var(--gold); border:none; color:#000; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold; width:100%;">YENİ GÖRÜŞME BAŞLAT</button>
+    </div>
+</div>
+
+<script>
+    const slugParts = window.location.pathname.split('/');
+    const currentSlug = slugParts.pop() || slugParts.pop(); 
+    const nocache = '?_=' + new Date().getTime(); 
+    let chatInterval = null;
+    const genericAgentName = "Canlı Destek";
+    const genericTypingName = "Temsilci";
+    let agentName = genericAgentName;
+
+    let lastUserChatMsgs = 0;
+    let isUserWindowActive = true;
+    let documentTitleOriginal = "Sayfa | VIP";
+    let userNotificationSound = null;
+    let visitorMessageNotificationSound = null;
+    let userAudioUnlocked = false;
+    let deviceFingerprint = '';
+    let visitorBanNoticeActive = false;
+    let visitorBanRedirectTimer = null;
+
+    function syncResponsiveNav() {
+        const navUl = document.getElementById('nav-links');
+        const navToggle = document.getElementById('navToggle');
+        if (!navUl || !navToggle) return;
+        if (window.innerWidth > 980) navUl.classList.remove('open');
+        const isOpen = navUl.classList.contains('open');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        navToggle.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+    }
+    function toggleSiteNav() {
+        const navUl = document.getElementById('nav-links');
+        if (!navUl || window.innerWidth > 980) return;
+        navUl.classList.toggle('open');
+        syncResponsiveNav();
+    }
+    function closeSiteNav() {
+        const navUl = document.getElementById('nav-links');
+        if (!navUl) return;
+        navUl.classList.remove('open');
+        syncResponsiveNav();
+    }
+    window.addEventListener('resize', syncResponsiveNav);
+    document.addEventListener('click', event => {
+        if (window.innerWidth > 980) return;
+        const nav = document.querySelector('nav');
+        if (nav && !nav.contains(event.target)) closeSiteNav();
+    });
+
+    function setDeviceFingerprintCookie(value) {
+        document.cookie = `device_fp=${encodeURIComponent(value)}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    function arrayBufferToHex(buffer) {
+        return Array.from(new Uint8Array(buffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+    function getStorageStatus() {
+        try {
+            const key = '__storage_probe__';
+            localStorage.setItem(key, '1');
+            localStorage.removeItem(key);
+            return 'localStorage aktif';
+        } catch (e) {
+            return 'localStorage kapalı';
+        }
+    }
+    function collectClientEnvironment() {
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const language = Array.isArray(navigator.languages) && navigator.languages.length > 0 ? navigator.languages.join(', ') : (navigator.language || 'Bilinmiyor');
+        const dpr = window.devicePixelRatio || 1;
+        return {
+            screenResolution: `${window.screen.width}x${window.screen.height} @${dpr}x`,
+            browserLanguage: language,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Bilinmiyor',
+            referrerUrl: document.referrer || 'Direkt Giris',
+            networkType: connection ? [connection.effectiveType || '', connection.downlink ? `${connection.downlink}mbps` : '', connection.rtt ? `${connection.rtt}ms` : ''].filter(Boolean).join(' / ') || 'Bilinmiyor' : 'Bilinmiyor',
+            cookieStatus: navigator.cookieEnabled ? 'Cookie aktif' : 'Cookie kapalı',
+            storageStatus: getStorageStatus()
+        };
+    }
+    async function ensureDeviceFingerprint() {
+        if (deviceFingerprint) return deviceFingerprint;
+        const stored = localStorage.getItem('device_fingerprint');
+        if (stored) {
+            deviceFingerprint = stored;
+            setDeviceFingerprintCookie(deviceFingerprint);
+            return deviceFingerprint;
+        }
+        const fingerprintSource = [navigator.userAgent, navigator.language, navigator.platform, window.screen.width, window.screen.height, window.devicePixelRatio || 1, navigator.hardwareConcurrency || 0, Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown'].join('||');
+        if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+            const encoded = new TextEncoder().encode(fingerprintSource);
+            deviceFingerprint = arrayBufferToHex(await window.crypto.subtle.digest('SHA-256', encoded));
+        } else {
+            deviceFingerprint = btoa(unescape(encodeURIComponent(fingerprintSource))).replace(/=/g, '').slice(0, 64);
+        }
+        localStorage.setItem('device_fingerprint', deviceFingerprint);
+        setDeviceFingerprintCookie(deviceFingerprint);
+        return deviceFingerprint;
+    }
+    async function postJsonWithDeviceFingerprint(url, payload) {
+        const fingerprint = await ensureDeviceFingerprint();
+        const environment = collectClientEnvironment();
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fingerprint },
+            body: JSON.stringify({ ...(payload || {}), ...environment, deviceFingerprint: fingerprint })
+        });
+        await handleBannedApiResponse(response);
+        return response;
+    }
+    function sendTracking(url, payload) {
+        ensureDeviceFingerprint().then(fingerprint => {
+            const body = JSON.stringify({ ...(payload || {}), ...collectClientEnvironment(), deviceFingerprint: fingerprint });
+            const blob = new Blob([body], { type: 'application/json' });
+            const beaconSent = typeof navigator.sendBeacon === 'function' ? navigator.sendBeacon(url, blob) : false;
+            if (!beaconSent) {
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fingerprint },
+                    body,
+                    keepalive: true
+                }).catch(() => {});
+            }
+        }).catch(() => {});
+    }
+    function showVisitorBanNotice(message) {
+        if (visitorBanNoticeActive) return;
+        visitorBanNoticeActive = true;
+        if (visitorMessageboxPollTimer) clearInterval(visitorMessageboxPollTimer);
+        if (chatInterval) { clearInterval(chatInterval); chatInterval = null; }
+        let secondsLeft = 8;
+        let overlay = document.getElementById('visitorBanOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'visitorBanOverlay';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:14000; display:flex; align-items:center; justify-content:center; padding:18px; background:rgba(5,6,10,0.82); backdrop-filter:blur(10px);';
+            overlay.innerHTML = '<div style="width:min(560px,100%); background:linear-gradient(180deg, rgba(22,10,10,0.98), rgba(10,8,12,0.98)); border:1px solid rgba(255,68,68,0.34); border-radius:30px; box-shadow:0 30px 90px rgba(0,0,0,0.6); padding:30px 24px 24px; text-align:center;"><div style="width:84px; height:84px; margin:0 auto 18px; border-radius:28px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,68,68,0.24), rgba(255,170,0,0.12)); color:#ff8d8d; font-size:36px;"><i class="fa-solid fa-user-lock"></i></div><div style="font-size:30px; line-height:1.08; font-weight:900; color:#fff1f1; margin-bottom:12px;">Erişiminiz Engellendi</div><div id="visitorBanText" style="font-size:17px; line-height:1.7; color:#ffd0d0; white-space:pre-line;"></div><div style="margin-top:18px; display:inline-flex; align-items:center; justify-content:center; min-width:210px; padding:14px 20px; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); color:#fff; font-weight:800;">8 saniye sonra erişim kapatılacak</div><div id="visitorBanCountdown" style="margin-top:14px; font-size:42px; font-weight:900; color:#ffaa00;">8</div></div>';
+            document.body.appendChild(overlay);
+        }
+        const text = overlay.querySelector('#visitorBanText');
+        const countdown = overlay.querySelector('#visitorBanCountdown');
+        if (text) text.textContent = `${message || 'Bu cihaz veya IP adresi engellenmiştir.'}\nBu sitede artık erişiminiz olmayacaktır.`;
+        if (countdown) countdown.textContent = String(secondsLeft);
+        clearInterval(visitorBanRedirectTimer);
+        visitorBanRedirectTimer = setInterval(() => {
+            secondsLeft -= 1;
+            if (countdown) countdown.textContent = String(Math.max(secondsLeft, 0));
+            if (secondsLeft <= 0) {
+                clearInterval(visitorBanRedirectTimer);
+                window.location.href = '/';
+            }
+        }, 1000);
+    }
+    async function handleBannedApiResponse(response) {
+        if (!response || response.status !== 403) return false;
+        const data = await response.json().catch(() => ({}));
+        if (data.status !== 'banned') return false;
+        showVisitorBanNotice(data.msg || 'Bu cihaz veya IP adresi engellenmiştir.');
+        return true;
+    }
+
+    window.addEventListener('focus', () => { isUserWindowActive = true; document.title = documentTitleOriginal; });
+    window.addEventListener('blur', () => { isUserWindowActive = false; });
+    function bytesToBase64(bytes) {
+        let binary = '';
+        const chunkSize = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+            const chunk = bytes.subarray(i, i + chunkSize);
+            binary += String.fromCharCode.apply(null, chunk);
+        }
+        return btoa(binary);
+    }
+    function buildNotificationToneDataUrl(notes, masterVolume = 0.2) {
+        const sampleRate = 22050;
+        const tailSeconds = 0.18;
+        const totalSeconds = notes.reduce((maxTime, note) => Math.max(maxTime, note.start + note.duration), 0) + tailSeconds;
+        const totalSamples = Math.ceil(totalSeconds * sampleRate);
+        const samples = new Int16Array(totalSamples);
+        notes.forEach(note => {
+            const startSample = Math.floor(note.start * sampleRate);
+            const durationSamples = Math.floor(note.duration * sampleRate);
+            const attackSamples = Math.max(1, Math.floor(durationSamples * 0.08));
+            const releaseSamples = Math.max(1, Math.floor(durationSamples * 0.24));
+            for (let i = 0; i < durationSamples; i++) {
+                const sampleIndex = startSample + i;
+                if (sampleIndex >= totalSamples) break;
+                const t = i / sampleRate;
+                let envelope = 1;
+                if (i < attackSamples) envelope = i / attackSamples;
+                else if (i > durationSamples - releaseSamples) envelope = Math.max(0, (durationSamples - i) / releaseSamples);
+                const baseWave = Math.sin(2 * Math.PI * note.freq * t);
+                const overtone = 0.35 * Math.sin(2 * Math.PI * note.freq * 2 * t + 0.4);
+                const softener = 0.18 * Math.sin(2 * Math.PI * note.freq * 0.5 * t);
+                const value = (baseWave + overtone + softener) * envelope * (note.volume || 1) * masterVolume;
+                const mixed = samples[sampleIndex] + Math.floor(Math.max(-1, Math.min(1, value)) * 32767);
+                samples[sampleIndex] = Math.max(-32768, Math.min(32767, mixed));
+            }
+        });
+        const dataSize = samples.length * 2;
+        const buffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(buffer);
+        const writeString = (offset, text) => {
+            for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
+        };
+        writeString(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeString(8, 'WAVE');
+        writeString(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(36, 'data');
+        view.setUint32(40, dataSize, true);
+        for (let i = 0; i < samples.length; i++) view.setInt16(44 + i * 2, samples[i], true);
+        return `data:audio/wav;base64,${bytesToBase64(new Uint8Array(buffer))}`;
+    }
+    function ensureUserNotificationSound() {
+        if (userNotificationSound) return userNotificationSound;
+        userNotificationSound = new Audio(buildNotificationToneDataUrl([
+            { freq: 622.25, start: 0.00, duration: 0.11, volume: 0.60 },
+            { freq: 783.99, start: 0.09, duration: 0.18, volume: 0.82 },
+            { freq: 932.33, start: 0.22, duration: 0.20, volume: 0.66 }
+        ], 0.18));
+        userNotificationSound.preload = 'auto';
+        userNotificationSound.playsInline = true;
+        userNotificationSound.volume = 1;
+        return userNotificationSound;
+    }
+    function ensureVisitorMessageNotificationSound() {
+        if (visitorMessageNotificationSound) return visitorMessageNotificationSound;
+        visitorMessageNotificationSound = new Audio(buildNotificationToneDataUrl([
+            { freq: 523.25, start: 0.00, duration: 0.10, volume: 0.55 },
+            { freq: 659.25, start: 0.08, duration: 0.12, volume: 0.72 },
+            { freq: 987.77, start: 0.18, duration: 0.24, volume: 0.92 },
+            { freq: 1318.51, start: 0.30, duration: 0.16, volume: 0.66 }
+        ], 0.22));
+        visitorMessageNotificationSound.preload = 'auto';
+        visitorMessageNotificationSound.playsInline = true;
+        visitorMessageNotificationSound.volume = 1;
+        return visitorMessageNotificationSound;
+    }
+    function unlockUserNotificationAudio() {
+        if (userAudioUnlocked) return;
+        [ensureUserNotificationSound(), ensureVisitorMessageNotificationSound()].forEach(sound => {
+            try {
+                sound.muted = true;
+                sound.currentTime = 0;
+                const playPromise = sound.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.then(() => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                        sound.muted = false;
+                        userAudioUnlocked = true;
+                    }).catch(() => {
+                        sound.muted = false;
+                    });
+                } else {
+                    sound.pause();
+                    sound.currentTime = 0;
+                    sound.muted = false;
+                    userAudioUnlocked = true;
+                }
+            } catch (e) {
+                sound.muted = false;
+            }
+        });
+    }
+    document.addEventListener('pointerdown', unlockUserNotificationAudio);
+    document.addEventListener('keydown', unlockUserNotificationAudio);
+    function playNotif() {
+        try {
+            const player = ensureUserNotificationSound();
+            player.pause();
+            player.currentTime = 0;
+            player.volume = 1;
+            player.play().catch(() => {});
+        } catch (e) {}
+    }
+    function playVisitorMessageNotif() {
+        try {
+            const player = ensureVisitorMessageNotificationSound();
+            player.pause();
+            player.currentTime = 0;
+            player.volume = 1;
+            player.play().catch(() => {});
+        } catch (e) {}
+    }
+
+    let visitStartTime = Date.now();
+    window.addEventListener('beforeunload', () => {
+        let timeSpent = Math.round((Date.now() - visitStartTime) / 1000);
+        if(timeSpent > 0) sendTracking('/api/track-details', { path: '/p/' + currentSlug, time: timeSpent, isClick: false });
+    });
+    
+    function trackClick(name) { sendTracking('/api/track-details', { path: 'Tıklandı: ' + name, time: 0, isClick: true }); }
+
+    let blockedShortcutReportAt = 0;
+    let screenshotAttemptReportAt = 0;
+    let mobileScreenshotSignalAt = 0;
+    let mobileHiddenAt = 0;
+    let blockedShortcutToastTimer = null;
+    function showBlockedShortcutWarning(message) {
+        let overlay = document.getElementById('blockedShortcutToast');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'blockedShortcutToast';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:12000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,0.64); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.22s ease;';
+            overlay.innerHTML = '<div style="width:min(560px, 100%); padding:30px 26px; border-radius:28px; background:linear-gradient(180deg, rgba(22,15,8,0.98), rgba(10,8,5,0.98)); border:1px solid rgba(255,170,0,0.35); box-shadow:0 30px 80px rgba(0,0,0,0.58); text-align:center;"><div style="width:74px; height:74px; margin:0 auto 18px auto; border-radius:24px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,170,0,0.26), rgba(255,68,68,0.24)); color:#ffbf47; font-size:34px;"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-size:30px; line-height:1.15; font-weight:900; color:#fff4d6; margin-bottom:12px;">Guvenlik Uyarisi</div><div id="blockedShortcutToastText" style="font-size:19px; line-height:1.6; color:#ffd58a; font-weight:800;"></div></div>';
+            document.body.appendChild(overlay);
+        }
+        const text = document.getElementById('blockedShortcutToastText');
+        if (text) text.textContent = message;
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+        clearTimeout(blockedShortcutToastTimer);
+        blockedShortcutToastTimer = setTimeout(() => {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+        }, 2600);
+    }
+    let visitorMessageboxPollTimer = null;
+    let lastVisitorMessageboxId = 0;
+    function showVisitorRemoteMessagebox(message, type, title) {
+        const finalTitle = title || 'Yonetim Mesaji';
+        const finalMessage = message || '';
+        let overlay = document.getElementById('visitorMessageboxOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'visitorMessageboxOverlay';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:13000; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(0,0,0,0.72); backdrop-filter:blur(8px);';
+            overlay.innerHTML = '<div style="width:min(540px,100%); background:linear-gradient(180deg, rgba(16,18,26,0.98), rgba(8,10,14,0.98)); border:1px solid rgba(255,170,0,0.26); border-radius:28px; box-shadow:0 30px 80px rgba(0,0,0,0.58); padding:28px 24px 22px 24px; position:relative; text-align:center;"><button type="button" id="visitorMessageboxCloseBtn" style="position:absolute; top:14px; right:14px; width:38px; height:38px; border:none; border-radius:999px; background:rgba(255,255,255,0.08); color:#fff; cursor:pointer; font-size:16px;"><i class="fa-solid fa-xmark"></i></button><div id="visitorMessageboxIcon" style="width:74px; height:74px; margin:0 auto 18px auto; border-radius:24px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,170,0,0.24), rgba(255,208,92,0.10)); color:#ffd36b; font-size:32px;"><i class="fa-solid fa-bell"></i></div><div id="visitorMessageboxTitle" style="font-size:28px; line-height:1.1; font-weight:900; color:#fff6df; margin-bottom:12px;"></div><div id="visitorMessageboxText" style="font-size:17px; line-height:1.7; color:#d8dce6; white-space:pre-line;"></div><button type="button" id="visitorMessageboxOkBtn" style="margin-top:20px; min-width:170px; border:none; border-radius:999px; padding:14px 22px; background:linear-gradient(135deg, #ffd15a, #ff9b25 58%, #ff7f11); color:#000; font-weight:900; cursor:pointer;">Tamam</button></div>';
+            document.body.appendChild(overlay);
+            const closeOverlay = () => { overlay.style.display = 'none'; };
+            overlay.addEventListener('click', event => { if (event.target === overlay) closeOverlay(); });
+            overlay.querySelector('#visitorMessageboxCloseBtn').addEventListener('click', closeOverlay);
+            overlay.querySelector('#visitorMessageboxOkBtn').addEventListener('click', closeOverlay);
+        }
+        overlay.querySelector('#visitorMessageboxTitle').textContent = finalTitle;
+        overlay.querySelector('#visitorMessageboxText').textContent = finalMessage;
+        overlay.querySelector('#visitorMessageboxIcon').innerHTML = type === 'error' ? '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-bell"></i>';
+        overlay.style.display = 'flex';
+    }
+    async function pollVisitorMessagebox() {
+        try {
+            await ensureDeviceFingerprint();
+            const response = await fetch('/api/visitor-messagebox?_=' + Date.now(), { headers: { 'X-Device-Fingerprint': deviceFingerprint }, cache: 'no-store' });
+            if (await handleBannedApiResponse(response)) return;
+            const data = await response.json().catch(() => ({}));
+            if (data.status !== 'success' || !data.messagebox) return;
+            if (Number(data.messagebox.id || 0) === lastVisitorMessageboxId) return;
+            lastVisitorMessageboxId = Number(data.messagebox.id || 0);
+            playVisitorMessageNotif();
+            showVisitorRemoteMessagebox(data.messagebox.message || '', data.messagebox.type || 'info', data.messagebox.title || 'Yonetim Mesaji');
+        } catch (e) {}
+    }
+    function startVisitorMessageboxPolling() {
+        if (visitorMessageboxPollTimer) clearInterval(visitorMessageboxPollTimer);
+        pollVisitorMessagebox();
+        visitorMessageboxPollTimer = setInterval(pollVisitorMessagebox, 4000);
+    }
+    function reportBlockedShortcut(shortcut) {
+        const now = Date.now();
+        if (now - blockedShortcutReportAt < 4000) return;
+        blockedShortcutReportAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'blocked-shortcut',
+            shortcut,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function reportScreenshotAttempt(shortcut) {
+        const now = Date.now();
+        if (now - screenshotAttemptReportAt < 4000) return;
+        screenshotAttemptReportAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'screenshot-capture',
+            shortcut,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function isLikelyMobileClient() {
+        return /android|iphone|ipad|ipod/i.test(navigator.userAgent || '') || (navigator.maxTouchPoints || 0) > 1;
+    }
+    function reportMobileScreenshotSuspicion(shortcut, signal) {
+        const now = Date.now();
+        if (now - mobileScreenshotSignalAt < 8000) return;
+        mobileScreenshotSignalAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'mobile-screenshot-suspected',
+            shortcut,
+            signal,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function getScreenshotShortcut(event) {
+        const key = String(event.key || '').toLowerCase();
+        const code = String(event.code || '').toLowerCase();
+        if (key === 'printscreen' || code === 'printscreen') return 'PrintScreen';
+        if (event.metaKey && event.shiftKey && key === '3') return 'Cmd+Shift+3';
+        if (event.metaKey && event.shiftKey && key === '4') return 'Cmd+Shift+4';
+        if (event.metaKey && event.shiftKey && key === '5') return 'Cmd+Shift+5';
+        if (event.metaKey && event.shiftKey && key === 's') return 'Win+Shift+S';
+        return '';
+    }
+
+    document.addEventListener('keydown', function(event) {
+        const key = String(event.key || '').toLowerCase();
+        const screenshotShortcut = getScreenshotShortcut(event);
+        if (screenshotShortcut) {
+            reportScreenshotAttempt(screenshotShortcut);
+        }
+        if ((event.ctrlKey || event.metaKey) && key === 'u') {
+            event.preventDefault();
+            event.stopPropagation();
+            showBlockedShortcutWarning('Kaynak goruntulemeye devam ederseniz banlanabilirsiniz.');
+            reportBlockedShortcut(event.ctrlKey ? 'Ctrl+U' : 'Cmd+U');
+        }
+    }, true);
+    document.addEventListener('visibilitychange', function() {
+        if (!isLikelyMobileClient()) return;
+        if (document.visibilityState === 'hidden') {
+            mobileHiddenAt = Date.now();
+            return;
+        }
+        if (!mobileHiddenAt) return;
+        const hiddenDuration = Date.now() - mobileHiddenAt;
+        mobileHiddenAt = 0;
+        if (hiddenDuration >= 150 && hiddenDuration <= 2500) {
+            reportMobileScreenshotSuspicion('MobileButtons', `visibility-${hiddenDuration}ms`);
+        }
+    }, true);
+
+    postJsonWithDeviceFingerprint('/api/track-visit', {}).catch(() => {});
+    startVisitorMessageboxPolling();
+
+    function initBgSlider(type, color, imagesStr, effect, speed, scale, sizeNum, sizeUnit) {
+        let bgDiv = document.getElementById('bg-slider');
+        if(!bgDiv) { bgDiv = document.createElement('div'); bgDiv.id = 'bg-slider'; document.body.appendChild(bgDiv); }
+        bgDiv.style.cssText = `position:fixed; top:0; left:0; width:100%; height:100%; z-index:-10; overflow:hidden; background:${color};`;
+        if(type !== 'slider' || !imagesStr) return;
+        let urls = imagesStr.split(',').map(x=>x.trim()).filter(x=>x); if(urls.length === 0) return;
+        let actualScale = scale === 'custom' ? (sizeNum + sizeUnit) : scale;
+        bgDiv.innerHTML = `<style> .bg-slide { position:absolute; top:0; left:0; width:100%; height:100%; background-size:${actualScale}; background-position:center; background-repeat:no-repeat; opacity:0; transition: all ${speed}ms ease-in-out; transform: scale(1); } .bg-slide.active { opacity:1; } .eff-fade.active { opacity: 1; } </style>`;
+        urls.forEach((url, i) => { let div = document.createElement('div'); div.className = `bg-slide eff-${effect} ${i===0?'active':''}`; div.style.backgroundImage = `url(${url})`; bgDiv.appendChild(div); });
+        if(urls.length > 1 && effect !== 'sabit') { let idx = 0; setInterval(() => { const slides = bgDiv.querySelectorAll('.bg-slide'); if(!slides[idx]) return; slides[idx].classList.remove('active'); idx = (idx + 1) % slides.length; slides[idx].classList.add('active'); }, parseInt(speed) + 4000); }
+    }
+
+    function parseLayoutJson(raw) {
+        try {
+            const parsed = JSON.parse(raw || '[]');
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function ensureCustomLayerRoot() {
+        let root = document.getElementById('customLayerRoot');
+        if (!root) {
+            root = document.createElement('div');
+            root.id = 'customLayerRoot';
+            root.className = 'page-custom-layer';
+            document.body.appendChild(root);
+        }
+        root.style.height = `${Math.max(document.body.scrollHeight, window.innerHeight)}px`;
+        return root;
+    }
+
+    function renderCustomLayer(raw) {
+        const root = ensureCustomLayerRoot();
+        const items = parseLayoutJson(raw);
+        root.innerHTML = items.map(item => {
+            const style = `left:${item.x || 0}%; top:${item.y || 0}%; width:${item.width || 220}px; ${item.type === 'text' ? '' : `height:${item.height || 52}px;`} color:${item.color || '#fff'}; background:${item.bgColor || 'transparent'};`;
+            if (item.type === 'button') return `<a class="page-custom-element page-custom-button" href="${item.href || '#'}" style="${style}">${item.text || 'Buton'}</a>`;
+            if (item.type === 'input') return `<div class="page-custom-element" style="${style}"><input class="page-custom-input" placeholder="${item.placeholder || item.text || 'Textbox'}" style="height:${item.height || 52}px; color:${item.color || '#fff'}; background:${item.bgColor || 'rgba(11,13,19,0.92)'};"></div>`;
+            return `<div class="page-custom-element page-custom-text" style="${style}">${item.text || 'Metin'}</div>`;
+        }).join('');
+    }
+
+    async function initializeSystem() {
+        try {
+            const texts = await (await fetch('/api/texts' + nocache)).json();
+            texts.forEach(t => {
+                if(t.anahtar === 'placeholder_ad' && document.getElementById('chatName')) document.getElementById('chatName').placeholder = t.deger;
+                if(t.anahtar === 'placeholder_tel' && document.getElementById('chatPhone')) document.getElementById('chatPhone').placeholder = t.deger;
+            });
+
+            const m = await (await fetch('/api/menus' + nocache)).json();
+            const navUl = document.getElementById('nav-links');
+            if(navUl) {
+                navUl.innerHTML = '<li><a href="/" style="transition:0.3s; color:inherit;" onclick="trackClick(\'Menü: Ana Sayfa\')">ANA SAYFA</a></li>' + 
+                m.map((x, i) => `<li><a href="${x.link}" style="color: ${i === 0 ? 'var(--gold)' : 'inherit'};" onclick="trackClick('Menü: ${x.ad}')">${x.ad} ${x.link.includes('analizler') ? '<span class="live-dot"></span>' : ''}</a></li>`).join('');
+                navUl.addEventListener('click', closeSiteNav);
+            }
+            syncResponsiveNav();
+
+            const s = await (await fetch('/api/settings' + nocache)).json();
+            let wpNo = '';
+            
+            s.forEach(a => {
+                if(a.anahtar === 'tema_gold') document.documentElement.style.setProperty('--gold', a.deger);
+                if(a.anahtar === 'logo_text' && document.getElementById('logoTxt')) document.getElementById('logoTxt').innerText = a.deger; 
+                if(a.anahtar === 'logo_url' && document.getElementById('logoImg')) document.getElementById('logoImg').src = a.deger;
+                if(a.anahtar === 'site_favicon' && a.deger) document.getElementById('siteFavicon').href = a.deger; 
+                if(a.anahtar === 'chat_agent_name' && a.deger) agentName = a.deger;
+                if(a.anahtar === 'footer_bg' && document.getElementById('footerBox')) document.getElementById('footerBox').style.backgroundColor = a.deger;
+                if(a.anahtar === 'footer_copy' && document.getElementById('fCopyText')) document.getElementById('fCopyText').innerText = a.deger;
+                if(a.anahtar === 'whatsapp_no' && a.deger) wpNo = a.deger.replace(/[^0-9+]/g, '');
+                if(a.anahtar === 'live_chat_active' && a.deger === 'true') document.getElementById('chatBtn').style.display = 'flex';
+            });
+
+            document.getElementById('chatTitleName').innerText = agentName;
+            document.getElementById('agentTypingName').innerText = agentName;
+
+            if(wpNo) { document.getElementById('wpLink').href = `https://wa.me/${wpNo}`; document.getElementById('wpLink').style.display = 'flex'; }
+
+            const items = await (await fetch('/api/footer-items' + nocache)).json();
+            const footerContainer = document.querySelector('.footer-content');
+            if(footerContainer) {
+                let html = "";
+                items.forEach(f => {
+                    if (f.tip === 'image') html += `<img src="${f.icerik}" style="height:40px; margin: 0 10px;">`;
+                    else if (f.tip === 'link') html += `<a href="${f.link_url}" target="${f.hedef}" style="color:${f.renk}; text-decoration:none; font-weight:bold; margin: 0 10px; transition:0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='${f.renk}'" onclick="trackClick('Footer Link: ${f.icerik}')">${f.icerik}</a>`;
+                    else html += `<span style="color:${f.renk}; font-weight:bold; margin: 0 10px;">${f.icerik}</span>`;
+                });
+                footerContainer.innerHTML = `<div style="display:flex; align-items:center; flex-wrap:wrap; justify-content:center; width:100%; gap:15px;">${html}</div>`;
+            }
+
+            if(currentSlug) {
+                const p = await (await fetch('/api/pages/' + currentSlug + nocache)).json();
+                if(p.baslik){
+                    documentTitleOriginal = (p.seo_title || (p.baslik + " | VIP"));
+                    document.title = documentTitleOriginal;
+                    document.getElementById('pTitle').innerText = p.baslik;
+                    document.getElementById('pContent').innerHTML = p.icerik; 
+                    renderCustomLayer(p.layout_json || '[]');
+                    document.querySelector('.page-container').style.background = p.box_color || 'rgba(20,20,25,0.8)';
+                    initBgSlider(p.bg_type || 'color', p.bg_color || '#0a0a0c', p.bg_images || '', p.bg_effect || 'fade', p.bg_speed || '1500', p.bg_scale || 'cover', p.bg_size_num || '100', p.bg_size_unit || '%');
+                    if(p.resim_url && p.resim_url.trim() !== '') { 
+                        let imgEl = document.getElementById('pImg'); imgEl.src = p.resim_url; 
+                        imgEl.style.width = (p.img_size || '110') + 'px';
+                        imgEl.style.opacity = p.img_opacity || '1';
+                        imgEl.className = 'anim-' + (p.img_anim || 'float');
+                    } else { document.getElementById('pImg').style.display = 'none'; }
+                }
+            }
+        } catch(e) { console.log(e); }
+    }
+
+    function toggleChat() { const w = document.getElementById('chatWindow'); w.style.display = w.style.display === 'flex' ? 'none' : 'flex'; if(w.style.display === 'flex') checkChatAuth(); }
+    
+    function checkChatAuth() { 
+        if(localStorage.getItem('chat_auth') === 'true') { 
+            document.getElementById('chatAuthArea').style.display = 'none'; 
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatMsgArea').style.display = 'flex'; 
+            document.getElementById('chatCloseActionArea').style.display = 'block';
+            loadChatMsgs(); 
+            if(!chatInterval) chatInterval = setInterval(loadChatMsgs, 3000); 
+        } else {
+            document.getElementById('chatMsgArea').style.display = 'none';
+            document.getElementById('chatCloseActionArea').style.display = 'none';
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatAuthArea').style.display = 'flex';
+            document.getElementById('chatBody').innerHTML = '';
+        }
+    }
+    
+    async function startChat() { 
+        const n = document.getElementById('chatName').value; 
+        const p = document.getElementById('chatPhone').value; 
+        const s = document.getElementById('chatSubject').value; 
+        if(!n || !p || !s) return alert("Bilgileri eksiksiz doldurun."); 
+        
+        localStorage.setItem('chat_name', n); 
+        localStorage.setItem('chat_phone', p); 
+        localStorage.setItem('chat_subject', s); 
+        localStorage.setItem('chat_auth', 'true'); 
+        
+        trackClick('Canlı Desteğe Bağlandı');
+        await postJsonWithDeviceFingerprint('/api/chat/send', {name: n, phone: p, subject: s, message: 'Görüşmeye katıldı.'});
+        checkChatAuth(); 
+    }
+
+    function resetChat() {
+        localStorage.removeItem('chat_auth');
+        localStorage.removeItem('chat_name');
+        localStorage.removeItem('chat_phone');
+        localStorage.removeItem('chat_subject');
+        
+        document.getElementById('chatMsgArea').style.display = 'none';
+        document.getElementById('chatCloseActionArea').style.display = 'none';
+        document.getElementById('chatClosedArea').style.display = 'none';
+        document.getElementById('chatAuthArea').style.display = 'flex';
+        document.getElementById('chatBody').innerHTML = '';
+        document.getElementById('chatName').value = '';
+        document.getElementById('chatPhone').value = '';
+        document.getElementById('chatSubject').value = '';
+        
+        lastUserChatMsgs = 0;
+        if(chatInterval) { clearInterval(chatInterval); chatInterval = null; }
+    }
+    
+    let lastChatAssignmentStatus = '';
+    let lastConnectedAgentLabel = '';
+    async function loadChatMsgs() { 
+        const fingerprint = await ensureDeviceFingerprint();
+        let r = await fetch('/api/chat/get' + nocache, { headers: { 'X-Device-Fingerprint': fingerprint } }); let data = await r.json(); 
+        if (data.expired) {
+            resetChat();
+            return;
+        }
+        const body = document.getElementById('chatBody'); 
+        
+        document.getElementById('typingIndicator').style.display = data.admin_typing ? 'block' : 'none';
+        if (data.assignment_status === 'accepted' && data.assigned_label) {
+            agentName = data.assigned_label;
+            document.getElementById('chatTitleName').innerText = agentName;
+            document.getElementById('agentTypingName').innerText = agentName;
+        } else {
+            agentName = genericAgentName;
+            document.getElementById('chatTitleName').innerText = genericAgentName;
+            document.getElementById('agentTypingName').innerText = genericTypingName;
+        }
+        if (lastChatAssignmentStatus && lastChatAssignmentStatus !== 'accepted' && data.assignment_status === 'accepted') {
+            playVisitorMessageNotif();
+        }
+
+        if (data.msgs.length === 0) {
+            body.innerHTML = `<div style="color:#888; text-align:center; margin-top:20px; font-size:12px;">${agentName} size yardimci olmak icin hazir.</div>`;
+        } else {
+            body.innerHTML = data.msgs.map(m => `<div class="chat-msg ${m.sender==='user'?'msg-user':'msg-admin'}"><b>${m.sender==='user'?'Siz':agentName}:</b><br>${m.text} <div style="font-size:9px; opacity:0.6; text-align:right; margin-top:3px;">${m.time}</div></div>`).join(''); 
+            
+            if(lastUserChatMsgs !== 0 && data.msgs.length > lastUserChatMsgs) {
+                if(data.msgs[data.msgs.length-1].sender === 'admin') {
+                    playNotif();
+                    if(!isUserWindowActive) document.title = "💬 YENİ MESAJ!";
+                }
+            }
+            lastUserChatMsgs = data.msgs.length;
+        }
+        body.scrollTop = body.scrollHeight; 
+
+        if (data.pending_assignment && data.is_active !== 0) {
+            body.insertAdjacentHTML('afterbegin', '<div style="color:#ffcc80; text-align:center; margin-bottom:12px; font-size:12px; line-height:1.5;">Uygun temsilcimize atanacaksınız, biraz bekleyin.</div>');
+        }
+        if (data.assignment_status === 'accepted' && data.assigned_label && lastConnectedAgentLabel !== data.assigned_label) {
+            body.insertAdjacentHTML('beforeend', `<div class="chat-msg msg-admin"><b>Sistem:</b><br>${escapeHtml(data.assigned_label)} ile bağlantı kuruldu. Sohbete devam edebilirsiniz.</div>`);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        if (data.is_active === 0) {
+            agentName = genericAgentName;
+            document.getElementById('chatTitleName').innerText = genericAgentName;
+            document.getElementById('agentTypingName').innerText = genericTypingName;
+            let closeHtml = `
+            <div style="color:#ff4444; font-weight:bold; width:100%; text-align:center; padding:10px; border-top:1px solid #333;">
+                Görüşme sonlandırıldı. <br>
+                <button onclick="resetChat()" style="margin-top:15px; background:var(--gold); border:none; color:#000; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight:bold; width:100%;">YENİ GÖRÜŞME BAŞLAT</button>
+            </div>`;
+            document.getElementById('chatMsgArea').style.display = 'none';
+            document.getElementById('chatCloseActionArea').style.display = 'none';
+            document.getElementById('chatClosedArea').style.display = 'flex';
+            document.getElementById('chatClosedArea').innerHTML = closeHtml;
+            clearInterval(chatInterval); chatInterval = null;
+        } else {
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatMsgArea').style.display = 'flex';
+            document.getElementById('chatCloseActionArea').style.display = 'block';
+        }
+        lastChatAssignmentStatus = String(data.assignment_status || '').trim() || lastChatAssignmentStatus;
+        lastConnectedAgentLabel = data.is_active !== 0 && data.assignment_status === 'accepted' && data.assigned_label ? data.assigned_label : '';
+    }
+    
+    async function sendChatMsg() { 
+        const inp = document.getElementById('chatInput'); const msg = inp?.value; if(!msg) return; inp.value = ''; 
+        
+        stopVisitorTyping();
+        const body = document.getElementById('chatBody'); body.scrollTop = body.scrollHeight;
+
+        await postJsonWithDeviceFingerprint('/api/chat/send', {name: localStorage.getItem('chat_name'), phone: localStorage.getItem('chat_phone'), subject: localStorage.getItem('chat_subject'), message: msg}); 
+        loadChatMsgs(); 
+    }
+    async function closeVisitorChat() {
+        if (!confirm('Görüşmeyi sonlandırmak istiyor musunuz?')) return;
+        stopVisitorTyping();
+        const response = await postJsonWithDeviceFingerprint('/api/chat/close', {});
+        const result = await response.json();
+        if (result.status !== 'success') return;
+        loadChatMsgs();
+    }
+
+    window._visitorTypingTimer = null;
+    async function setVisitorTyping(typing) {
+        try { await postJsonWithDeviceFingerprint('/api/chat/typing', { typing: !!typing }); } catch (e) {}
+    }
+    function scheduleVisitorTyping() {
+        setVisitorTyping(true);
+        if (window._visitorTypingTimer) clearTimeout(window._visitorTypingTimer);
+        window._visitorTypingTimer = setTimeout(() => {
+            setVisitorTyping(false);
+            window._visitorTypingTimer = null;
+        }, 1400);
+    }
+    function stopVisitorTyping() {
+        if (window._visitorTypingTimer) {
+            clearTimeout(window._visitorTypingTimer);
+            window._visitorTypingTimer = null;
+        }
+        setVisitorTyping(false);
+    }
+    document.getElementById('chatInput')?.addEventListener('input', (e) => {
+        if (String(e.target.value || '').trim()) scheduleVisitorTyping();
+        else stopVisitorTyping();
+    });
+    document.getElementById('chatInput')?.addEventListener('blur', stopVisitorTyping);
+
+    initializeSystem();
+    window.addEventListener('resize', () => {
+        const root = document.getElementById('customLayerRoot');
+        if (root) root.style.height = `${Math.max(document.body.scrollHeight, window.innerHeight)}px`;
+    });
+</script>
+</body>
+</html>

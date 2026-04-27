@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="mainTitle">VIP Forum | VIP</title>
+    <link id="siteFavicon" rel="shortcut icon" href="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --gold: #ffaa00; --page-shell: rgba(20,20,25,0.78); --accent-soft: #ffd37a; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        html, body { max-width: 100%; overflow-x: hidden; }
+        body { background: transparent; color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; background: rgba(0,0,0,0.5); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,170,0,0.1); position: sticky; top:0; z-index: 1000; }
+        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-img { width: 38px; height: 38px; filter: drop-shadow(0 0 5px var(--gold)); }
+        .logo-text { font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
+        .nav-links { display:flex; gap:30px; list-style:none; font-size:13px; font-weight:800; color:#888; align-items:center; }
+        .nav-links li a { color: inherit; text-decoration:none; transition:0.3s; }
+        .nav-links li a:hover { color: var(--gold); }
+        .nav-toggle { display:none; width:46px; height:46px; border:none; border-radius:14px; background:rgba(255,255,255,0.06); color:#fff; align-items:center; justify-content:center; cursor:pointer; font-size:18px; }
+        .forum-shell { width: min(1180px, 92vw); max-width: 100%; margin: 54px auto 80px auto; display:grid; grid-template-columns: 1.05fr 0.95fr; gap: 26px; align-items:start; }
+        .forum-panel { min-width: 0; background: var(--page-shell); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 36px; backdrop-filter: blur(24px); box-shadow: 0 28px 60px rgba(0,0,0,0.5); position:relative; overflow:hidden; }
+        .forum-panel::before { content:''; position:absolute; inset:auto -60px -80px auto; width:180px; height:180px; background:radial-gradient(circle, rgba(255,170,0,0.18), transparent 68%); pointer-events:none; }
+        .forum-kicker { display:inline-flex; align-items:center; gap:8px; background: rgba(255,170,0,0.12); color: var(--gold); border:1px solid rgba(255,170,0,0.16); padding:8px 12px; border-radius:999px; font-size:11px; font-weight:900; letter-spacing:0.4px; text-transform:uppercase; }
+        .forum-hero-image { width:120px; height:120px; object-fit:contain; filter: drop-shadow(0 16px 28px rgba(255,170,0,0.22)); margin-bottom: 18px; display:none; }
+        .forum-anim-float { animation: forumFloat 4s ease-in-out infinite; }
+        .forum-anim-pulse { animation: forumPulse 2.3s ease-in-out infinite; }
+        .forum-anim-spin { animation: forumSpin 8s linear infinite; }
+        .forum-panel h1 { font-size: clamp(34px, 4vw, 56px); line-height: 1.06; margin: 18px 0 16px 0; }
+        .forum-panel p { color:#b5b8c4; font-size:16px; line-height:1.75; }
+        .forum-highlight { margin-top: 24px; padding: 18px 20px; border-radius: 22px; background: linear-gradient(135deg, rgba(255,170,0,0.14), rgba(255,255,255,0.02)); border:1px solid rgba(255,170,0,0.14); }
+        .forum-highlight strong { display:block; color:#fff; font-size:18px; margin-bottom:8px; }
+        .forum-highlight span { color:#c8ccd7; font-size:14px; line-height:1.7; }
+        .forum-benefits { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 28px; }
+        .forum-benefit { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 16px; }
+        .forum-benefit strong { display:block; color:#fff; margin-bottom:8px; }
+        .forum-benefit span { color:#8f93a1; font-size:13px; line-height:1.6; }
+        .form-card { background: linear-gradient(180deg, rgba(10,10,14,0.95), rgba(17,17,24,0.96)); }
+        .form-card h2 { font-size: 28px; margin-bottom: 10px; color: var(--gold); }
+        .form-card p { color:#969aaa; font-size:14px; line-height:1.7; margin-bottom: 22px; }
+        .field-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        label { display:block; color:#8f93a1; font-size:11px; text-transform:uppercase; font-weight:800; margin-bottom:8px; letter-spacing:0.45px; }
+        input { width:100%; padding:16px 18px; border-radius:16px; border:1px solid #2c313d; background:#0d1017; color:#fff; font-size:15px; transition:0.25s; }
+        input:focus { outline:none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,170,0,0.08); }
+        .contact-options { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+        .contact-option { position:relative; }
+        .contact-option input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+        .contact-option-card { border:1px solid #2c313d; background:linear-gradient(180deg, rgba(14,16,24,1), rgba(10,12,18,1)); border-radius:22px; padding:18px; min-height:138px; transition:0.25s; display:flex; flex-direction:column; gap:10px; justify-content:space-between; }
+        .contact-option-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+        .contact-option-icon { width:48px; height:48px; border-radius:16px; display:flex; align-items:center; justify-content:center; background:rgba(255,170,0,0.12); color:var(--gold); font-size:22px; box-shadow: inset 0 0 0 1px rgba(255,170,0,0.08); }
+        .contact-option-check { width:24px; height:24px; border-radius:999px; border:1px solid #3b404d; background:#121520; display:flex; align-items:center; justify-content:center; color:transparent; transition:0.25s; font-size:12px; }
+        .contact-option-card strong { display:block; font-size:17px; margin-bottom:4px; }
+        .contact-option-card span { color:#98a0b2; font-size:13px; line-height:1.6; }
+        .contact-option-card small { display:block; color:var(--accent-soft); font-size:11px; text-transform:uppercase; letter-spacing:0.4px; font-weight:800; }
+        .contact-option:hover .contact-option-card { border-color: rgba(255,170,0,0.25); transform: translateY(-2px); }
+        .contact-option input:checked + .contact-option-card { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,170,0,0.08), 0 20px 34px rgba(255,170,0,0.08); background: linear-gradient(180deg, rgba(255,170,0,0.12), rgba(13,16,23,1)); }
+        .contact-option input:checked + .contact-option-card .contact-option-check { background: var(--gold); border-color: var(--gold); color:#000; }
+        .form-actions { display:flex; align-items:center; gap:14px; margin-top:22px; }
+        .submit-btn { flex:1; margin-top: 0; border:none; border-radius:20px; padding:18px 22px; cursor:pointer; font-size:14px; font-weight:900; letter-spacing:1px; color:#000; background: linear-gradient(135deg, #ffd15a, #ff9b25 58%, #ff7f11); box-shadow: 0 20px 38px rgba(255,170,0,0.22); transition: transform 0.2s, box-shadow 0.2s; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 24px 42px rgba(255,170,0,0.28); }
+        .submit-btn:active { transform: translateY(0); }
+        .ghost-btn { min-width: 154px; border-radius:20px; padding:18px 18px; border:1px solid rgba(255,255,255,0.09); background:rgba(255,255,255,0.03); color:#eef1f7; font-weight:800; cursor:pointer; transition:0.2s; }
+        .ghost-btn:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,170,0,0.22); color:var(--gold); }
+        .submit-note { margin-top: 14px; color:#7f8495; font-size:12px; line-height:1.7; }
+        .form-status { display:none; margin-top: 16px; border-radius: 14px; padding: 14px 16px; font-size: 13px; font-weight: 700; }
+        .form-status.success { display:block; background: rgba(52,208,88,0.12); border:1px solid rgba(52,208,88,0.2); color:#8fe9ab; }
+        .form-status.error { display:block; background: rgba(255,68,68,0.12); border:1px solid rgba(255,68,68,0.2); color:#ffaaaa; }
+        footer { background: #0a0a0c; padding: 50px 6% 80px 6%; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+        .footer-content { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:30px; }
+        .copyright { width:100%; text-align:center; margin-top:40px; color:#444; font-size:11px; letter-spacing:1px; text-transform:uppercase; }
+        .page-custom-layer { position:absolute; top:0; left:0; width:100%; pointer-events:none; z-index:40; }
+        .page-custom-element { position:absolute; pointer-events:auto; }
+        .page-custom-text { padding:10px 12px; color:#fff; font-weight:800; text-shadow:0 2px 12px rgba(0,0,0,0.45); }
+        .page-custom-button { display:inline-flex; align-items:center; justify-content:center; padding:14px 18px; border-radius:14px; font-weight:900; text-decoration:none; }
+        .page-custom-input { width:100%; padding:14px 16px; border-radius:14px; border:1px solid #2f3440; background:rgba(11,13,19,0.92); color:#f1f3f8; }
+        @keyframes forumFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes forumPulse { 0%, 100% { transform: scale(1); opacity:1; } 50% { transform: scale(1.05); opacity:0.88; } }
+        @keyframes forumSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @media (max-width: 980px) {
+            nav { padding: 16px 20px; flex-wrap: wrap; gap: 14px; }
+            .nav-toggle { display:flex; }
+            .nav-links { display:none; width:100%; flex-direction:column; align-items:stretch; gap:8px; padding-top:12px; }
+            .nav-links.open { display:flex; }
+            .nav-links li, .nav-links li a { width:100%; }
+            .nav-links li a { display:block; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.04); }
+            .forum-shell { grid-template-columns: 1fr; width: min(1180px, calc(100vw - 32px)); margin: 32px auto 56px auto; }
+            footer { padding: 40px 20px 90px 20px; }
+        }
+        @media (max-width: 640px) { .forum-panel { padding: 24px; border-radius: 24px; } .field-grid, .contact-options, .forum-benefits { grid-template-columns: 1fr; } .form-actions { flex-direction:column; } .ghost-btn, .submit-btn { width:100%; } .logo-text { font-size:22px; } }
+        @media (max-width: 430px) {
+            nav { padding: 12px 14px; }
+            .logo-img { width:30px; height:30px; }
+            .logo-text { font-size:18px; letter-spacing:1px; }
+            .nav-toggle { width:40px; height:40px; border-radius:12px; font-size:15px; }
+            .nav-links li a { padding:10px 12px; font-size:12px; }
+            .forum-shell { width: calc(100vw - 18px); margin: 16px auto 30px auto; gap: 12px; }
+            .forum-panel { padding: 16px 14px; border-radius: 18px; }
+            .forum-kicker { padding: 6px 10px; font-size: 9px; }
+            .forum-hero-image { width: 74px !important; height: 74px; margin-bottom: 10px; }
+            .forum-panel h1 { font-size: clamp(22px, 8vw, 30px); margin: 12px 0 10px 0; }
+            .forum-panel p { font-size: 12px; line-height: 1.55; }
+            .forum-highlight { margin-top: 14px; padding: 12px 14px; border-radius: 16px; }
+            .forum-highlight strong { font-size: 15px; margin-bottom: 6px; }
+            .forum-highlight span { font-size: 12px; line-height: 1.5; }
+            .forum-benefits { gap: 10px; margin-top: 16px; }
+            .forum-benefit { padding: 12px; border-radius: 14px; }
+            .forum-benefit strong { font-size: 13px; margin-bottom: 6px; }
+            .forum-benefit span { font-size: 11px; line-height: 1.45; }
+            .form-card h2 { font-size: 20px; margin-bottom: 6px; }
+            .form-card p { font-size: 12px; margin-bottom: 14px; }
+            label { font-size: 10px; margin-bottom: 6px; }
+            input { padding: 12px 13px; border-radius: 12px; font-size: 13px; }
+            .contact-option-card { min-height: 110px; padding: 14px; border-radius: 16px; }
+            .contact-option-icon { width: 38px; height: 38px; border-radius: 12px; font-size: 17px; }
+            .contact-option-check { width: 20px; height: 20px; font-size: 10px; }
+            .contact-option-card strong { font-size: 14px; }
+            .contact-option-card span { font-size: 11px; line-height: 1.45; }
+            .contact-option-card small { font-size: 9px; }
+            .submit-btn, .ghost-btn { padding: 14px 16px; border-radius: 14px; font-size: 11px; min-width: 0; }
+            .submit-note, .form-status { font-size: 11px; line-height: 1.5; }
+            footer { padding: 28px 12px 60px 12px; }
+        }
+        @media (max-width: 375px) {
+            .forum-shell { width: calc(100vw - 18px); }
+            .forum-panel { padding: 14px 12px; }
+            .forum-panel h1 { font-size: 20px; }
+            .contact-option-card { min-height: 102px; }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/" class="logo-area"><img id="logoImg" class="logo-img"><span id="logoTxt" class="logo-text"></span></a>
+    <ul class="nav-links" id="nav-links"></ul>
+    <button id="navToggle" class="nav-toggle" type="button" onclick="toggleSiteNav()" aria-label="Menüyü aç" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+</nav>
+
+<main class="forum-shell">
+    <section class="forum-panel">
+        <img id="forumHeroImage" class="forum-hero-image forum-anim-float" src="" alt="VIP Forum">
+        <div class="forum-kicker"><i class="fa-solid fa-comments"></i> VIP Forum Alanı</div>
+        <h1 id="forumTitle">Size nasıl ulaşmamızı istediğinizi bırakın, ekip dönüş yapsın.</h1>
+        <p id="forumIntro">Forum alanından temel bilgilerinizi bırakın. Uygun olduğunuz iletişim biçimini seçin; ekip kısa sürede ya sizi arasın ya da WhatsApp üzerinden yazsın.</p>
+        <div class="forum-highlight"><strong>VIP FORUM</strong><span>Bu alan hızlı iletişim toplamak için ayrıldı. Formu net, kısa ve tek aksiyonlu tuttuk; ziyaretçi sadece bilgisini bırakır, ekip seçtiği kanaldan dönüş yapar.</span></div>
+        <div class="forum-benefits">
+            <div class="forum-benefit"><strong>Hızlı dönüş</strong><span>Bilgileriniz kaydedilir ve uygun temsilci kısa sürede size ulaşır.</span></div>
+            <div class="forum-benefit"><strong>Tercihli iletişim</strong><span>Arama veya WhatsApp seçeneklerinden size uygun olanı seçebilirsiniz.</span></div>
+            <div class="forum-benefit"><strong>Basit kayıt</strong><span>Sadece isim, soyisim, telefon ve ulaşım tercihi yeterlidir.</span></div>
+            <div class="forum-benefit"><strong>Takip edilebilir süreç</strong><span>Gönderim sonrası kayıt sistemde tutulur ve dönüş süreci hızlanır.</span></div>
+        </div>
+    </section>
+
+    <section class="forum-panel form-card">
+        <h2 id="forumFormTitle">Forum Formu</h2>
+        <p id="forumFormIntro">Bilgilerinizi doldurun ve hangi kanaldan dönüş istediğinizi seçin.</p>
+        <form id="forumForm">
+            <div class="field-grid">
+                <div>
+                    <label for="forumAd">İsim</label>
+                    <input id="forumAd" type="text" placeholder="Adınız" required>
+                </div>
+                <div>
+                    <label for="forumSoyad">Soyisim</label>
+                    <input id="forumSoyad" type="text" placeholder="Soyadınız" required>
+                </div>
+            </div>
+            <div style="margin-top:14px;">
+                <label for="forumTelefon">Telefon Numarası</label>
+                <input id="forumTelefon" type="tel" inputmode="tel" maxlength="30" placeholder="05xx xxx xx xx" required>
+            </div>
+            <div style="margin-top:18px;">
+                <label>Ulaşım Seçeneği</label>
+                <div class="contact-options">
+                    <label class="contact-option">
+                        <input type="radio" name="ulasimTercihi" value="arama" required>
+                        <span class="contact-option-card"><span class="contact-option-top"><span class="contact-option-icon"><i class="fa-solid fa-phone-volume"></i></span><span class="contact-option-check"><i class="fa-solid fa-check"></i></span></span><span><small>Hızlı Geri Dönüş</small><strong id="forumCallLabel">Telefonla Arama</strong><span id="forumCallDesc">Temsilci sizi doğrudan telefonla arasın ve hızlıca bilgi versin.</span></span></span>
+                    </label>
+                    <label class="contact-option">
+                        <input type="radio" name="ulasimTercihi" value="whatsapp" required>
+                        <span class="contact-option-card"><span class="contact-option-top"><span class="contact-option-icon"><i class="fa-brands fa-whatsapp"></i></span><span class="contact-option-check"><i class="fa-solid fa-check"></i></span></span><span><small>Mesajlaşma Tercihi</small><strong id="forumWhatsappLabel">WhatsApp'tan Ulaşmak</strong><span id="forumWhatsappDesc">Temsilci size WhatsApp üzerinden yazsın, yazılı iletişimle ilerleyin.</span></span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button id="forumSubmitBtn" class="submit-btn" type="submit">VIP FORUMA GÖNDER</button>
+                <button id="forumClearBtn" class="ghost-btn" type="button" onclick="document.getElementById('forumForm').reset(); document.getElementById('formStatus').className='form-status'; document.getElementById('formStatus').textContent='';">TEMİZLE</button>
+            </div>
+            <div id="formStatus" class="form-status"></div>
+            <div class="submit-note">Gönderim yaptığınızda bilgileriniz sistemde saklanır ve tercih ettiğiniz kanaldan size dönüş yapılır.</div>
+        </form>
+    </section>
+</main>
+
+<footer id="footerBox">
+    <div class="footer-content"></div>
+    <div class="copyright" id="fCopyText"></div>
+</footer>
+
+<script>
+    const nocache = '?_=' + Date.now();
+    let deviceFingerprint = '';
+    let visitStartTime = Date.now();
+    let userNotificationSound = null;
+    let visitorMessageNotificationSound = null;
+    let userAudioUnlocked = false;
+    let visitorBanNoticeActive = false;
+    let visitorBanRedirectTimer = null;
+
+    function syncResponsiveNav() {
+        const navUl = document.getElementById('nav-links');
+        const navToggle = document.getElementById('navToggle');
+        if (!navUl || !navToggle) return;
+        if (window.innerWidth > 980) navUl.classList.remove('open');
+        const isOpen = navUl.classList.contains('open');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        navToggle.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+    }
+    function toggleSiteNav() {
+        const navUl = document.getElementById('nav-links');
+        if (!navUl || window.innerWidth > 980) return;
+        navUl.classList.toggle('open');
+        syncResponsiveNav();
+    }
+    function closeSiteNav() {
+        const navUl = document.getElementById('nav-links');
+        if (!navUl) return;
+        navUl.classList.remove('open');
+        syncResponsiveNav();
+    }
+    window.addEventListener('resize', syncResponsiveNav);
+    document.addEventListener('click', event => {
+        if (window.innerWidth > 980) return;
+        const nav = document.querySelector('nav');
+        if (nav && !nav.contains(event.target)) closeSiteNav();
+    });
+
+    function setDeviceFingerprintCookie(value) {
+        document.cookie = `device_fp=${encodeURIComponent(value)}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    function arrayBufferToHex(buffer) {
+        return Array.from(new Uint8Array(buffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+    function getStorageStatus() {
+        try {
+            const key = '__storage_probe__';
+            localStorage.setItem(key, '1');
+            localStorage.removeItem(key);
+            return 'localStorage aktif';
+        } catch (e) {
+            return 'localStorage kapalı';
+        }
+    }
+    function collectClientEnvironment() {
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const language = Array.isArray(navigator.languages) && navigator.languages.length > 0 ? navigator.languages.join(', ') : (navigator.language || 'Bilinmiyor');
+        const dpr = window.devicePixelRatio || 1;
+        return {
+            screenResolution: `${window.screen.width}x${window.screen.height} @${dpr}x`,
+            browserLanguage: language,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Bilinmiyor',
+            referrerUrl: document.referrer || 'Direkt Giris',
+            networkType: connection ? [connection.effectiveType || '', connection.downlink ? `${connection.downlink}mbps` : '', connection.rtt ? `${connection.rtt}ms` : ''].filter(Boolean).join(' / ') || 'Bilinmiyor' : 'Bilinmiyor',
+            cookieStatus: navigator.cookieEnabled ? 'Cookie aktif' : 'Cookie kapalı',
+            storageStatus: getStorageStatus()
+        };
+    }
+    async function ensureDeviceFingerprint() {
+        if (deviceFingerprint) return deviceFingerprint;
+        const stored = localStorage.getItem('device_fingerprint');
+        if (stored) {
+            deviceFingerprint = stored;
+            setDeviceFingerprintCookie(deviceFingerprint);
+            return deviceFingerprint;
+        }
+        const fingerprintSource = [navigator.userAgent, navigator.language, navigator.platform, window.screen.width, window.screen.height, window.devicePixelRatio || 1, navigator.hardwareConcurrency || 0, Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown'].join('||');
+        if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+            const encoded = new TextEncoder().encode(fingerprintSource);
+            deviceFingerprint = arrayBufferToHex(await window.crypto.subtle.digest('SHA-256', encoded));
+        } else {
+            deviceFingerprint = btoa(unescape(encodeURIComponent(fingerprintSource))).replace(/=/g, '').slice(0, 64);
+        }
+        localStorage.setItem('device_fingerprint', deviceFingerprint);
+        setDeviceFingerprintCookie(deviceFingerprint);
+        return deviceFingerprint;
+    }
+    async function postJsonWithDeviceFingerprint(url, payload) {
+        const fingerprint = await ensureDeviceFingerprint();
+        const environment = collectClientEnvironment();
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fingerprint },
+            body: JSON.stringify({ ...(payload || {}), ...environment, deviceFingerprint: fingerprint })
+        });
+        await handleBannedApiResponse(response);
+        return response;
+    }
+    function sendTracking(url, payload) {
+        ensureDeviceFingerprint().then(fingerprint => {
+            const body = JSON.stringify({ ...(payload || {}), ...collectClientEnvironment(), deviceFingerprint: fingerprint });
+            const blob = new Blob([body], { type: 'application/json' });
+            const sent = typeof navigator.sendBeacon === 'function' ? navigator.sendBeacon(url, blob) : false;
+            if (!sent) {
+                fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fingerprint }, body, keepalive: true }).catch(() => {});
+            }
+        }).catch(() => {});
+    }
+    function showVisitorBanNotice(message) {
+        if (visitorBanNoticeActive) return;
+        visitorBanNoticeActive = true;
+        if (visitorMessageboxPollTimer) clearInterval(visitorMessageboxPollTimer);
+        let secondsLeft = 8;
+        let overlay = document.getElementById('visitorBanOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'visitorBanOverlay';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:14000; display:flex; align-items:center; justify-content:center; padding:18px; background:rgba(5,6,10,0.82); backdrop-filter:blur(10px);';
+            overlay.innerHTML = '<div style="width:min(560px,100%); background:linear-gradient(180deg, rgba(22,10,10,0.98), rgba(10,8,12,0.98)); border:1px solid rgba(255,68,68,0.34); border-radius:30px; box-shadow:0 30px 90px rgba(0,0,0,0.6); padding:30px 24px 24px; text-align:center;"><div style="width:84px; height:84px; margin:0 auto 18px; border-radius:28px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,68,68,0.24), rgba(255,170,0,0.12)); color:#ff8d8d; font-size:36px;"><i class="fa-solid fa-user-lock"></i></div><div style="font-size:30px; line-height:1.08; font-weight:900; color:#fff1f1; margin-bottom:12px;">Erişiminiz Engellendi</div><div id="visitorBanText" style="font-size:17px; line-height:1.7; color:#ffd0d0; white-space:pre-line;"></div><div style="margin-top:18px; display:inline-flex; align-items:center; justify-content:center; min-width:210px; padding:14px 20px; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); color:#fff; font-weight:800;">8 saniye sonra erişim kapatılacak</div><div id="visitorBanCountdown" style="margin-top:14px; font-size:42px; font-weight:900; color:#ffaa00;">8</div></div>';
+            document.body.appendChild(overlay);
+        }
+        const text = overlay.querySelector('#visitorBanText');
+        const countdown = overlay.querySelector('#visitorBanCountdown');
+        if (text) text.textContent = `${message || 'Bu cihaz veya IP adresi engellenmiştir.'}\nBu sitede artık erişiminiz olmayacaktır.`;
+        if (countdown) countdown.textContent = String(secondsLeft);
+        clearInterval(visitorBanRedirectTimer);
+        visitorBanRedirectTimer = setInterval(() => {
+            secondsLeft -= 1;
+            if (countdown) countdown.textContent = String(Math.max(secondsLeft, 0));
+            if (secondsLeft <= 0) {
+                clearInterval(visitorBanRedirectTimer);
+                window.location.href = '/';
+            }
+        }, 1000);
+    }
+    async function handleBannedApiResponse(response) {
+        if (!response || response.status !== 403) return false;
+        const data = await response.json().catch(() => ({}));
+        if (data.status !== 'banned') return false;
+        showVisitorBanNotice(data.msg || 'Bu cihaz veya IP adresi engellenmiştir.');
+        return true;
+    }
+    function bytesToBase64(bytes) {
+        let binary = '';
+        const chunkSize = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+            const chunk = bytes.subarray(i, i + chunkSize);
+            binary += String.fromCharCode.apply(null, chunk);
+        }
+        return btoa(binary);
+    }
+    function buildNotificationToneDataUrl(notes, masterVolume = 0.2) {
+        const sampleRate = 22050;
+        const tailSeconds = 0.18;
+        const totalSeconds = notes.reduce((maxTime, note) => Math.max(maxTime, note.start + note.duration), 0) + tailSeconds;
+        const totalSamples = Math.ceil(totalSeconds * sampleRate);
+        const samples = new Int16Array(totalSamples);
+        notes.forEach(note => {
+            const startSample = Math.floor(note.start * sampleRate);
+            const durationSamples = Math.floor(note.duration * sampleRate);
+            const attackSamples = Math.max(1, Math.floor(durationSamples * 0.08));
+            const releaseSamples = Math.max(1, Math.floor(durationSamples * 0.24));
+            for (let i = 0; i < durationSamples; i++) {
+                const sampleIndex = startSample + i;
+                if (sampleIndex >= totalSamples) break;
+                const t = i / sampleRate;
+                let envelope = 1;
+                if (i < attackSamples) envelope = i / attackSamples;
+                else if (i > durationSamples - releaseSamples) envelope = Math.max(0, (durationSamples - i) / releaseSamples);
+                const baseWave = Math.sin(2 * Math.PI * note.freq * t);
+                const overtone = 0.35 * Math.sin(2 * Math.PI * note.freq * 2 * t + 0.4);
+                const softener = 0.18 * Math.sin(2 * Math.PI * note.freq * 0.5 * t);
+                const value = (baseWave + overtone + softener) * envelope * (note.volume || 1) * masterVolume;
+                const mixed = samples[sampleIndex] + Math.floor(Math.max(-1, Math.min(1, value)) * 32767);
+                samples[sampleIndex] = Math.max(-32768, Math.min(32767, mixed));
+            }
+        });
+        const dataSize = samples.length * 2;
+        const buffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(buffer);
+        const writeString = (offset, text) => {
+            for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
+        };
+        writeString(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeString(8, 'WAVE');
+        writeString(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(36, 'data');
+        view.setUint32(40, dataSize, true);
+        for (let i = 0; i < samples.length; i++) view.setInt16(44 + i * 2, samples[i], true);
+        return `data:audio/wav;base64,${bytesToBase64(new Uint8Array(buffer))}`;
+    }
+    function ensureUserNotificationSound() {
+        if (userNotificationSound) return userNotificationSound;
+        userNotificationSound = new Audio(buildNotificationToneDataUrl([
+            { freq: 622.25, start: 0.00, duration: 0.11, volume: 0.60 },
+            { freq: 783.99, start: 0.09, duration: 0.18, volume: 0.82 },
+            { freq: 932.33, start: 0.22, duration: 0.20, volume: 0.66 }
+        ], 0.18));
+        userNotificationSound.preload = 'auto';
+        userNotificationSound.playsInline = true;
+        userNotificationSound.volume = 1;
+        return userNotificationSound;
+    }
+    function ensureVisitorMessageNotificationSound() {
+        if (visitorMessageNotificationSound) return visitorMessageNotificationSound;
+        visitorMessageNotificationSound = new Audio(buildNotificationToneDataUrl([
+            { freq: 523.25, start: 0.00, duration: 0.10, volume: 0.55 },
+            { freq: 659.25, start: 0.08, duration: 0.12, volume: 0.72 },
+            { freq: 987.77, start: 0.18, duration: 0.24, volume: 0.92 },
+            { freq: 1318.51, start: 0.30, duration: 0.16, volume: 0.66 }
+        ], 0.22));
+        visitorMessageNotificationSound.preload = 'auto';
+        visitorMessageNotificationSound.playsInline = true;
+        visitorMessageNotificationSound.volume = 1;
+        return visitorMessageNotificationSound;
+    }
+    function unlockUserNotificationAudio() {
+        if (userAudioUnlocked) return;
+        [ensureUserNotificationSound(), ensureVisitorMessageNotificationSound()].forEach(sound => {
+            try {
+                sound.muted = true;
+                sound.currentTime = 0;
+                const playPromise = sound.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.then(() => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                        sound.muted = false;
+                        userAudioUnlocked = true;
+                    }).catch(() => {
+                        sound.muted = false;
+                    });
+                } else {
+                    sound.pause();
+                    sound.currentTime = 0;
+                    sound.muted = false;
+                    userAudioUnlocked = true;
+                }
+            } catch (e) {
+                sound.muted = false;
+            }
+        });
+    }
+    document.addEventListener('pointerdown', unlockUserNotificationAudio);
+    document.addEventListener('keydown', unlockUserNotificationAudio);
+    function playNotif() {
+        try {
+            const source = ensureUserNotificationSound();
+            const player = new Audio(source.currentSrc || source.src);
+            player.preload = 'auto';
+            player.playsInline = true;
+            player.volume = 1;
+            player.currentTime = 0;
+            player.play().catch(() => {});
+        } catch (e) {}
+    }
+    function playVisitorMessageNotif() {
+        try {
+            const source = ensureVisitorMessageNotificationSound();
+            const player = new Audio(source.currentSrc || source.src);
+            player.preload = 'auto';
+            player.playsInline = true;
+            player.volume = 1;
+            player.currentTime = 0;
+            player.play().catch(() => {});
+        } catch (e) {}
+    }
+    function showStatus(message, type) {
+        const box = document.getElementById('formStatus');
+        box.className = `form-status ${type}`;
+        box.textContent = message;
+    }
+    let blockedShortcutReportAt = 0;
+    let screenshotAttemptReportAt = 0;
+    let mobileScreenshotSignalAt = 0;
+    let mobileHiddenAt = 0;
+    let blockedShortcutToastTimer = null;
+    function showBlockedShortcutWarning(message) {
+        let overlay = document.getElementById('blockedShortcutToast');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'blockedShortcutToast';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:12000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,0.64); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.22s ease;';
+            overlay.innerHTML = '<div style="width:min(560px, 100%); padding:30px 26px; border-radius:28px; background:linear-gradient(180deg, rgba(22,15,8,0.98), rgba(10,8,5,0.98)); border:1px solid rgba(255,170,0,0.35); box-shadow:0 30px 80px rgba(0,0,0,0.58); text-align:center;"><div style="width:74px; height:74px; margin:0 auto 18px auto; border-radius:24px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,170,0,0.26), rgba(255,68,68,0.24)); color:#ffbf47; font-size:34px;"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-size:30px; line-height:1.15; font-weight:900; color:#fff4d6; margin-bottom:12px;">Guvenlik Uyarisi</div><div id="blockedShortcutToastText" style="font-size:19px; line-height:1.6; color:#ffd58a; font-weight:800;"></div></div>';
+            document.body.appendChild(overlay);
+        }
+        const text = document.getElementById('blockedShortcutToastText');
+        if (text) text.textContent = message;
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+        clearTimeout(blockedShortcutToastTimer);
+        blockedShortcutToastTimer = setTimeout(() => {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+        }, 2600);
+    }
+    let visitorMessageboxPollTimer = null;
+    let lastVisitorMessageboxId = 0;
+    function showVisitorRemoteMessagebox(message, type, title) {
+        const finalTitle = title || 'Yonetim Mesaji';
+        const finalMessage = message || '';
+        let overlay = document.getElementById('visitorMessageboxOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'visitorMessageboxOverlay';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:13000; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(0,0,0,0.72); backdrop-filter:blur(8px);';
+            overlay.innerHTML = '<div style="width:min(540px,100%); background:linear-gradient(180deg, rgba(16,18,26,0.98), rgba(8,10,14,0.98)); border:1px solid rgba(255,170,0,0.26); border-radius:28px; box-shadow:0 30px 80px rgba(0,0,0,0.58); padding:28px 24px 22px 24px; position:relative; text-align:center;"><button type="button" id="visitorMessageboxCloseBtn" style="position:absolute; top:14px; right:14px; width:38px; height:38px; border:none; border-radius:999px; background:rgba(255,255,255,0.08); color:#fff; cursor:pointer; font-size:16px;"><i class="fa-solid fa-xmark"></i></button><div id="visitorMessageboxIcon" style="width:74px; height:74px; margin:0 auto 18px auto; border-radius:24px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,170,0,0.24), rgba(255,208,92,0.10)); color:#ffd36b; font-size:32px;"><i class="fa-solid fa-bell"></i></div><div id="visitorMessageboxTitle" style="font-size:28px; line-height:1.1; font-weight:900; color:#fff6df; margin-bottom:12px;"></div><div id="visitorMessageboxText" style="font-size:17px; line-height:1.7; color:#d8dce6; white-space:pre-line;"></div><button type="button" id="visitorMessageboxOkBtn" style="margin-top:20px; min-width:170px; border:none; border-radius:999px; padding:14px 22px; background:linear-gradient(135deg, #ffd15a, #ff9b25 58%, #ff7f11); color:#000; font-weight:900; cursor:pointer;">Tamam</button></div>';
+            document.body.appendChild(overlay);
+            const closeOverlay = () => { overlay.style.display = 'none'; };
+            overlay.addEventListener('click', event => { if (event.target === overlay) closeOverlay(); });
+            overlay.querySelector('#visitorMessageboxCloseBtn').addEventListener('click', closeOverlay);
+            overlay.querySelector('#visitorMessageboxOkBtn').addEventListener('click', closeOverlay);
+        }
+        overlay.querySelector('#visitorMessageboxTitle').textContent = finalTitle;
+        overlay.querySelector('#visitorMessageboxText').textContent = finalMessage;
+        overlay.querySelector('#visitorMessageboxIcon').innerHTML = type === 'error' ? '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-bell"></i>';
+        overlay.style.display = 'flex';
+    }
+    async function pollVisitorMessagebox() {
+        try {
+            await ensureDeviceFingerprint();
+            const response = await fetch('/api/visitor-messagebox?_=' + Date.now(), { headers: { 'X-Device-Fingerprint': deviceFingerprint }, cache: 'no-store' });
+            if (await handleBannedApiResponse(response)) return;
+            const data = await response.json().catch(() => ({}));
+            if (data.status !== 'success' || !data.messagebox) return;
+            if (Number(data.messagebox.id || 0) === lastVisitorMessageboxId) return;
+            lastVisitorMessageboxId = Number(data.messagebox.id || 0);
+            playVisitorMessageNotif();
+            showVisitorRemoteMessagebox(data.messagebox.message || '', data.messagebox.type || 'info', data.messagebox.title || 'Yonetim Mesaji');
+        } catch (e) {}
+    }
+    function startVisitorMessageboxPolling() {
+        if (visitorMessageboxPollTimer) clearInterval(visitorMessageboxPollTimer);
+        pollVisitorMessagebox();
+        visitorMessageboxPollTimer = setInterval(pollVisitorMessagebox, 4000);
+    }
+    function reportBlockedShortcut(shortcut) {
+        const now = Date.now();
+        if (now - blockedShortcutReportAt < 4000) return;
+        blockedShortcutReportAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'blocked-shortcut',
+            shortcut,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function reportScreenshotAttempt(shortcut) {
+        const now = Date.now();
+        if (now - screenshotAttemptReportAt < 4000) return;
+        screenshotAttemptReportAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'screenshot-capture',
+            shortcut,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function isLikelyMobileClient() {
+        return /android|iphone|ipad|ipod/i.test(navigator.userAgent || '') || (navigator.maxTouchPoints || 0) > 1;
+    }
+    function reportMobileScreenshotSuspicion(shortcut, signal) {
+        const now = Date.now();
+        if (now - mobileScreenshotSignalAt < 8000) return;
+        mobileScreenshotSignalAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'mobile-screenshot-suspected',
+            shortcut,
+            signal,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function getScreenshotShortcut(event) {
+        const key = String(event.key || '').toLowerCase();
+        const code = String(event.code || '').toLowerCase();
+        if (key === 'printscreen' || code === 'printscreen') return 'PrintScreen';
+        if (event.metaKey && event.shiftKey && key === '3') return 'Cmd+Shift+3';
+        if (event.metaKey && event.shiftKey && key === '4') return 'Cmd+Shift+4';
+        if (event.metaKey && event.shiftKey && key === '5') return 'Cmd+Shift+5';
+        if (event.metaKey && event.shiftKey && key === 's') return 'Win+Shift+S';
+        return '';
+    }
+    document.addEventListener('keydown', function(event) {
+        const key = String(event.key || '').toLowerCase();
+        const screenshotShortcut = getScreenshotShortcut(event);
+        if (screenshotShortcut) {
+            reportScreenshotAttempt(screenshotShortcut);
+        }
+        if ((event.ctrlKey || event.metaKey) && key === 'u') {
+            event.preventDefault();
+            event.stopPropagation();
+            showBlockedShortcutWarning('Kaynak goruntulemeye devam ederseniz banlanabilirsiniz.');
+            reportBlockedShortcut(event.ctrlKey ? 'Ctrl+U' : 'Cmd+U');
+        }
+    }, true);
+    document.addEventListener('visibilitychange', function() {
+        if (!isLikelyMobileClient()) return;
+        if (document.visibilityState === 'hidden') {
+            mobileHiddenAt = Date.now();
+            return;
+        }
+        if (!mobileHiddenAt) return;
+        const hiddenDuration = Date.now() - mobileHiddenAt;
+        mobileHiddenAt = 0;
+        if (hiddenDuration >= 150 && hiddenDuration <= 2500) {
+            reportMobileScreenshotSuspicion('MobileButtons', `visibility-${hiddenDuration}ms`);
+        }
+    }, true);
+    function hasPhoneLetters(value) {
+        return /[A-Za-zÇĞİIÖŞÜçğıiöşü]/.test(String(value || ''));
+    }
+    function normalizePhoneValue(value) {
+        return String(value || '').trim().slice(0, 30);
+    }
+    function parseLayoutJson(raw) {
+        try {
+            const parsed = JSON.parse(raw || '[]');
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            return [];
+        }
+    }
+    function ensureCustomLayerRoot() {
+        let root = document.getElementById('customLayerRoot');
+        if (!root) {
+            root = document.createElement('div');
+            root.id = 'customLayerRoot';
+            root.className = 'page-custom-layer';
+            document.body.appendChild(root);
+        }
+        root.style.height = `${Math.max(document.body.scrollHeight, window.innerHeight)}px`;
+        return root;
+    }
+    function renderCustomLayer(raw) {
+        const root = ensureCustomLayerRoot();
+        const items = parseLayoutJson(raw);
+        root.innerHTML = items.map(item => {
+            const style = `left:${item.x || 0}%; top:${item.y || 0}%; width:${item.width || 220}px; ${item.type === 'text' ? '' : `height:${item.height || 52}px;`} color:${item.color || '#fff'}; background:${item.bgColor || 'transparent'};`;
+            if (item.type === 'button') return `<a class="page-custom-element page-custom-button" href="${item.href || '#'}" style="${style}">${item.text || 'Buton'}</a>`;
+            if (item.type === 'input') return `<div class="page-custom-element" style="${style}"><input class="page-custom-input" placeholder="${item.placeholder || item.text || 'Textbox'}" style="height:${item.height || 52}px; color:${item.color || '#fff'}; background:${item.bgColor || 'rgba(11,13,19,0.92)'};"></div>`;
+            return `<div class="page-custom-element page-custom-text" style="${style}">${item.text || 'Metin'}</div>`;
+        }).join('');
+    }
+    async function initializeForumPage() {
+        postJsonWithDeviceFingerprint('/api/track-visit', {}).catch(() => {});
+        startVisitorMessageboxPolling();
+        const [menus, settings, footerItems] = await Promise.all([
+            fetch('/api/menus' + nocache).then(res => res.json()).catch(() => []),
+            fetch('/api/settings' + nocache).then(res => res.json()).catch(() => []),
+            fetch('/api/footer-items' + nocache).then(res => res.json()).catch(() => [])
+        ]);
+
+        const navUl = document.getElementById('nav-links');
+        navUl.innerHTML = '<li><a href="/">ANA SAYFA</a></li>' + menus.map(item => `<li><a href="${item.link}" style="color:${item.link === '/forum' ? 'var(--gold)' : 'inherit'};">${item.ad}</a></li>`).join('');
+        navUl.addEventListener('click', closeSiteNav);
+        syncResponsiveNav();
+
+        let forumLayoutJson = '[]';
+        let seoTitle = '';
+        settings.forEach(item => {
+            if (item.anahtar === 'tema_gold') document.documentElement.style.setProperty('--gold', item.deger);
+            if (item.anahtar === 'logo_text') document.getElementById('logoTxt').innerText = item.deger;
+            if (item.anahtar === 'logo_url') document.getElementById('logoImg').src = item.deger;
+            if (item.anahtar === 'site_favicon' && item.deger) document.getElementById('siteFavicon').href = item.deger;
+            if (item.anahtar === 'forum_seo_title' && item.deger) { seoTitle = item.deger; document.title = item.deger; }
+            if (item.anahtar === 'forum_title' && item.deger) document.getElementById('forumTitle').innerHTML = item.deger.replace(/\n/g, '<br>');
+            if (item.anahtar === 'forum_intro' && item.deger) document.getElementById('forumIntro').innerHTML = item.deger.replace(/\n/g, '<br>');
+            if (item.anahtar === 'forum_form_title' && item.deger) document.getElementById('forumFormTitle').innerText = item.deger;
+            if (item.anahtar === 'forum_form_intro' && item.deger) document.getElementById('forumFormIntro').innerText = item.deger;
+            if (item.anahtar === 'forum_placeholder_name' && item.deger) document.getElementById('forumAd').placeholder = item.deger;
+            if (item.anahtar === 'forum_placeholder_surname' && item.deger) document.getElementById('forumSoyad').placeholder = item.deger;
+            if (item.anahtar === 'forum_placeholder_phone' && item.deger) document.getElementById('forumTelefon').placeholder = item.deger;
+            if (item.anahtar === 'forum_submit_text' && item.deger) document.getElementById('forumSubmitBtn').innerText = item.deger;
+            if (item.anahtar === 'forum_clear_text' && item.deger) document.getElementById('forumClearBtn').innerText = item.deger;
+            if (item.anahtar === 'forum_option_call_label' && item.deger) document.getElementById('forumCallLabel').innerText = item.deger;
+            if (item.anahtar === 'forum_option_call_desc' && item.deger) document.getElementById('forumCallDesc').innerText = item.deger;
+            if (item.anahtar === 'forum_option_whatsapp_label' && item.deger) document.getElementById('forumWhatsappLabel').innerText = item.deger;
+            if (item.anahtar === 'forum_option_whatsapp_desc' && item.deger) document.getElementById('forumWhatsappDesc').innerText = item.deger;
+            if (item.anahtar === 'forum_image' && item.deger) {
+                const image = document.getElementById('forumHeroImage');
+                image.src = item.deger;
+                image.style.display = 'block';
+            }
+            if (item.anahtar === 'footer_bg') document.getElementById('footerBox').style.backgroundColor = item.deger;
+            if (item.anahtar === 'footer_copy') document.getElementById('fCopyText').innerText = item.deger;
+            if (item.anahtar === 'forum_bg_type') window._bgType = item.deger;
+            if (item.anahtar === 'forum_bg_color') window._bgColor = item.deger;
+            if (item.anahtar === 'forum_bg_images') window._bgImages = item.deger;
+            if (item.anahtar === 'forum_bg_effect') window._bgEffect = item.deger;
+            if (item.anahtar === 'forum_bg_speed') window._bgSpeed = item.deger;
+            if (item.anahtar === 'forum_bg_scale') window._bgScale = item.deger;
+            if (item.anahtar === 'forum_bg_size_num') window._bgSizeNum = item.deger;
+            if (item.anahtar === 'forum_bg_size_unit') window._bgSizeUnit = item.deger;
+            if (item.anahtar === 'forum_box_color' && item.deger) document.querySelectorAll('.forum-panel').forEach(panel => panel.style.background = item.deger);
+            if (item.anahtar === 'forum_img_size' && item.deger) document.getElementById('forumHeroImage').style.width = `${item.deger}px`;
+            if (item.anahtar === 'forum_img_opacity' && item.deger) document.getElementById('forumHeroImage').style.opacity = item.deger;
+            if (item.anahtar === 'forum_img_anim') {
+                const image = document.getElementById('forumHeroImage');
+                image.className = 'forum-hero-image';
+                if (item.deger && item.deger !== 'none') image.classList.add(`forum-anim-${item.deger}`);
+            }
+            if (item.anahtar === 'forum_layout_json') forumLayoutJson = item.deger || '[]';
+        });
+
+        const footerContent = document.querySelector('.footer-content');
+        footerContent.innerHTML = footerItems.map(item => {
+            if (item.tip === 'image') return `<img src="${item.icerik}" style="max-height:46px; max-width:160px; object-fit:contain;">`;
+            if (item.tip === 'link') return `<a href="${item.link_url || '#'}" target="${item.hedef || '_self'}" style="color:${item.renk || '#fff'}; text-decoration:none; font-weight:800;">${item.icerik}</a>`;
+            return `<span style="color:${item.renk || '#fff'}; font-weight:700;">${item.icerik}</span>`;
+        }).join('');
+
+        initBgSlider(window._bgType || 'color', window._bgColor || '#0a0a0c', window._bgImages || '', window._bgEffect || 'fade', window._bgSpeed || '1500', window._bgScale || 'cover', window._bgSizeNum || '100', window._bgSizeUnit || '%');
+        renderCustomLayer(forumLayoutJson);
+    }
+    function initBgSlider(type, color, imagesStr, effect, speed, scale, sizeNum, sizeUnit) {
+        let bgDiv = document.getElementById('bg-slider');
+        if (!bgDiv) { bgDiv = document.createElement('div'); bgDiv.id = 'bg-slider'; document.body.appendChild(bgDiv); }
+        bgDiv.style.cssText = `position:fixed; top:0; left:0; width:100%; height:100%; z-index:-10; overflow:hidden; background:${color};`;
+        if (type !== 'slider' || !imagesStr) return;
+        const urls = imagesStr.split(',').map(item => item.trim()).filter(Boolean);
+        if (urls.length === 0) return;
+        const actualScale = scale === 'custom' ? (sizeNum + sizeUnit) : scale;
+        bgDiv.innerHTML = `<style>.bg-slide{position:absolute;top:0;left:0;width:100%;height:100%;background-size:${actualScale};background-position:center;background-repeat:no-repeat;opacity:0;transition:all ${speed}ms ease-in-out;transform:scale(1)}.bg-slide.active{opacity:1}.eff-fade.active{opacity:1}.eff-zoomIn.active{transform:scale(1.08)}</style>`;
+        urls.forEach((url, index) => {
+            const div = document.createElement('div');
+            div.className = `bg-slide eff-${effect} ${index === 0 ? 'active' : ''}`;
+            div.style.backgroundImage = `linear-gradient(rgba(7,8,12,0.72), rgba(7,8,12,0.82)), url(${url})`;
+            bgDiv.appendChild(div);
+        });
+        if (urls.length > 1) {
+            let index = 0;
+            setInterval(() => {
+                const slides = bgDiv.querySelectorAll('.bg-slide');
+                slides[index].classList.remove('active');
+                index = (index + 1) % slides.length;
+                slides[index].classList.add('active');
+            }, Number(speed) + 4200);
+        }
+    }
+    document.getElementById('forumForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const selected = document.querySelector('input[name="ulasimTercihi"]:checked');
+        const phoneInput = document.getElementById('forumTelefon');
+        const normalizedPhone = normalizePhoneValue(phoneInput.value);
+        phoneInput.value = normalizedPhone;
+        const payload = {
+            ad: document.getElementById('forumAd').value.trim(),
+            soyad: document.getElementById('forumSoyad').value.trim(),
+            telefon: normalizedPhone,
+            ulasimTercihi: selected ? selected.value : ''
+        };
+        if (!payload.ad || !payload.soyad || !payload.telefon || !payload.ulasimTercihi) {
+            return showStatus('Lutfen tum alanlari eksiksiz doldurun.', 'error');
+        }
+        if (hasPhoneLetters(payload.telefon)) {
+            return showStatus('Telefon alanina yazi girilemez.', 'error');
+        }
+        if (!/\d/.test(payload.telefon)) {
+            return showStatus('Telefon alanina gecerli bir numara girin.', 'error');
+        }
+        try {
+            const response = await postJsonWithDeviceFingerprint('/api/forum-submit', payload);
+            const data = await response.json();
+            if (data.status !== 'success') return showStatus(data.msg || 'Gonderim basarisiz oldu.', 'error');
+            sendTracking('/api/track-details', { path: 'Forum Gonderildi', time: 0, isClick: true });
+            document.getElementById('forumForm').reset();
+            showStatus('Bilgileriniz alindi. Tercih ettiginiz kanal uzerinden size donus yapilacak.', 'success');
+        } catch (e) {
+            showStatus('Sunucuya baglanirken hata olustu.', 'error');
+        }
+    });
+    window.addEventListener('beforeunload', () => {
+        const timeSpent = Math.round((Date.now() - visitStartTime) / 1000);
+        if (timeSpent > 0) sendTracking('/api/track-details', { path: 'Forum', time: timeSpent, isClick: false });
+    });
+    initializeForumPage();
+    window.addEventListener('resize', () => {
+        const root = document.getElementById('customLayerRoot');
+        if (root) root.style.height = `${Math.max(document.body.scrollHeight, window.innerHeight)}px`;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title id="mainTitle">VIP Access | Elite RTP</title>
+    <link id="siteFavicon" rel="shortcut icon" href="">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --gold: #ffaa00; --h-title: #fff; --h-sub: #aaa; --index-box-bg: rgba(20,20,25,0.7); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: transparent; color: white; min-height: 100vh; min-height: 100dvh; overflow-x: hidden; padding-bottom: clamp(170px, 22vh, 250px); display: flex; flex-direction: column;}
+        .announcement-bar { padding: 12px; text-align: center; font-weight: 800; font-size: 13px; letter-spacing: 1px; border-bottom: 1px solid rgba(0,0,0,0.2); }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; background: rgba(0,0,0,0.5); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,170,0,0.1); position: sticky; top:0; z-index: 1000;}
+        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-img { width: 38px; height: 38px; filter: drop-shadow(0 0 5px var(--gold)); }
+        .logo-text { font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 30px; list-style: none; font-size: 13px; font-weight: 800; color: #888; align-items:center;}
+        .nav-links li { transition: 0.3s; cursor: pointer; display:flex; align-items:center; }
+        .nav-links li a { color: inherit; text-decoration: none; transition: 0.3s; display:flex; align-items:center; }
+        .nav-links li:hover, .nav-links li a:hover { color: var(--gold); }
+        .nav-toggle { display:none; width:46px; height:46px; border:none; border-radius:14px; background:rgba(255,255,255,0.06); color:#fff; align-items:center; justify-content:center; cursor:pointer; font-size:18px; }
+        
+        .live-dot { display: inline-block; width: 8px; height: 8px; background: #ff4444; border-radius: 50%; margin-left: 6px; box-shadow: 0 0 8px #ff4444; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); } }
+
+        .hero { display: flex; align-items: center; justify-content: space-between; width: min(100%, 1250px); margin: 60px auto; padding: 0 6%; gap: 50px; flex: 1;}
+        .hero-content { flex: 1.2; }
+        .hero-icon { width: 140px; height: 140px; margin-bottom: 25px; filter: drop-shadow(0 0 20px var(--gold)); animation: float 4s infinite ease-in-out; }
+        .form-box { background: var(--index-box-bg); padding: 45px; border-radius: 40px; width: min(420px, 100%); border-top: 5px solid var(--gold); backdrop-filter: blur(30px); box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
+        input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 18px; border: 1px solid #333; background: rgba(0,0,0,0.4); color: white; font-size: 15px;}
+        input:focus { outline: none; border-color: var(--gold); }
+        .btn { width: 100%; padding: 20px; background: linear-gradient(135deg, var(--gold), #ff8800); border: none; border-radius: 18px; font-weight: 900; cursor: pointer; color: #000; text-transform: uppercase; letter-spacing: 2px; margin-top: 15px; }
+        .lead-messagebox-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.72); z-index:10020; align-items:center; justify-content:center; backdrop-filter:blur(6px); padding:20px; }
+        .lead-messagebox { width:min(420px, 100%); background:linear-gradient(180deg, rgba(17,17,24,0.98), rgba(8,8,12,0.98)); border:1px solid rgba(255,170,0,0.28); border-radius:28px; box-shadow:0 28px 80px rgba(0,0,0,0.72); padding:28px; }
+        .lead-messagebox-icon { width:56px; height:56px; border-radius:18px; display:flex; align-items:center; justify-content:center; margin-bottom:18px; font-size:24px; font-weight:900; }
+        .lead-messagebox.error .lead-messagebox-icon { background:linear-gradient(135deg, rgba(255,68,68,0.24), rgba(255,170,0,0.12)); border:1px solid rgba(255,68,68,0.35); color:#ff8080; }
+        .lead-messagebox.success .lead-messagebox-icon { background:linear-gradient(135deg, rgba(52,208,88,0.24), rgba(255,170,0,0.12)); border:1px solid rgba(52,208,88,0.35); color:#8df0ae; }
+        .lead-messagebox-title { font-size:24px; font-weight:900; color:#fff; margin:0 0 10px 0; }
+        .lead-messagebox-text { color:#b8bcc8; font-size:14px; line-height:1.7; margin-bottom:22px; }
+        .lead-messagebox-btn { width:100%; padding:14px 16px; border:none; border-radius:16px; font-weight:900; cursor:pointer; background:linear-gradient(135deg, var(--gold), #ff8f1f); color:#000; }
+        
+        footer { background: #0a0a0c; padding: 50px 6% 120px 6%; margin-top: 50px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
+        .footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .footer-logo span { color: var(--gold); font-weight: 900; font-size: 20px; letter-spacing: 1px; }
+        .copyright { width: 100%; text-align: center; margin-top: 40px; color: #444; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+        
+        .fixed-slider-container { position: fixed; bottom: 0; left: 0; width: 100%; background: #0d0d12; border-top: 2px solid var(--gold); padding: 15px 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); z-index: 999; }
+        .mySwiper { width: min(96%, 1480px); margin: 0 auto; overflow: visible; }
+        .mySwiper .swiper-wrapper { align-items: stretch; }
+        .mySwiper .swiper-slide { width: auto !important; height: auto; display: flex; }
+        
+        .game-card { background: rgba(255,255,255,0.05); border-radius: 18px; display: flex; align-items: center; padding: 14px 16px; width: 260px; margin-right: 15px; border: 1px solid rgba(255,255,255,0.08); position:relative; min-height: 120px; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+        .game-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 18px 32px rgba(255,170,0,0.16); }
+        .game-card img { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--gold); margin-right: 14px; object-fit: cover; }
+        .game-card-body { display:flex; flex-direction:column; gap:8px; }
+        .game-card-body .title { font-size: 15px; font-weight: 800; letter-spacing: 0.2px; }
+        .game-card-body .meta { display:flex; align-items:center; gap:10px; font-size: 13px; color: #ccc; }
+        .game-card-body .meta span { padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,0.06); }
+        .game-desc { display:block; color:#ccc; font-size: 13px; line-height: 1.4; max-height: 42px; overflow:hidden; text-overflow: ellipsis; margin-top: 4px; }
+        .game-link-btn { display:inline-block; margin-top: 8px; background: linear-gradient(135deg, var(--gold), #ffb347); color:#000; padding: 8px 14px; border-radius: 999px; text-decoration:none; font-size: 13px; font-weight: 700; transition: transform 0.2s, box-shadow 0.2s; }
+        .game-link-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(255,170,0,0.24); }
+        .game-card-preview.is-blurred { filter: blur(0.38px) saturate(0.99); opacity: 0.975; pointer-events: none; user-select: none; }
+        .game-card-preview.is-blurred .game-link-btn { visibility: hidden; }
+        
+        .blur-lock-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; background: rgba(10, 10, 15, 0.58); backdrop-filter: blur(2.6px); border-radius: 18px; text-align: center; padding: 20px; font-weight: 800; color: var(--gold); }
+        .blur-lock-icon { font-size: 24px; margin-bottom: 0; }
+        .blur-lock-text { font-size: 14px; font-weight: bold; line-height: 1.6; max-width: 320px; }
+        .blur-lock-btn { margin-top: 6px; background: var(--gold); color: #000; padding: 12px 22px; border-radius: 12px; border: none; font-weight: 900; cursor: pointer; box-shadow: 0 12px 24px rgba(255,170,0,0.18); }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes studioPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.86; } }
+        @keyframes studioSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .wp-btn { position:fixed; bottom:70px; right:25px; background:#25D366; color:#fff; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:35px; box-shadow:0 10px 20px rgba(0,0,0,0.5); z-index:9999; text-decoration:none; transition:0.3s; }
+        .wp-btn:hover { transform:scale(1.1); }
+        .chat-btn { position:fixed; bottom:140px; right:25px; background:linear-gradient(135deg, var(--gold), #ff8f1f); color:#000; width:64px; height:64px; border-radius:22px; display:flex; justify-content:center; align-items:center; font-size:28px; box-shadow:0 18px 32px rgba(0,0,0,0.45); z-index:10000; cursor:pointer; transition:transform 0.25s, box-shadow 0.25s; }
+        .chat-btn:hover { transform:translateY(-3px) scale(1.03); box-shadow:0 24px 38px rgba(0,0,0,0.55); }
+        
+        .chat-window { position:fixed; bottom:100px; right:25px; width:390px; max-width:calc(100vw - 24px); max-height:min(calc(100dvh - 120px), 720px); background:linear-gradient(180deg, rgba(17,17,24,0.98), rgba(8,8,12,0.98)); border-radius:28px; border:1px solid rgba(255,170,0,0.3); box-shadow:0 28px 80px rgba(0,0,0,0.72); z-index:10000; display:none; flex-direction:column; overflow:hidden; backdrop-filter: blur(18px); }
+        .chat-header { padding:18px 18px 16px 18px; font-weight:900; display:flex; justify-content:space-between; align-items:flex-start; background:linear-gradient(135deg, rgba(255,170,0,0.16), rgba(255,143,31,0.06)); border-bottom:1px solid rgba(255,255,255,0.06); }
+        .chat-header-main { display:flex; gap:12px; align-items:center; }
+        .chat-avatar { width:44px; height:44px; border-radius:16px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, var(--gold), #ff8f1f); color:#000; font-size:20px; box-shadow:0 10px 18px rgba(255,170,0,0.22); }
+        .chat-header-copy { display:flex; flex-direction:column; gap:3px; }
+        .chat-header-title { color:#fff; font-size:16px; line-height:1.1; }
+        .chat-header-subtitle { color:#d8c28a; font-size:11px; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; }
+        .chat-close-btn { width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:12px; color:#f4d18d; background:rgba(255,255,255,0.05); cursor:pointer; transition:0.25s; }
+        .chat-close-btn:hover { background:rgba(255,255,255,0.1); color:#fff; }
+        .chat-body { padding:18px; height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; background:radial-gradient(circle at top, rgba(255,170,0,0.08), transparent 34%), linear-gradient(180deg, #0f1017, #06070b 82%); position:relative; }
+        .chat-empty { margin:auto 0; text-align:center; padding:28px 18px; border:1px dashed rgba(255,255,255,0.12); border-radius:22px; color:#9b9ca8; font-size:13px; line-height:1.6; background:rgba(255,255,255,0.03); }
+        .chat-row { display:flex; }
+        .chat-row.user { justify-content:flex-end; }
+        .chat-row.admin { justify-content:flex-start; }
+        .chat-msg { max-width:84%; padding:12px 14px; border-radius:18px; font-size:14px; line-height:1.5; box-shadow:0 10px 24px rgba(0,0,0,0.18); }
+        .msg-user { background:linear-gradient(135deg, var(--gold), #ff921f); color:#000; border-bottom-right-radius:6px; }
+        .msg-admin { background:linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04)); color:#fff; border:1px solid rgba(255,255,255,0.08); border-bottom-left-radius:6px; }
+        .chat-author { display:block; font-size:11px; font-weight:800; margin-bottom:6px; opacity:0.72; text-transform:uppercase; letter-spacing:0.4px; }
+        .chat-time { display:block; font-size:10px; opacity:0.62; text-align:right; margin-top:6px; }
+        .typing-indicator { font-size:11px; color:#f4d18d; padding:10px 18px; background:rgba(0,0,0,0.28); display:none; text-align:left; font-style:italic; border-top:1px solid rgba(255,255,255,0.05);}
+        .chat-input-area { padding:16px; background:rgba(11,12,17,0.95); display:flex; gap:10px; border-top:1px solid rgba(255,255,255,0.06); flex-direction:column; }
+        .chat-field { padding:12px 14px !important; margin:0 !important; border-radius:14px !important; background:rgba(255,255,255,0.04) !important; border:1px solid rgba(255,255,255,0.08) !important; }
+        .chat-form-note { color:#8d8f9b; font-size:12px; line-height:1.5; padding:0 2px; }
+        .chat-primary-btn { background:linear-gradient(135deg, var(--gold), #ff8f1f); border:none; color:#000; padding:13px 14px; font-weight:900; border-radius:14px; cursor:pointer; margin-top:2px; box-shadow:0 12px 24px rgba(255,170,0,0.18); }
+        .chat-compose { display:flex; align-items:center; gap:10px; }
+        .chat-compose-main { flex:1; min-width:0; }
+        .chat-send-btn { width:48px; min-width:48px; height:48px; border:none; border-radius:16px; background:linear-gradient(135deg, var(--gold), #ff8f1f); color:#000; font-size:18px; cursor:pointer; box-shadow:0 10px 18px rgba(255,170,0,0.18); }
+        .chat-attach-btn { width:48px; min-width:48px; height:48px; border:none; border-radius:16px; background:rgba(255,255,255,0.08); color:#f4d18d; font-size:17px; cursor:pointer; box-shadow:0 10px 18px rgba(0,0,0,0.18); }
+        .chat-attachment-pending { display:none; align-items:center; justify-content:space-between; gap:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:10px 12px; color:#fff; }
+        .chat-attachment-meta { display:flex; flex-direction:column; gap:3px; min-width:0; }
+        .chat-attachment-name { font-size:12px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .chat-attachment-size { font-size:11px; color:#b5b8c4; }
+        .chat-attachment-remove { border:none; background:transparent; color:#ff9f9f; cursor:pointer; font-size:16px; }
+        .chat-message-text { word-break:break-word; white-space:normal; }
+        .chat-attachment-link { display:flex; flex-direction:column; gap:8px; margin-top:8px; text-decoration:none; }
+        .chat-attachment-image { width:min(220px, 100%); max-height:220px; object-fit:cover; border-radius:14px; border:1px solid rgba(255,255,255,0.12); background:#0d1017; }
+        .chat-attachment-chip { display:inline-flex; align-items:center; gap:10px; padding:10px 12px; border-radius:14px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:inherit; max-width:100%; }
+        .chat-attachment-chip-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
+        .chat-attachment-chip-name { font-size:12px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .chat-attachment-chip-size { font-size:11px; opacity:0.72; }
+        .chat-closed-card { color:#ff9d9d; font-weight:800; text-align:center; padding:14px; background:rgba(255,68,68,0.08); border:1px solid rgba(255,68,68,0.18); border-radius:16px; }
+        .page-custom-layer { position:absolute; top:0; left:0; width:100%; pointer-events:none; z-index:40; }
+        .page-custom-element { position:absolute; pointer-events:auto; }
+        .page-custom-text { padding:10px 12px; color:#fff; font-weight:800; text-shadow:0 2px 12px rgba(0,0,0,0.45); }
+        .page-custom-button { display:inline-flex; align-items:center; justify-content:center; padding:14px 18px; border-radius:14px; font-weight:900; text-decoration:none; }
+        .page-custom-input { width:100%; padding:14px 16px; border-radius:14px; border:1px solid #2f3440; background:rgba(11,13,19,0.92); color:#f1f3f8; }
+        @media (min-width: 981px) {
+            .blur-lock-screen { justify-content: flex-start; align-items: center; gap: 15px; padding: 14px 24px 10px; transform: translateY(-40px); }
+            .blur-lock-icon { font-size: 36px; }
+            .blur-lock-text { font-size: 22px; line-height: 1.5; max-width: 560px; text-align: center; }
+            .blur-lock-btn { margin-top: 0; padding: 18px 34px; border-radius: 16px; font-size: 20px; letter-spacing: 0.8px; }
+        }
+        @media (max-width: 980px) {
+            nav { padding: 16px 20px; flex-wrap: wrap; gap: 14px; }
+            .nav-toggle { display:flex; }
+            .nav-links { display:none; width:100%; flex-direction:column; align-items:stretch; gap:8px; padding-top:12px; }
+            .nav-links.open { display:flex; }
+            .nav-links li, .nav-links li a { width:100%; }
+            .nav-links li a { padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.04); }
+            .hero { flex-direction: column; margin: 36px auto; padding: 0 20px; gap: 28px; }
+            .hero-content { text-align:center; }
+            .hero-icon { width: 108px; height: 108px; margin-left:auto; margin-right:auto; }
+            .form-box { width: min(100%, 560px); padding: 32px 24px; border-radius: 28px; }
+            .fixed-slider-container { padding: 8px 0; min-height: 94px; }
+            .mySwiper { width: min(94%, 1180px); }
+            .game-card { width: 182px; min-height: 82px; padding: 10px 12px; }
+            .game-card img { width: 44px; height: 44px; margin-right: 10px; }
+            .game-card-body { gap: 6px; }
+            .game-card-body .title { font-size: 13px; }
+            .game-card-body .meta { font-size: 11px; gap: 6px; }
+            .game-desc { font-size: 10px; max-height: 28px; line-height: 1.3; }
+            .game-link-btn { padding: 5px 8px; font-size: 10px; margin-top: 4px; }
+            footer { padding: 40px 20px 110px 20px; }
+            .wp-btn { right:16px; bottom:84px; }
+            .chat-btn { right:16px; bottom:156px; }
+        }
+        @media (max-width: 640px) {
+            .announcement-bar { font-size: 11px; letter-spacing: 0.5px; }
+            .logo-text { font-size: 22px; }
+            #hTitle { font-size: clamp(34px, 11vw, 54px) !important; }
+            #hSub { font-size: 16px !important; margin-top: 18px !important; }
+            .form-box { padding: 24px 18px; }
+            input { padding: 16px; }
+            .fixed-slider-container { bottom: -22px; padding: 6px 0; min-height: 78px; }
+            .mySwiper { width: 92%; }
+            .game-card { width: 146px; min-height: 64px; padding: 8px 9px; margin-right: 8px; }
+            .game-card img { width: 36px; height: 36px; margin-right: 8px; }
+            .game-card-body .title { font-size: 10px; }
+            .game-card-body .meta { font-size: 9px; gap: 4px; }
+            .game-desc { font-size: 8px; max-height: 22px; line-height: 1.2; }
+            .game-link-btn { padding: 4px 7px; font-size: 8px; margin-top: 1px; }
+            .blur-lock-screen { justify-content: flex-start; align-items: center; gap: 5px; padding: 0 12px 6px; transform: translateY(-20px); }
+            .blur-lock-icon { font-size: 20px; }
+            .blur-lock-text { font-size: 12px; line-height: 1.35; max-width: 250px; }
+            .blur-lock-btn { margin-top: -6px; padding: 9px 16px; border-radius: 11px; font-size: 12px; }
+            .chat-window { right:12px; bottom:84px; width:calc(100vw - 24px); max-height:calc(100vh - 108px); }
+            .chat-body { height:min(42vh, 320px); }
+            .chat-btn { right:12px; bottom:148px; }
+            .wp-btn { right:12px; bottom:76px; }
+        }
+        @media (max-width: 430px) {
+            body { padding-bottom: 150px; }
+            nav { padding: 12px 14px; }
+            .logo-img { width: 30px; height: 30px; }
+            .logo-text { font-size: 18px; letter-spacing: 1px; }
+            .nav-toggle { width: 40px; height: 40px; border-radius: 12px; font-size: 15px; }
+            .nav-links li a { padding: 10px 12px; font-size: 12px; }
+            .hero { margin: 18px auto 24px auto; padding: 0 12px; gap: 18px; }
+            .hero-icon { width: 76px; height: 76px; margin-bottom: 14px; }
+            #hTitle { font-size: clamp(24px, 8.6vw, 32px) !important; line-height: 1.05 !important; }
+            #hSub { font-size: 13px !important; line-height: 1.45 !important; margin-top: 12px !important; }
+            .form-box { width: 100%; padding: 18px 14px; border-radius: 22px; border-top-width: 3px; }
+            .form-box h2 { margin-bottom: 12px !important; font-size: 18px; }
+            input { padding: 13px 14px; margin: 8px 0; border-radius: 14px; font-size: 13px; }
+            .btn { padding: 15px; border-radius: 14px; font-size: 12px; letter-spacing: 1px; margin-top: 10px; }
+            footer { padding: 28px 14px 100px 14px; margin-top: 18px; }
+            .footer-content { gap: 16px; }
+            .copyright { margin-top: 20px; font-size: 10px; }
+            .fixed-slider-container { bottom: -26px; padding: 5px 0; min-height: 72px; }
+            .mySwiper { width: 92%; padding: 0; }
+            .game-card { width: 136px; min-height: 60px; padding: 7px 8px; margin-right: 7px; border-radius: 12px; }
+            .game-card img { width: 34px; height: 34px; margin-right: 8px; }
+            .game-card-body { gap: 5px; }
+            .game-card-body .title { font-size: 10px; }
+            .game-card-body .meta { gap: 4px; font-size: 8px; }
+            .game-card-body .meta span { padding: 3px 6px; }
+            .game-desc { font-size: 7px; max-height: 18px; line-height: 1.2; }
+            .game-link-btn { padding: 4px 6px; font-size: 7px; margin-top: 1px; }
+            .blur-lock-screen { justify-content: flex-start; align-items: center; gap: 5px; padding: 0 10px 5px; transform: translateY(-22px); }
+            .blur-lock-icon { font-size: 18px; }
+            .blur-lock-text { font-size: 11px; line-height: 1.3; max-width: 210px; }
+            .blur-lock-btn { margin-top: -6px; padding: 8px 14px; border-radius: 10px; font-size: 11px; }
+            .chat-btn { width: 50px; height: 50px; right: 10px; bottom: 124px; border-radius: 16px; font-size: 20px; }
+            .wp-btn { width: 48px; height: 48px; right: 10px; bottom: 66px; font-size: 28px; }
+            .chat-window { right: 8px; bottom: 62px; width: calc(100vw - 16px); border-radius: 20px; }
+            .chat-header { padding: 12px; }
+            .chat-avatar { width: 34px; height: 34px; border-radius: 12px; font-size: 15px; }
+            .chat-header-title { font-size: 13px; }
+            .chat-header-subtitle { font-size: 9px; }
+            .chat-close-btn { width: 30px; height: 30px; border-radius: 10px; }
+            .chat-body { padding: 12px; height: min(34vh, 240px); gap: 8px; }
+            .chat-msg { max-width: 88%; padding: 9px 11px; border-radius: 14px; font-size: 12px; }
+            .chat-input-area { padding: 12px; gap: 8px; }
+            .chat-field { padding: 10px 12px !important; border-radius: 12px !important; font-size: 12px; }
+            .chat-primary-btn { padding: 11px 12px; border-radius: 12px; font-size: 12px; }
+            .chat-send-btn { width: 40px; min-width: 40px; height: 40px; border-radius: 12px; font-size: 14px; }
+            .chat-form-note, .chat-empty { font-size: 11px; }
+        }
+        @media (max-width: 375px) {
+            .hero { padding: 0 10px; }
+            .form-box { padding: 16px 12px; }
+            .fixed-slider-container { min-height: 68px; }
+            .mySwiper { width: 88%; }
+            .game-card { width: 128px; }
+            #hTitle { font-size: 22px !important; }
+            #hSub { font-size: 12px !important; }
+        }
+        @media (max-height: 860px) {
+            body { padding-bottom: 190px; }
+            .hero { margin: 28px auto; gap: 24px; }
+            .form-box { padding: 28px 22px; border-radius: 30px; }
+            .fixed-slider-container { padding: 8px 0; min-height: 98px; }
+            .game-card { min-height: 88px; }
+            .blur-lock-screen { justify-content: flex-end; gap: 6px; padding: 10px 14px 8px; }
+            .blur-lock-icon { font-size: 18px; }
+            .blur-lock-text { font-size: 11px; line-height: 1.35; max-width: 240px; }
+            .blur-lock-btn { margin-top: 0; padding: 8px 14px; border-radius: 10px; font-size: 11px; }
+            .chat-window { bottom: 72px; max-height: calc(100dvh - 92px); }
+            .chat-btn { bottom: 132px; }
+            .wp-btn { bottom: 64px; }
+        }
+        @media (max-height: 720px) {
+            .announcement-bar { padding: 8px; font-size: 11px; }
+            nav { padding-top: 12px; padding-bottom: 12px; }
+            .hero { margin: 18px auto; gap: 18px; }
+            .hero-icon { width: 84px; height: 84px; margin-bottom: 10px; }
+            .form-box { padding: 20px 16px; border-radius: 24px; }
+            input { padding: 14px; margin: 8px 0; }
+            .btn { padding: 15px; }
+            footer { margin-top: 20px; padding-top: 28px; padding-bottom: 92px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="duyuruBar" class="announcement-bar"></div>
+<nav>
+    <a href="/" class="logo-area" onclick="trackClick('Logo: Ana Sayfa')"><img id="logoImg" class="logo-img"><span id="logoTxt" class="logo-text"></span></a>
+    <ul class="nav-links" id="nav-links"></ul>
+    <button id="navToggle" class="nav-toggle" type="button" onclick="toggleSiteNav()" aria-label="Menüyü aç" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <img id="heroIcon" class="hero-icon">
+        <h1 id="hTitle" style="color:var(--h-title); font-size:54px; font-weight:800; line-height:1.1;"></h1>
+        <p id="hSub" style="color:var(--h-sub); font-size:18px; margin-top:25px; line-height: 1.6;"></p>
+    </div>
+    <div class="form-box" id="leadFormBox">
+        <h2 style="color:var(--gold); margin-bottom:20px; font-weight:900;">SİSTEME GİRİŞ</h2>
+        <form id="leadForm">
+            <input type="text" id="ad" required>
+            <input type="text" id="soyad" required>
+            <input type="tel" id="tel" inputmode="tel" maxlength="30" required>
+            <input type="text" id="kadi" required>
+            <button type="submit" id="btnSubmit" class="btn">YÜKLENİYOR...</button>
+        </form>
+    </div>
+</section>
+
+<div id="leadMessageboxOverlay" class="lead-messagebox-overlay" onclick="if(event.target===this) closeLeadMessageBox();">
+    <div id="leadMessagebox" class="lead-messagebox error">
+        <div id="leadMessageboxIcon" class="lead-messagebox-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+        <h3 id="leadMessageboxTitle" class="lead-messagebox-title">Uyari</h3>
+        <div id="leadMessageboxText" class="lead-messagebox-text"></div>
+        <button class="lead-messagebox-btn" onclick="closeLeadMessageBox()">Tamam</button>
+    </div>
+</div>
+
+<footer id="footerBox">
+    <div class="footer-content"></div>
+    <div class="copyright" id="fCopyText"></div>
+</footer>
+
+<div id="gamesContainer" class="fixed-slider-container">
+    <div class="swiper mySwiper"><div class="swiper-wrapper" id="g-wrap" style="position:relative;"></div></div>
+</div>
+
+<a id="wpLink" href="#" target="_blank" class="wp-btn" style="display:none;" onclick="trackClick('WhatsApp Yönlendirme')"><i class="fa-brands fa-whatsapp"></i></a>
+<div id="chatBtn" class="chat-btn" onclick="toggleChat(); trackClick('Canlı Destek Açıldı');" style="display:none;"><i class="fa-solid fa-comment-dots"></i></div>
+
+<div id="chatWindow" class="chat-window">
+    <div class="chat-header"><div class="chat-header-main"><div class="chat-avatar"><i class="fa-solid fa-headset"></i></div><div class="chat-header-copy"><span class="chat-header-title" id="chatTitleName">Canlı Destek</span><span class="chat-header-subtitle">Canli baglanti ve hizli donus</span></div></div><div class="chat-close-btn" onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></div></div>
+    <div class="chat-body" id="chatBody"></div>
+    <div id="typingIndicator" class="typing-indicator"><span id="agentTypingName">Müşteri Temsilcisi</span> yazıyor...</div>
+    
+    <div class="chat-input-area" id="chatAuthArea">
+        <div class="chat-form-note">Kisa bilgilerinizi bir kez girin, temsilci size ayni pencere uzerinden donsun.</div>
+        <input id="chatName" class="chat-field" placeholder="Adınız Soyadınız" required>
+        <input id="chatPhone" class="chat-field" type="tel" placeholder="Telefon Numaranız" required>
+        <input id="chatSubject" class="chat-field" placeholder="Hangi konuda yazıyorsunuz?" required>
+        <button onclick="startChat()" class="chat-primary-btn">Görüşmeye Bağlan</button>
+    </div>
+    
+    <div class="chat-input-area" id="chatMsgArea" style="display:none;">
+        <div id="chatAttachmentPreview" class="chat-attachment-pending"></div>
+        <div class="chat-compose"><input id="chatFileInput" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" style="display:none;" onchange="handleChatFileSelected(event)"><input id="chatInput" class="chat-field chat-compose-main" placeholder="Mesajınızı yazın..." style="flex:1;"><button type="button" onclick="document.getElementById('chatFileInput').click()" class="chat-attach-btn"><i class="fa-solid fa-paperclip"></i></button><button onclick="sendChatMsg()" class="chat-send-btn"><i class="fa-solid fa-paper-plane"></i></button></div>
+        <div class="chat-form-note">Canlı destekte JPG, PNG, WEBP veya PDF dosyası gönderebilirsiniz. Maksimum 4 MB.</div>
+        <button onclick="closeVisitorChat()" class="chat-primary-btn" style="width:100%; margin-top:8px; background:#2a2d35; color:#fff;">GÖRÜŞMEYİ SONLANDIR</button>
+    </div>
+    
+    <div class="chat-input-area" id="chatClosedArea" style="display:none; flex-direction:column;">
+        <div class="chat-closed-card">Görüşme sonlandırıldı.</div>
+        <button onclick="resetChat()" class="chat-primary-btn" style="width:100%;">YENİ GÖRÜŞME BAŞLAT</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    const nocache = '?_=' + new Date().getTime(); 
+    let redirectTarget = '/analizler';
+    let globalBlurEnabled = false;
+    let chatInterval = null;
+    const genericAgentName = "Canlı Destek";
+    const genericTypingName = "Temsilci";
+    let agentName = genericAgentName;
+
+    let lastUserChatMsgs = 0;
+    let isUserWindowActive = true;
+    let documentTitleOriginal = document.title;
+    let blurWarningText = "Oyunlardaki RTP oranlarını görmek için bilgileri girin.";
+    let userNotificationSound = null;
+    let visitorMessageNotificationSound = null;
+    let userAudioUnlocked = false;
+    let deviceFingerprint = '';
+    let visitorBanNoticeActive = false;
+    let visitorBanRedirectTimer = null;
+    let pendingChatAttachment = null;
+
+    function syncResponsiveNav() {
+        const navUl = document.getElementById('nav-links');
+        const navToggle = document.getElementById('navToggle');
+        if (!navUl || !navToggle) return;
+        if (window.innerWidth > 980) navUl.classList.remove('open');
+        const isOpen = navUl.classList.contains('open');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        navToggle.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+    }
+    function toggleSiteNav() {
+        const navUl = document.getElementById('nav-links');
+        if (!navUl || window.innerWidth > 980) return;
+        navUl.classList.toggle('open');
+        syncResponsiveNav();
+    }
+    function closeSiteNav() {
+        const navUl = document.getElementById('nav-links');
+        if (!navUl) return;
+        navUl.classList.remove('open');
+        syncResponsiveNav();
+    }
+    window.addEventListener('resize', syncResponsiveNav);
+    document.addEventListener('click', event => {
+        if (window.innerWidth > 980) return;
+        const nav = document.querySelector('nav');
+        if (nav && !nav.contains(event.target)) closeSiteNav();
+    });
+
+    function setDeviceFingerprintCookie(value) {
+        document.cookie = `device_fp=${encodeURIComponent(value)}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    function hasPhoneLetters(value) {
+        return /[A-Za-zÇĞİIÖŞÜçğıiöşü]/.test(String(value || ''));
+    }
+    function normalizePhoneValue(value) {
+        return String(value || '').trim().slice(0, 30);
+    }
+    function arrayBufferToHex(buffer) {
+        return Array.from(new Uint8Array(buffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+    function getStorageStatus() {
+        try {
+            const key = '__storage_probe__';
+            localStorage.setItem(key, '1');
+            localStorage.removeItem(key);
+            return 'localStorage aktif';
+        } catch (e) {
+            return 'localStorage kapalı';
+        }
+    }
+    function collectClientEnvironment() {
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const language = Array.isArray(navigator.languages) && navigator.languages.length > 0 ? navigator.languages.join(', ') : (navigator.language || 'Bilinmiyor');
+        const dpr = window.devicePixelRatio || 1;
+        return {
+            screenResolution: `${window.screen.width}x${window.screen.height} @${dpr}x`,
+            browserLanguage: language,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Bilinmiyor',
+            referrerUrl: document.referrer || 'Direkt Giris',
+            networkType: connection ? [connection.effectiveType || '', connection.downlink ? `${connection.downlink}mbps` : '', connection.rtt ? `${connection.rtt}ms` : ''].filter(Boolean).join(' / ') || 'Bilinmiyor' : 'Bilinmiyor',
+            cookieStatus: navigator.cookieEnabled ? 'Cookie aktif' : 'Cookie kapalı',
+            storageStatus: getStorageStatus()
+        };
+    }
+    async function ensureDeviceFingerprint() {
+        if (deviceFingerprint) return deviceFingerprint;
+        const stored = localStorage.getItem('device_fingerprint');
+        if (stored) {
+            deviceFingerprint = stored;
+            setDeviceFingerprintCookie(deviceFingerprint);
+            return deviceFingerprint;
+        }
+        const fingerprintSource = [navigator.userAgent, navigator.language, navigator.platform, window.screen.width, window.screen.height, window.devicePixelRatio || 1, navigator.hardwareConcurrency || 0, Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown'].join('||');
+        if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+            const encoded = new TextEncoder().encode(fingerprintSource);
+            deviceFingerprint = arrayBufferToHex(await window.crypto.subtle.digest('SHA-256', encoded));
+        } else {
+            deviceFingerprint = btoa(unescape(encodeURIComponent(fingerprintSource))).replace(/=/g, '').slice(0, 64);
+        }
+        localStorage.setItem('device_fingerprint', deviceFingerprint);
+        setDeviceFingerprintCookie(deviceFingerprint);
+        return deviceFingerprint;
+    }
+    async function postJsonWithDeviceFingerprint(url, payload) {
+        const fingerprint = await ensureDeviceFingerprint();
+        const environment = collectClientEnvironment();
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fingerprint },
+            body: JSON.stringify({ ...(payload || {}), ...environment, deviceFingerprint: fingerprint })
+        });
+        await handleBannedApiResponse(response);
+        return response;
+    }
+    function sendTracking(url, payload) {
+        ensureDeviceFingerprint().then(fingerprint => {
+            const body = JSON.stringify({ ...(payload || {}), ...collectClientEnvironment(), deviceFingerprint: fingerprint });
+            const blob = new Blob([body], { type: 'application/json' });
+            const beaconSent = typeof navigator.sendBeacon === 'function' ? navigator.sendBeacon(url, blob) : false;
+            if (!beaconSent) {
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fingerprint },
+                    body,
+                    keepalive: true
+                }).catch(() => {});
+            }
+        }).catch(() => {});
+    }
+    function showVisitorBanNotice(message) {
+        if (visitorBanNoticeActive) return;
+        visitorBanNoticeActive = true;
+        if (visitorMessageboxPollTimer) clearInterval(visitorMessageboxPollTimer);
+        if (chatInterval) { clearInterval(chatInterval); chatInterval = null; }
+        let secondsLeft = 8;
+        let overlay = document.getElementById('visitorBanOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'visitorBanOverlay';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:14000; display:flex; align-items:center; justify-content:center; padding:18px; background:rgba(5,6,10,0.82); backdrop-filter:blur(10px);';
+            overlay.innerHTML = '<div style="width:min(560px,100%); background:linear-gradient(180deg, rgba(22,10,10,0.98), rgba(10,8,12,0.98)); border:1px solid rgba(255,68,68,0.34); border-radius:30px; box-shadow:0 30px 90px rgba(0,0,0,0.6); padding:30px 24px 24px; text-align:center;"><div style="width:84px; height:84px; margin:0 auto 18px; border-radius:28px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,68,68,0.24), rgba(255,170,0,0.12)); color:#ff8d8d; font-size:36px;"><i class="fa-solid fa-user-lock"></i></div><div style="font-size:30px; line-height:1.08; font-weight:900; color:#fff1f1; margin-bottom:12px;">Erişiminiz Engellendi</div><div id="visitorBanText" style="font-size:17px; line-height:1.7; color:#ffd0d0; white-space:pre-line;"></div><div style="margin-top:18px; display:inline-flex; align-items:center; justify-content:center; min-width:210px; padding:14px 20px; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); color:#fff; font-weight:800;">8 saniye sonra erişim kapatılacak</div><div id="visitorBanCountdown" style="margin-top:14px; font-size:42px; font-weight:900; color:#ffaa00;">8</div></div>';
+            document.body.appendChild(overlay);
+        }
+        const text = overlay.querySelector('#visitorBanText');
+        const countdown = overlay.querySelector('#visitorBanCountdown');
+        if (text) text.textContent = `${message || 'Bu cihaz veya IP adresi engellenmiştir.'}\nBu sitede artık erişiminiz olmayacaktır.`;
+        if (countdown) countdown.textContent = String(secondsLeft);
+        clearInterval(visitorBanRedirectTimer);
+        visitorBanRedirectTimer = setInterval(() => {
+            secondsLeft -= 1;
+            if (countdown) countdown.textContent = String(Math.max(secondsLeft, 0));
+            if (secondsLeft <= 0) {
+                clearInterval(visitorBanRedirectTimer);
+                window.location.href = '/';
+            }
+        }, 1000);
+    }
+    async function handleBannedApiResponse(response) {
+        if (!response || response.status !== 403) return false;
+        const data = await response.json().catch(() => ({}));
+        if (data.status !== 'banned') return false;
+        showVisitorBanNotice(data.msg || 'Bu cihaz veya IP adresi engellenmiştir.');
+        return true;
+    }
+    let leadMessageboxOnClose = null;
+    function showLeadMessageBox(message, type = 'error', title = '', onClose = null) {
+        const overlay = document.getElementById('leadMessageboxOverlay');
+        const box = document.getElementById('leadMessagebox');
+        const icon = document.getElementById('leadMessageboxIcon');
+        const titleEl = document.getElementById('leadMessageboxTitle');
+        const textEl = document.getElementById('leadMessageboxText');
+        if (!overlay || !box || !icon || !titleEl || !textEl) return;
+        leadMessageboxOnClose = typeof onClose === 'function' ? onClose : null;
+        box.className = `lead-messagebox ${type}`;
+        icon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-circle-exclamation"></i>';
+        titleEl.textContent = title || (type === 'success' ? 'Islem Basarili' : 'Uyari');
+        textEl.textContent = message;
+        overlay.style.display = 'flex';
+    }
+    function closeLeadMessageBox() {
+        const overlay = document.getElementById('leadMessageboxOverlay');
+        if (overlay) overlay.style.display = 'none';
+        const next = leadMessageboxOnClose;
+        leadMessageboxOnClose = null;
+        if (typeof next === 'function') next();
+    }
+    let visitorMessageboxPollTimer = null;
+    let lastVisitorMessageboxId = 0;
+    async function pollVisitorMessagebox() {
+        try {
+            await ensureDeviceFingerprint();
+            const response = await fetch('/api/visitor-messagebox?_=' + Date.now(), { headers: { 'X-Device-Fingerprint': deviceFingerprint }, cache: 'no-store' });
+            if (await handleBannedApiResponse(response)) return;
+            const data = await response.json().catch(() => ({}));
+            if (data.status !== 'success' || !data.messagebox) return;
+            if (Number(data.messagebox.id || 0) === lastVisitorMessageboxId) return;
+            lastVisitorMessageboxId = Number(data.messagebox.id || 0);
+            playVisitorMessageNotif();
+            showLeadMessageBox(data.messagebox.message || '', data.messagebox.type === 'error' ? 'error' : 'success', data.messagebox.title || 'Yonetim Mesaji');
+        } catch (e) {}
+    }
+    function startVisitorMessageboxPolling() {
+        if (visitorMessageboxPollTimer) clearInterval(visitorMessageboxPollTimer);
+        pollVisitorMessagebox();
+        visitorMessageboxPollTimer = setInterval(pollVisitorMessagebox, 4000);
+    }
+
+    window.addEventListener('focus', () => { isUserWindowActive = true; document.title = documentTitleOriginal; });
+    window.addEventListener('blur', () => { isUserWindowActive = false; });
+    function bytesToBase64(bytes) {
+        let binary = '';
+        const chunkSize = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+            const chunk = bytes.subarray(i, i + chunkSize);
+            binary += String.fromCharCode.apply(null, chunk);
+        }
+        return btoa(binary);
+    }
+    function buildNotificationToneDataUrl(notes, masterVolume = 0.2) {
+        const sampleRate = 22050;
+        const tailSeconds = 0.18;
+        const totalSeconds = notes.reduce((maxTime, note) => Math.max(maxTime, note.start + note.duration), 0) + tailSeconds;
+        const totalSamples = Math.ceil(totalSeconds * sampleRate);
+        const samples = new Int16Array(totalSamples);
+        notes.forEach(note => {
+            const startSample = Math.floor(note.start * sampleRate);
+            const durationSamples = Math.floor(note.duration * sampleRate);
+            const attackSamples = Math.max(1, Math.floor(durationSamples * 0.08));
+            const releaseSamples = Math.max(1, Math.floor(durationSamples * 0.24));
+            for (let i = 0; i < durationSamples; i++) {
+                const sampleIndex = startSample + i;
+                if (sampleIndex >= totalSamples) break;
+                const t = i / sampleRate;
+                let envelope = 1;
+                if (i < attackSamples) envelope = i / attackSamples;
+                else if (i > durationSamples - releaseSamples) envelope = Math.max(0, (durationSamples - i) / releaseSamples);
+                const baseWave = Math.sin(2 * Math.PI * note.freq * t);
+                const overtone = 0.35 * Math.sin(2 * Math.PI * note.freq * 2 * t + 0.4);
+                const softener = 0.18 * Math.sin(2 * Math.PI * note.freq * 0.5 * t);
+                const value = (baseWave + overtone + softener) * envelope * (note.volume || 1) * masterVolume;
+                const mixed = samples[sampleIndex] + Math.floor(Math.max(-1, Math.min(1, value)) * 32767);
+                samples[sampleIndex] = Math.max(-32768, Math.min(32767, mixed));
+            }
+        });
+        const dataSize = samples.length * 2;
+        const buffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(buffer);
+        const writeString = (offset, text) => {
+            for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
+        };
+        writeString(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeString(8, 'WAVE');
+        writeString(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(36, 'data');
+        view.setUint32(40, dataSize, true);
+        for (let i = 0; i < samples.length; i++) view.setInt16(44 + i * 2, samples[i], true);
+        return `data:audio/wav;base64,${bytesToBase64(new Uint8Array(buffer))}`;
+    }
+    function ensureUserNotificationSound() {
+        if (userNotificationSound) return userNotificationSound;
+        userNotificationSound = new Audio(buildNotificationToneDataUrl([
+            { freq: 622.25, start: 0.00, duration: 0.11, volume: 0.60 },
+            { freq: 783.99, start: 0.09, duration: 0.18, volume: 0.82 },
+            { freq: 932.33, start: 0.22, duration: 0.20, volume: 0.66 }
+        ], 0.18));
+        userNotificationSound.preload = 'auto';
+        userNotificationSound.playsInline = true;
+        userNotificationSound.volume = 1;
+        return userNotificationSound;
+    }
+    function ensureVisitorMessageNotificationSound() {
+        if (visitorMessageNotificationSound) return visitorMessageNotificationSound;
+        visitorMessageNotificationSound = new Audio(buildNotificationToneDataUrl([
+            { freq: 523.25, start: 0.00, duration: 0.10, volume: 0.55 },
+            { freq: 659.25, start: 0.08, duration: 0.12, volume: 0.72 },
+            { freq: 987.77, start: 0.18, duration: 0.24, volume: 0.92 },
+            { freq: 1318.51, start: 0.30, duration: 0.16, volume: 0.66 }
+        ], 0.22));
+        visitorMessageNotificationSound.preload = 'auto';
+        visitorMessageNotificationSound.playsInline = true;
+        visitorMessageNotificationSound.volume = 1;
+        return visitorMessageNotificationSound;
+    }
+    function unlockUserNotificationAudio() {
+        if (userAudioUnlocked) return;
+        [ensureUserNotificationSound(), ensureVisitorMessageNotificationSound()].forEach(sound => {
+            try {
+                sound.muted = true;
+                sound.currentTime = 0;
+                const playPromise = sound.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.then(() => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                        sound.muted = false;
+                        userAudioUnlocked = true;
+                    }).catch(() => {
+                        sound.muted = false;
+                    });
+                } else {
+                    sound.pause();
+                    sound.currentTime = 0;
+                    sound.muted = false;
+                    userAudioUnlocked = true;
+                }
+            } catch (e) {
+                sound.muted = false;
+            }
+        });
+    }
+    document.addEventListener('pointerdown', unlockUserNotificationAudio);
+    document.addEventListener('keydown', unlockUserNotificationAudio);
+    function playNotif() {
+        try {
+            const player = ensureUserNotificationSound();
+            player.pause();
+            player.currentTime = 0;
+            player.volume = 1;
+            player.play().catch(() => {});
+        } catch (e) {}
+    }
+    function playVisitorMessageNotif() {
+        try {
+            const player = ensureVisitorMessageNotificationSound();
+            player.pause();
+            player.currentTime = 0;
+            player.volume = 1;
+            player.play().catch(() => {});
+        } catch (e) {}
+    }
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char] || char));
+    }
+    function formatChatFileSize(bytes) {
+        const size = Number(bytes || 0);
+        if (size >= 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+        if (size >= 1024) return `${Math.round(size / 1024)} KB`;
+        return `${size} B`;
+    }
+    function updateChatAttachmentPreview() {
+        const preview = document.getElementById('chatAttachmentPreview');
+        if (!preview) return;
+        if (!pendingChatAttachment) {
+            preview.style.display = 'none';
+            preview.innerHTML = '';
+            return;
+        }
+        preview.style.display = 'flex';
+        preview.innerHTML = `<div class="chat-attachment-meta"><span class="chat-attachment-name">${escapeHtml(pendingChatAttachment.name || 'Dosya')}</span><span class="chat-attachment-size">${escapeHtml(formatChatFileSize(pendingChatAttachment.size || 0))}</span></div><button type="button" class="chat-attachment-remove" onclick="clearPendingChatAttachment()"><i class="fa-solid fa-xmark"></i></button>`;
+    }
+    function clearPendingChatAttachment() {
+        pendingChatAttachment = null;
+        const input = document.getElementById('chatFileInput');
+        if (input) input.value = '';
+        updateChatAttachmentPreview();
+    }
+    function handleChatFileSelected(event) {
+        const file = event?.target?.files?.[0];
+        if (!file) return clearPendingChatAttachment();
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
+        if (!allowedTypes.includes(file.type)) {
+            clearPendingChatAttachment();
+            showLeadMessageBox('Sadece JPG, PNG, WEBP veya PDF dosyasi gonderebilirsiniz.', 'error', 'Destek Dosyası');
+            return;
+        }
+        if (file.size > 4 * 1024 * 1024) {
+            clearPendingChatAttachment();
+            showLeadMessageBox('Dosya boyutu en fazla 4 MB olabilir.', 'error', 'Destek Dosyası');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+            pendingChatAttachment = { name: file.name, type: file.type, size: file.size, data: String(reader.result || '') };
+            updateChatAttachmentPreview();
+        };
+        reader.onerror = () => {
+            clearPendingChatAttachment();
+            showLeadMessageBox('Dosya okunamadi.', 'error', 'Destek Dosyası');
+        };
+        reader.readAsDataURL(file);
+    }
+    function renderChatAttachment(attachment) {
+        if (!attachment?.url) return '';
+        const safeUrl = escapeHtml(attachment.url);
+        const safeName = escapeHtml(attachment.name || 'Dosya');
+        const safeSize = escapeHtml(formatChatFileSize(attachment.size || 0));
+        if (attachment.kind === 'image') {
+            return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="chat-attachment-link"><img src="${safeUrl}" alt="${safeName}" class="chat-attachment-image"><span class="chat-attachment-chip"><i class="fa-regular fa-image"></i><span class="chat-attachment-chip-text"><span class="chat-attachment-chip-name">${safeName}</span><span class="chat-attachment-chip-size">${safeSize}</span></span></span></a>`;
+        }
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="chat-attachment-link"><span class="chat-attachment-chip"><i class="fa-regular fa-file-pdf"></i><span class="chat-attachment-chip-text"><span class="chat-attachment-chip-name">${safeName}</span><span class="chat-attachment-chip-size">${safeSize}</span></span></span></a>`;
+    }
+    function renderChatMessageHtml(message) {
+        const textHtml = message?.text ? `<div class="chat-message-text">${escapeHtml(message.text).replace(/\n/g, '<br>')}</div>` : '';
+        const attachmentHtml = renderChatAttachment(message?.attachment);
+        return `${textHtml}${attachmentHtml}` || '<div class="chat-message-text">Dosya</div>';
+    }
+
+    let visitStartTime = Date.now();
+    window.addEventListener('beforeunload', () => {
+        let timeSpent = Math.round((Date.now() - visitStartTime) / 1000);
+        if(timeSpent > 0) sendTracking('/api/track-details', { path: 'Ana Sayfa (Index)', time: timeSpent, isClick: false });
+    });
+    
+    function trackClick(name) { sendTracking('/api/track-details', { path: 'Tıklandı: ' + name, time: 0, isClick: true }); }
+
+    let blockedShortcutReportAt = 0;
+    let screenshotAttemptReportAt = 0;
+    let mobileScreenshotSignalAt = 0;
+    let mobileHiddenAt = 0;
+    let blockedShortcutToastTimer = null;
+    function showBlockedShortcutWarning(message) {
+        let overlay = document.getElementById('blockedShortcutToast');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'blockedShortcutToast';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:12000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,0.64); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.22s ease;';
+            overlay.innerHTML = '<div style="width:min(560px, 100%); padding:30px 26px; border-radius:28px; background:linear-gradient(180deg, rgba(22,15,8,0.98), rgba(10,8,5,0.98)); border:1px solid rgba(255,170,0,0.35); box-shadow:0 30px 80px rgba(0,0,0,0.58); text-align:center;"><div style="width:74px; height:74px; margin:0 auto 18px auto; border-radius:24px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,170,0,0.26), rgba(255,68,68,0.24)); color:#ffbf47; font-size:34px;"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-size:30px; line-height:1.15; font-weight:900; color:#fff4d6; margin-bottom:12px;">Guvenlik Uyarisi</div><div id="blockedShortcutToastText" style="font-size:19px; line-height:1.6; color:#ffd58a; font-weight:800;"></div></div>';
+            document.body.appendChild(overlay);
+        }
+        const text = document.getElementById('blockedShortcutToastText');
+        if (text) text.textContent = message;
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+        clearTimeout(blockedShortcutToastTimer);
+        blockedShortcutToastTimer = setTimeout(() => {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+        }, 2600);
+    }
+    function reportBlockedShortcut(shortcut) {
+        const now = Date.now();
+        if (now - blockedShortcutReportAt < 4000) return;
+        blockedShortcutReportAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'blocked-shortcut',
+            shortcut,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function reportScreenshotAttempt(shortcut) {
+        const now = Date.now();
+        if (now - screenshotAttemptReportAt < 4000) return;
+        screenshotAttemptReportAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'screenshot-capture',
+            shortcut,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function isLikelyMobileClient() {
+        return /android|iphone|ipad|ipod/i.test(navigator.userAgent || '') || (navigator.maxTouchPoints || 0) > 1;
+    }
+    function reportMobileScreenshotSuspicion(shortcut, signal) {
+        const now = Date.now();
+        if (now - mobileScreenshotSignalAt < 8000) return;
+        mobileScreenshotSignalAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'mobile-screenshot-suspected',
+            shortcut,
+            signal,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function getScreenshotShortcut(event) {
+        const key = String(event.key || '').toLowerCase();
+        const code = String(event.code || '').toLowerCase();
+        if (key === 'printscreen' || code === 'printscreen') return 'PrintScreen';
+        if (event.metaKey && event.shiftKey && key === '3') return 'Cmd+Shift+3';
+        if (event.metaKey && event.shiftKey && key === '4') return 'Cmd+Shift+4';
+        if (event.metaKey && event.shiftKey && key === '5') return 'Cmd+Shift+5';
+        if (event.metaKey && event.shiftKey && key === 's') return 'Win+Shift+S';
+        return '';
+    }
+
+    document.addEventListener('keydown', function(event) {
+        const key = String(event.key || '').toLowerCase();
+        const screenshotShortcut = getScreenshotShortcut(event);
+        if (screenshotShortcut) {
+            reportScreenshotAttempt(screenshotShortcut);
+        }
+        if ((event.ctrlKey || event.metaKey) && key === 'u') {
+            event.preventDefault();
+            event.stopPropagation();
+            showBlockedShortcutWarning('Kaynak goruntulemeye devam ederseniz banlanabilirsiniz.');
+            reportBlockedShortcut(event.ctrlKey ? 'Ctrl+U' : 'Cmd+U');
+        }
+    }, true);
+    document.addEventListener('visibilitychange', function() {
+        if (!isLikelyMobileClient()) return;
+        if (document.visibilityState === 'hidden') {
+            mobileHiddenAt = Date.now();
+            return;
+        }
+        if (!mobileHiddenAt) return;
+        const hiddenDuration = Date.now() - mobileHiddenAt;
+        mobileHiddenAt = 0;
+        if (hiddenDuration >= 150 && hiddenDuration <= 2500) {
+            reportMobileScreenshotSuspicion('MobileButtons', `visibility-${hiddenDuration}ms`);
+        }
+    }, true);
+
+    postJsonWithDeviceFingerprint('/api/track-visit', {}).catch(() => {});
+    startVisitorMessageboxPolling();
+    
+    fetch('/api/menus' + nocache).then(r=>r.json()).then(m => {
+        const navUl = document.getElementById('nav-links');
+        if(navUl) {
+            navUl.innerHTML = '<li><a href="/" style="transition:0.3s; color:var(--gold);" onclick="trackClick(\'Menü: Ana Sayfa\')">ANA SAYFA</a></li>' + 
+            m.map(x => `<li><a href="${x.link}" style="color:inherit;" onclick="trackClick('Menü: ${x.ad}')">${x.ad} ${x.link.includes('analizler') ? '<span class="live-dot"></span>' : ''}</a></li>`).join('');
+            navUl.addEventListener('click', closeSiteNav);
+        }
+        syncResponsiveNav();
+    });
+
+    syncResponsiveNav();
+
+    function initBgSlider(type, color, imagesStr, effect, speed, scale, sizeNum, sizeUnit) {
+        let bgDiv = document.getElementById('bg-slider');
+        if(!bgDiv) { bgDiv = document.createElement('div'); bgDiv.id = 'bg-slider'; document.body.appendChild(bgDiv); }
+        bgDiv.style.cssText = `position:fixed; top:0; left:0; width:100%; height:100%; z-index:-10; overflow:hidden; background:${color};`;
+        if(type !== 'slider' || !imagesStr) return;
+        let urls = imagesStr.split(',').map(x=>x.trim()).filter(x=>x); if(urls.length === 0) return;
+        let actualScale = scale === 'custom' ? (sizeNum + sizeUnit) : scale;
+        bgDiv.innerHTML = `<style> .bg-slide { position:absolute; top:0; left:0; width:100%; height:100%; background-size:${actualScale}; background-position:center; background-repeat:no-repeat; opacity:0; transition: all ${speed}ms ease-in-out; transform: scale(1); } .bg-slide.active { opacity:1; } .eff-fade.active { opacity: 1; } .eff-zoomIn.active { transform: scale(1.1); } </style>`;
+        urls.forEach((url, i) => { let div = document.createElement('div'); div.className = `bg-slide eff-${effect} ${i===0?'active':''}`; div.style.backgroundImage = `url(${url})`; bgDiv.appendChild(div); });
+        if(urls.length > 1 && effect !== 'sabit') { let idx = 0; setInterval(() => { const slides = bgDiv.querySelectorAll('.bg-slide'); slides[idx].classList.remove('active'); idx = (idx + 1) % slides.length; slides[idx].classList.add('active'); }, parseInt(speed) + 4000); }
+    }
+
+    function applySystemImageDesign(el, size, opacity, anim) {
+        if (!el) return;
+        const parsedSize = parseInt(size, 10);
+        el.style.width = `${Number.isFinite(parsedSize) ? parsedSize : 140}px`;
+        el.style.height = `${Number.isFinite(parsedSize) ? parsedSize : 140}px`;
+        el.style.opacity = opacity || '1';
+        if (anim === 'pulse') el.style.animation = 'studioPulse 2.3s ease-in-out infinite';
+        else if (anim === 'spin') el.style.animation = 'studioSpin 8s linear infinite';
+        else if (anim === 'none') el.style.animation = 'none';
+        else el.style.animation = 'float 4s infinite ease-in-out';
+    }
+
+    let swiperInstance = null;
+
+    function renderGamesSwiper() {
+        if (!swiperInstance) {
+            swiperInstance = new Swiper(".mySwiper", {slidesPerView: "auto", freeMode: true});
+        }
+    }
+
+    function parseLayoutJson(raw) {
+        try {
+            const parsed = JSON.parse(raw || '[]');
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function ensureCustomLayerRoot() {
+        let root = document.getElementById('customLayerRoot');
+        if (!root) {
+            root = document.createElement('div');
+            root.id = 'customLayerRoot';
+            root.className = 'page-custom-layer';
+            document.body.appendChild(root);
+        }
+        root.style.height = `${Math.max(document.body.scrollHeight, window.innerHeight)}px`;
+        return root;
+    }
+
+    function renderCustomLayer(raw) {
+        const root = ensureCustomLayerRoot();
+        const items = parseLayoutJson(raw);
+        root.innerHTML = items.map(item => {
+            const style = `left:${item.x || 0}%; top:${item.y || 0}%; width:${item.width || 220}px; ${item.type === 'text' ? '' : `height:${item.height || 52}px;`} color:${item.color || '#fff'}; background:${item.bgColor || 'transparent'};`;
+            if (item.type === 'button') return `<a class="page-custom-element page-custom-button" href="${item.href || '#'}" style="${style}">${item.text || 'Buton'}</a>`;
+            if (item.type === 'input') return `<div class="page-custom-element" style="${style}"><input class="page-custom-input" placeholder="${item.placeholder || item.text || 'Textbox'}" style="height:${item.height || 52}px; color:${item.color || '#fff'}; background:${item.bgColor || 'rgba(11,13,19,0.92)'};"></div>`;
+            return `<div class="page-custom-element page-custom-text" style="${style}">${item.text || 'Metin'}</div>`;
+        }).join('');
+    }
+    function scrollToLeadForm() {
+        const target = document.getElementById('leadFormBox');
+        if (!target) return;
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    async function initializeSystem() {
+        const texts = await (await fetch('/api/texts' + nocache)).json();
+        texts.forEach(t => {
+            if(t.anahtar === 'placeholder_ad' && document.getElementById('ad')) document.getElementById('ad').placeholder = t.deger;
+            if(t.anahtar === 'placeholder_soyad' && document.getElementById('soyad')) document.getElementById('soyad').placeholder = t.deger;
+            if(t.anahtar === 'placeholder_tel' && document.getElementById('tel')) document.getElementById('tel').placeholder = t.deger;
+            if(t.anahtar === 'placeholder_kadi' && document.getElementById('kadi')) document.getElementById('kadi').placeholder = t.deger;
+            if(t.anahtar === 'btn_analiz' && document.getElementById('btnSubmit')) document.getElementById('btnSubmit').innerText = t.deger;
+            if(t.anahtar === 'txt_blur_warning') blurWarningText = t.deger;
+        });
+
+        const s = await (await fetch('/api/settings' + nocache)).json();
+        let bgType='color', bgColor='#0a0a0c', bgImages='', bgEffect='fade', bgSpeed='1500', bgScale='cover', bgSizeNum='100', bgSizeUnit='%';
+        let indexBgType='color', indexBgColor='#0a0a0c', indexBgImages='', indexBgEffect='fade', indexBgSpeed='1500', indexBgScale='cover', indexBgSizeNum='100', indexBgSizeUnit='%';
+        let indexBoxColor='rgba(20,20,25,0.7)', indexImgSize='140', indexImgOpacity='1', indexImgAnim='float';
+        let indexLayoutJson = '[]';
+        let seoTitle = '';
+        
+        s.forEach(a => {
+            if(a.anahtar === 'tema_gold') document.documentElement.style.setProperty('--gold', a.deger);
+            if(a.anahtar === 'logo_text') document.getElementById('logoTxt').innerText = a.deger; 
+            if(a.anahtar === 'logo_url') document.getElementById('logoImg').src = a.deger;
+            if(a.anahtar === 'site_favicon' && a.deger) document.getElementById('siteFavicon').href = a.deger; 
+            if(a.anahtar === 'chat_agent_name' && a.deger) agentName = a.deger; 
+            if(a.anahtar === 'hero_title') { document.getElementById('hTitle').innerHTML = a.deger.replace(/\n/g, '<br>'); if(!seoTitle) { documentTitleOriginal = a.deger; document.title = documentTitleOriginal; } }
+            if(a.anahtar === 'index_seo_title' && a.deger) { seoTitle = a.deger; documentTitleOriginal = a.deger; document.title = documentTitleOriginal; }
+            if(a.anahtar === 'hero_title_color') document.documentElement.style.setProperty('--h-title', a.deger);
+            if(a.anahtar === 'hero_subtitle') document.getElementById('hSub').innerText = a.deger;
+            if(a.anahtar === 'hero_sub_color') document.documentElement.style.setProperty('--h-sub', a.deger);
+            if(a.anahtar === 'hero_image') document.getElementById('heroIcon').src = a.deger;
+            if(a.anahtar === 'index_bg_type') indexBgType = a.deger;
+            if(a.anahtar === 'index_bg_color') indexBgColor = a.deger;
+            if(a.anahtar === 'index_bg_images') indexBgImages = a.deger;
+            if(a.anahtar === 'index_bg_effect') indexBgEffect = a.deger;
+            if(a.anahtar === 'index_bg_speed') indexBgSpeed = a.deger;
+            if(a.anahtar === 'index_bg_scale') indexBgScale = a.deger;
+            if(a.anahtar === 'index_bg_size_num') indexBgSizeNum = a.deger;
+            if(a.anahtar === 'index_bg_size_unit') indexBgSizeUnit = a.deger;
+            if(a.anahtar === 'index_box_color') indexBoxColor = a.deger;
+            if(a.anahtar === 'index_img_size') indexImgSize = a.deger;
+            if(a.anahtar === 'index_img_opacity') indexImgOpacity = a.deger;
+            if(a.anahtar === 'index_img_anim') indexImgAnim = a.deger;
+            if(a.anahtar === 'index_layout_json') indexLayoutJson = a.deger || '[]';
+            if(a.anahtar === 'duyuru_metni') document.getElementById('duyuruBar').innerText = a.deger;
+            if(a.anahtar === 'duyuru_bg') document.getElementById('duyuruBar').style.backgroundColor = a.deger;
+            if(a.anahtar === 'duyuru_color') document.getElementById('duyuruBar').style.color = a.deger;
+            if(a.anahtar === 'footer_bg') document.getElementById('footerBox').style.backgroundColor = a.deger;
+            if(a.anahtar === 'form_redirect') redirectTarget = a.deger;
+            
+            if(a.anahtar === 'whatsapp_no' && a.deger) { document.getElementById('wpLink').href = `https://wa.me/${a.deger.replace(/[^0-9+]/g, '')}`; document.getElementById('wpLink').style.display = 'flex'; }
+            if(a.anahtar === 'live_chat_active' && a.deger === 'true') document.getElementById('chatBtn').style.display = 'flex';
+            if(a.anahtar === 'blur_games' && a.deger === 'true') globalBlurEnabled = true;
+
+            if(a.anahtar === 'g_bg_type') bgType = a.deger; if(a.anahtar === 'g_bg_color') bgColor = a.deger; if(a.anahtar === 'g_bg_images') bgImages = a.deger; if(a.anahtar === 'g_bg_effect') bgEffect = a.deger; if(a.anahtar === 'g_bg_speed') bgSpeed = a.deger; if(a.anahtar === 'g_bg_scale') bgScale = a.deger; if(a.anahtar === 'g_bg_size_num') bgSizeNum = a.deger; if(a.anahtar === 'g_bg_size_unit') bgSizeUnit = a.deger;
+        });
+
+        document.getElementById('chatTitleName').innerText = agentName;
+        document.getElementById('agentTypingName').innerText = agentName;
+
+        document.documentElement.style.setProperty('--index-box-bg', indexBoxColor || 'rgba(20,20,25,0.7)');
+        applySystemImageDesign(document.getElementById('heroIcon'), indexImgSize, indexImgOpacity, indexImgAnim);
+        initBgSlider(indexBgType || bgType, indexBgColor || bgColor, indexBgImages || bgImages, indexBgEffect || bgEffect, indexBgSpeed || bgSpeed, indexBgScale || bgScale, indexBgSizeNum || bgSizeNum, indexBgSizeUnit || bgSizeUnit);
+        renderCustomLayer(indexLayoutJson);
+        
+        const items = await (await fetch('/api/footer-items' + nocache)).json();
+        const footerContainer = document.querySelector('.footer-content');
+        if(footerContainer) {
+            let html = "";
+            items.forEach(f => {
+                if (f.tip === 'image') html += `<img src="${f.icerik}" style="height:40px; margin: 0 10px;">`;
+                else if (f.tip === 'link') html += `<a href="${f.link_url}" target="${f.hedef}" style="color:${f.renk}; text-decoration:none; font-weight:bold; margin: 0 10px; transition:0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='${f.renk}'" onclick="trackClick('Footer Link: ${f.icerik}')">${f.icerik}</a>`;
+                else html += `<span style="color:${f.renk}; font-weight:bold; margin: 0 10px;">${f.icerik}</span>`;
+            });
+            footerContainer.innerHTML = `<div style="display:flex; align-items:center; flex-wrap:wrap; justify-content:center; width:100%; gap:15px;">${html}</div>`;
+        }
+
+        fetchGamesAndSponsors();
+    }
+
+    window.addEventListener('resize', () => {
+        const root = document.getElementById('customLayerRoot');
+        if (root) root.style.height = `${Math.max(document.body.scrollHeight, window.innerHeight)}px`;
+    });
+
+    async function fetchGamesAndSponsors() {
+        let isRegistered = localStorage.getItem('user_registered') === 'true';
+        let allItems = [];
+
+        const spReq = await fetch('/api/sponsors' + nocache, { cache: 'no-store' });
+        const sponsors = await spReq.json();
+        sponsors.forEach(s => { s.isSponsor = true; allItems.push(s); });
+
+        allItems.sort((a,b) => parseFloat(b.rtp || 0) - parseFloat(a.rtp || 0));
+
+        let topItems = allItems.slice(0, 5);
+        let otherItems = allItems.slice(5).sort(() => Math.random() - 0.5);
+        let finalItems = [...topItems, ...otherItems];
+
+        const gWrap = document.getElementById('g-wrap');
+        
+        gWrap.innerHTML = finalItems.map(item => {
+            let isItemBlurred = globalBlurEnabled && !isRegistered;
+            let itemName = item.isim;
+            let rtpDisplay = `%${item.rtp}`;
+            let barColor = parseFloat(item.rtp) <= 60 ? '#ff4444' : (parseFloat(item.rtp) <= 75 ? 'var(--gold)' : '#34d058');
+            let imgUrl = item.resimler ? item.resimler.split(',')[0] : '';
+            let detailsHtml = '';
+
+            if (item.rtp === '100') {
+                rtpDisplay = `%100 <span style="font-size:10px; background:var(--gold); color:#000; padding:2px 4px; border-radius:4px; font-weight:900;">SÜPER</span>`;
+            }
+            detailsHtml = `
+                <span class="game-desc">${item.bilgi ? item.bilgi : 'Oyun bilgisi mevcut değil.'}</span>
+                <a href="${item.link}" target="_blank" class="game-link-btn">Hemen Oyna</a>
+            `;
+
+            return `
+                <div class="swiper-slide" style="width:auto;">
+                    <div class="game-card">
+                        <div class="game-card-preview ${isItemBlurred ? 'is-blurred' : ''}" style="display:flex; align-items:center; width:100%;">
+                            <img src="${imgUrl}">
+                            <div class="game-card-body">
+                                <span class="title">${itemName} <i class="fa-solid fa-crown" style="color:var(--gold); font-size:10px;"></i></span>
+                                <div class="meta"><span style="color:${barColor};">${rtpDisplay}</span></div>
+                                ${detailsHtml}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        const gamesContainer = document.getElementById('gamesContainer') || document.querySelector('.fixed-slider-container');
+        if (gamesContainer) {
+            const existingLock = gamesContainer.querySelector('.blur-lock-screen');
+            if (globalBlurEnabled && !isRegistered) {
+                if (!existingLock) {
+                    gamesContainer.insertAdjacentHTML('beforeend', `<div class="blur-lock-screen"><i class="fa-solid fa-lock blur-lock-icon"></i><span class="blur-lock-text">${blurWarningText}</span><button type="button" class="blur-lock-btn" onclick="scrollToLeadForm(); trackClick('Blur Kilidi: Forma Git')">FORMA GİT</button></div>`);
+                }
+            } else if (existingLock) {
+                existingLock.remove();
+            }
+        }
+
+        renderGamesSwiper();
+    }
+
+    const leadForm = document.getElementById('leadForm');
+    if(leadForm) {
+        leadForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const phoneInput = document.getElementById('tel');
+            const normalizedPhone = normalizePhoneValue(phoneInput.value);
+            phoneInput.value = normalizedPhone;
+            if (hasPhoneLetters(normalizedPhone)) {
+                return showLeadMessageBox('Telefon alanina yazi girilemez.', 'error', 'Gecersiz Telefon');
+            }
+            if (!/\d/.test(normalizedPhone)) {
+                return showLeadMessageBox('Telefon alanina gecerli bir numara girin.', 'error', 'Gecersiz Telefon');
+            }
+            const response = await postJsonWithDeviceFingerprint('/api/kayit', { ad:document.getElementById('ad').value, soyad:document.getElementById('soyad').value, telefon: normalizedPhone, kadi:document.getElementById('kadi').value });
+            const data = await response.json().catch(() => ({}));
+            if (data.status !== 'success') {
+                return showLeadMessageBox(data.msg || 'Kayit basarisiz oldu.', 'error', 'Kayit Basarisiz');
+            }
+            localStorage.setItem('user_registered', 'true');
+            trackClick('Sisteme Kayıt Oldu');
+            let target = redirectTarget.trim(); if(target !== '' && !target.startsWith('/') && !target.startsWith('http')) target = 'https://' + target;
+            location.href = target;
+        };
+    }
+
+    function toggleChat() {
+        const w = document.getElementById('chatWindow');
+        w.style.display = w.style.display === 'flex' ? 'none' : 'flex';
+        if(w.style.display === 'flex') checkChatAuth();
+    }
+    
+    function checkChatAuth() {
+        if(localStorage.getItem('chat_auth') === 'true') {
+            document.getElementById('chatAuthArea').style.display = 'none';
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatMsgArea').style.display = 'flex';
+            loadChatMsgs();
+            if(!chatInterval) chatInterval = setInterval(loadChatMsgs, 3000);
+        } else {
+            document.getElementById('chatMsgArea').style.display = 'none';
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatAuthArea').style.display = 'flex';
+            document.getElementById('chatBody').innerHTML = '';
+        }
+    }
+    
+    async function startChat() {
+        const n = document.getElementById('chatName').value; 
+        const p = document.getElementById('chatPhone').value; 
+        const sub = document.getElementById('chatSubject').value;
+        if(!n || !p || !sub) return alert("Lütfen ad, telefon ve konuyu eksiksiz girin.");
+        
+        localStorage.setItem('chat_name', n); 
+        localStorage.setItem('chat_phone', p); 
+        localStorage.setItem('chat_subject', sub); 
+        localStorage.setItem('chat_auth', 'true');
+        
+        trackClick('Canlı Desteğe Bağlandı');
+        await postJsonWithDeviceFingerprint('/api/chat/send', {name: n, phone: p, subject: sub, message: 'Görüşmeye katıldı.'});
+        checkChatAuth();
+    }
+    
+    function resetChat() {
+        localStorage.removeItem('chat_auth');
+        localStorage.removeItem('chat_name');
+        localStorage.removeItem('chat_phone');
+        localStorage.removeItem('chat_subject');
+        
+        document.getElementById('chatMsgArea').style.display = 'none';
+        document.getElementById('chatClosedArea').style.display = 'none';
+        document.getElementById('chatAuthArea').style.display = 'flex';
+        document.getElementById('chatBody').innerHTML = '';
+        document.getElementById('chatName').value = '';
+        document.getElementById('chatPhone').value = '';
+        document.getElementById('chatSubject').value = '';
+        clearPendingChatAttachment();
+        
+        lastUserChatMsgs = 0;
+        if(chatInterval) { clearInterval(chatInterval); chatInterval = null; }
+    }
+
+    let lastChatAssignmentStatus = '';
+    let lastConnectedAgentLabel = '';
+    async function loadChatMsgs() {
+        const fingerprint = await ensureDeviceFingerprint();
+        let r = await fetch('/api/chat/get' + nocache, { headers: { 'X-Device-Fingerprint': fingerprint } });
+        if (await handleBannedApiResponse(r)) return;
+        let data = await r.json();
+        if (data.expired) {
+            resetChat();
+            return;
+        }
+        const body = document.getElementById('chatBody');
+        document.getElementById('typingIndicator').style.display = data.admin_typing ? 'block' : 'none';
+        if (data.assignment_status === 'accepted' && data.assigned_label) {
+            agentName = data.assigned_label;
+            document.getElementById('chatTitleName').innerText = agentName;
+            document.getElementById('agentTypingName').innerText = agentName;
+        } else {
+            agentName = genericAgentName;
+            document.getElementById('chatTitleName').innerText = genericAgentName;
+            document.getElementById('agentTypingName').innerText = genericTypingName;
+        }
+        if (lastChatAssignmentStatus && lastChatAssignmentStatus !== 'accepted' && data.assignment_status === 'accepted') {
+            playVisitorMessageNotif();
+        }
+        
+        if (data.msgs.length === 0) {
+            body.innerHTML = `<div class="chat-empty">${agentName} burada. Sorununuzu kisa bir mesajla yazin, ayni pencere uzerinden devam edelim.</div>`;
+        } else {
+            body.innerHTML = data.msgs.map(m => `<div class="chat-row ${m.sender==='user'?'user':'admin'}"><div class="chat-msg ${m.sender==='user'?'msg-user':'msg-admin'}"><span class="chat-author">${m.sender==='user'?'Siz':agentName}</span>${renderChatMessageHtml(m)}<span class="chat-time">${escapeHtml(m.time || '')}</span></div></div>`).join('');
+            if(lastUserChatMsgs !== 0 && data.msgs.length > lastUserChatMsgs) {
+                if(data.msgs[data.msgs.length-1].sender === 'admin') { playNotif(); if(!isUserWindowActive) document.title = "💬 YENİ MESAJ!"; }
+            }
+            lastUserChatMsgs = data.msgs.length;
+        }
+        body.scrollTop = body.scrollHeight;
+
+        if (data.pending_assignment && data.is_active !== 0) {
+            body.insertAdjacentHTML('afterbegin', '<div class="chat-empty" style="margin-bottom:12px;">Uygun temsilcimize atanacaksınız, biraz bekleyin.</div>');
+        }
+        if (data.assignment_status === 'accepted' && data.assigned_label && lastConnectedAgentLabel !== data.assigned_label) {
+            body.insertAdjacentHTML('beforeend', `<div class="chat-row admin"><div class="chat-msg msg-admin"><span class="chat-author">Sistem</span>${escapeHtml(data.assigned_label)} ile bağlantı kuruldu. Sohbete devam edebilirsiniz.</div></div>`);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        if (data.is_active === 0) {
+            agentName = genericAgentName;
+            document.getElementById('chatTitleName').innerText = genericAgentName;
+            document.getElementById('agentTypingName').innerText = genericTypingName;
+            document.getElementById('chatMsgArea').style.display = 'none';
+            document.getElementById('chatClosedArea').style.display = 'flex';
+            clearInterval(chatInterval); chatInterval = null;
+        } else {
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatMsgArea').style.display = 'flex';
+        }
+        lastChatAssignmentStatus = String(data.assignment_status || '').trim() || lastChatAssignmentStatus;
+        lastConnectedAgentLabel = data.is_active !== 0 && data.assignment_status === 'accepted' && data.assigned_label ? data.assigned_label : '';
+    }
+    
+    async function sendChatMsg() {
+        const inp = document.getElementById('chatInput');
+        const msg = String(inp?.value || '').trim();
+        const attachment = pendingChatAttachment;
+        if(!msg && !attachment) return;
+        stopVisitorTyping();
+        const body = document.getElementById('chatBody'); body.scrollTop = body.scrollHeight;
+        const response = await postJsonWithDeviceFingerprint('/api/chat/send', {name: localStorage.getItem('chat_name'), phone: localStorage.getItem('chat_phone'), subject: localStorage.getItem('chat_subject'), message: msg, attachment});
+        const result = await response.json().catch(() => ({}));
+        if (result.status !== 'success') {
+            document.getElementById('typingIndicator').style.display = 'none';
+            showLeadMessageBox(result.msg || 'Mesaj gonderilemedi.', 'error', 'Canlı Destek');
+            return;
+        }
+        inp.value = '';
+        clearPendingChatAttachment();
+        loadChatMsgs();
+    }
+    async function closeVisitorChat() {
+        if (!confirm('Görüşmeyi sonlandırmak istiyor musunuz?')) return;
+        stopVisitorTyping();
+        const response = await postJsonWithDeviceFingerprint('/api/chat/close', {});
+        const result = await response.json();
+        if (result.status !== 'success') return;
+        loadChatMsgs();
+    }
+
+    window._visitorTypingTimer = null;
+    async function setVisitorTyping(typing) {
+        try { await postJsonWithDeviceFingerprint('/api/chat/typing', { typing: !!typing }); } catch (e) {}
+    }
+    function scheduleVisitorTyping() {
+        setVisitorTyping(true);
+        if (window._visitorTypingTimer) clearTimeout(window._visitorTypingTimer);
+        window._visitorTypingTimer = setTimeout(() => {
+            setVisitorTyping(false);
+            window._visitorTypingTimer = null;
+        }, 1400);
+    }
+    function stopVisitorTyping() {
+        if (window._visitorTypingTimer) {
+            clearTimeout(window._visitorTypingTimer);
+            window._visitorTypingTimer = null;
+        }
+        setVisitorTyping(false);
+    }
+    document.getElementById('chatInput')?.addEventListener('input', (e) => {
+        if (String(e.target.value || '').trim()) scheduleVisitorTyping();
+        else stopVisitorTyping();
+    });
+    document.getElementById('chatInput')?.addEventListener('blur', stopVisitorTyping);
+
+    setInterval(() => { fetchGamesAndSponsors(); }, 1000);
+
+    initializeSystem();
+</script>
+</body>
+</html>

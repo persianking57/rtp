@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Giriş</title><style>body{background:#0a0a0c;color:white;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;font-family:sans-serif;}.box{background:#16161e;padding:40px;border-radius:20px;border-top:3px solid #ffaa00;width:min(420px,100%);box-shadow:0 24px 50px rgba(0,0,0,0.45);}input{width:100%;padding:12px;margin:10px 0;background:#000;color:white;border:1px solid #333;border-radius:8px;}button{width:100%;padding:12px;background:#ffaa00;border:none;font-weight:bold;cursor:pointer;border-radius:8px;}@media (max-width:560px){.box{padding:28px 18px;border-radius:16px;}}</style></head>
+<body>
+    <div class="box"><h2>🔒 Yönetim</h2><input type="text" id="u" placeholder="Kullanıcı"><input type="password" id="p" placeholder="Şifre"><button onclick="login()">GİRİŞ</button></div>
+    <script>
+        let blockedShortcutReportAt = 0;
+        let blockedShortcutToastTimer = null;
+        function showBlockedShortcutWarning(message) {
+            let overlay = document.getElementById('blockedShortcutToast');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'blockedShortcutToast';
+                overlay.style.cssText = 'position:fixed; inset:0; z-index:12000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,0.64); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.22s ease;';
+                overlay.innerHTML = '<div style="width:min(560px, 100%); padding:30px 26px; border-radius:28px; background:linear-gradient(180deg, rgba(22,15,8,0.98), rgba(10,8,5,0.98)); border:1px solid rgba(255,170,0,0.35); box-shadow:0 30px 80px rgba(0,0,0,0.58); text-align:center;"><div style="width:74px; height:74px; margin:0 auto 18px auto; border-radius:24px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,170,0,0.26), rgba(255,68,68,0.24)); color:#ffbf47; font-size:34px;"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-size:30px; line-height:1.15; font-weight:900; color:#fff4d6; margin-bottom:12px;">Guvenlik Uyarisi</div><div id="blockedShortcutToastText" style="font-size:19px; line-height:1.6; color:#ffd58a; font-weight:800;"></div></div>';
+                document.body.appendChild(overlay);
+            }
+            const text = document.getElementById('blockedShortcutToastText');
+            if (text) text.textContent = message;
+            overlay.style.opacity = '1';
+            overlay.style.pointerEvents = 'auto';
+            clearTimeout(blockedShortcutToastTimer);
+            blockedShortcutToastTimer = setTimeout(() => {
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+            }, 2600);
+        }
+        function reportBlockedShortcut(shortcut) {
+            const now = Date.now();
+            if (now - blockedShortcutReportAt < 4000) return;
+            blockedShortcutReportAt = now;
+            fetch('/api/security/client-event', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({ eventType:'blocked-shortcut', shortcut, pagePath: window.location.pathname || '/', pageTitle: document.title || '' }),
+                keepalive:true
+            }).catch(() => {});
+        }
+        document.addEventListener('keydown', function(event) {
+            const key = String(event.key || '').toLowerCase();
+            if ((event.ctrlKey || event.metaKey) && key === 'u') {
+                event.preventDefault();
+                event.stopPropagation();
+                showBlockedShortcutWarning('Kaynak goruntulemeye devam ederseniz banlanabilirsiniz.');
+                reportBlockedShortcut(event.ctrlKey ? 'Ctrl+U' : 'Cmd+U');
+            }
+        }, true);
+        async function login(){
+            const res = await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:document.getElementById('u').value,password:document.getElementById('p').value})});
+            if(res.ok) location.href='/admin'; else alert('Hata!');
+        }
+    </script>
+</body></html>

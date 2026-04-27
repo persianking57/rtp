@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="mainTitle">Canlı Analizler | VIP</title>
+    <link id="siteFavicon" rel="shortcut icon" href="">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --gold: #ffaa00; --analiz-box-bg: rgba(20,20,25,0.6); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: transparent; color: white; padding-bottom: 80px; display: flex; flex-direction: column; min-height: 100vh;}
+        
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; background: rgba(0,0,0,0.5); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,170,0,0.1); position: sticky; top:0; z-index: 1000;}
+        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-img { width: 38px; height: 38px; filter: drop-shadow(0 0 5px var(--gold)); }
+        .logo-text { font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 30px; list-style: none; font-size: 13px; font-weight: 800; color: #888; align-items:center; }
+        .nav-links li { transition: 0.3s; cursor: pointer; display:flex; align-items:center; }
+        .nav-links li a { color: inherit; text-decoration: none; transition: 0.3s; display:flex; align-items:center; }
+        .nav-links li:hover, .nav-links li a:hover { color: var(--gold); }
+        .nav-toggle { display:none; width:46px; height:46px; border:none; border-radius:14px; background:rgba(255,255,255,0.06); color:#fff; align-items:center; justify-content:center; cursor:pointer; font-size:18px; }
+        
+        .header-section { text-align: center; padding: 80px 20px 50px 20px; flex: 1;}
+        .header-section img { width: 120px; filter: drop-shadow(0 0 20px var(--gold)); margin-bottom: 25px; animation: float 4s infinite ease-in-out; }
+        .header-section h1 { font-size: 46px; margin-bottom: 20px; font-weight: 900; }
+        .header-section p { color: #aaa; font-size: 17px; max-width: 650px; margin: 0 auto; line-height: 1.6; }
+
+        .category-slider-box { background: var(--analiz-box-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 20px 0; margin: 0 6% 40px 6%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(15px); }
+        .category-title { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 20px; padding-left: 30px; text-transform: uppercase; letter-spacing: 1px; border-left: 4px solid var(--gold); }
+        .category-swiper { overflow: visible; padding-bottom: 18px; }
+        .category-swiper .swiper-wrapper,
+        .category-swiper .swiper-slide { overflow: visible; }
+        
+        .game-card { background: rgba(255,255,255,0.03); border-radius: 18px; padding: 14px; text-align: center; transition: 0.3s; border: 1px solid rgba(255,255,255,0.05); width: 210px; min-height: 300px; height: 300px; position:relative; margin-left: 14px; overflow: visible !important;}
+        .game-card.is-expanded { height: auto; }
+        .game-card:hover { border-color: var(--gold); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,170,0,0.15); }
+        .game-card img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; object-fit: cover; }
+        .game-card-preview { height: 100%; display:flex; flex-direction:column; }
+        .game-card.is-expanded .game-card-preview { height: auto; }
+        .game-card-main { display:flex; flex-direction:column; flex:1; min-height:0; }
+        .game-card-title { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; min-height:34px; font-size:16px; font-weight:800; line-height:1.15; }
+        .game-provider { margin-top: 5px; color: var(--gold); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1; line-clamp:1; overflow:hidden; min-height:12px; }
+        
+        .blurred-wrap { position: relative !important; overflow: hidden; border-radius: 20px;}
+        .blur-lock-screen { position:absolute; top:0; left:0; width:100%; height:100%; display:flex; justify-content:center; align-items:center; background:rgba(10, 10, 15, 0.4); z-index:20; font-weight:900; font-size:18px; color:var(--gold); flex-direction:column; gap:15px; text-align:center; padding:20px; backdrop-filter: blur(3px); border-radius: 20px;}
+        .game-card-preview.is-blurred { filter: blur(6px) saturate(0.82); opacity: 0.74; pointer-events: none; user-select: none; }
+        .game-card-preview.is-blurred .accordion-content { display:block !important; }
+        .game-card-preview.is-blurred .accordion-btn,
+        .game-card-preview.is-blurred .game-link-btn { visibility: hidden; }
+        
+        .game-rtp { font-size: 17px; font-weight: 900; margin-bottom: 4px; margin-top:6px; }
+        .progress-bar { width: 100%; height: 6px; background: #222; border-radius: 10px; margin-top: 15px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 10px; transition: width 1s ease-in-out; }
+
+        .sponsor-slider { width: 100%; height: 96px; border-radius: 13px; overflow: hidden; margin-bottom: 12px; }
+        .sponsor-slide { width: 100%; height: 100%; object-fit: cover; }
+        .accordion-btn { background: linear-gradient(135deg, rgba(255,170,0,0.14), rgba(255,255,255,0.04)); color: #fff5d6; border: 1px solid rgba(255,170,0,0.22); width: 100%; padding: 9px 11px; border-radius: 12px; cursor: pointer; font-weight: 800; margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 10px; letter-spacing: 0.3px; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+        .game-card.is-expanded .accordion-btn { margin-top: 12px; }
+        .accordion-btn:hover { transform: translateY(-1px); border-color: rgba(255,170,0,0.4); box-shadow: 0 14px 24px rgba(0,0,0,0.18); }
+        .accordion-content { background: linear-gradient(180deg, rgba(15,17,24,0.96), rgba(7,9,13,0.96)); padding: 13px; border-radius: 14px; margin-top: 10px; text-align: left; font-size: 12px; color: #d3d7e0; line-height: 1.6; border: 1px solid rgba(255,170,0,0.16); display:none; position: static; width: 100%; z-index:1; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 20px 34px rgba(0,0,0,0.24); backdrop-filter: blur(12px); }
+        .accordion-head { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px; text-align:center; }
+        .accordion-rtp-tag { color:#9ef7b2; font-weight:900; font-size:11px; width:100%; text-align:center; }
+        .accordion-copy { color:#cfd4dd; white-space:pre-line; }
+        .accordion-actions { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08); }
+        .game-card { overflow: visible; }
+        .game-link-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; margin-top: 4px; background: linear-gradient(135deg, var(--gold), #ffb347); color:#000; padding: 7px 10px; border-radius: 999px; text-decoration:none; font-size: 11px; font-weight: 800; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 10px 22px rgba(255,170,0,0.18); }
+        .game-link-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(255,170,0,0.24); }
+        .game-link-btn.is-disabled { background: linear-gradient(135deg, #454a57, #2c3039); color:#d0d3da; box-shadow:none; pointer-events:none; }
+
+        .live-dot { display: inline-block; width: 8px; height: 8px; background: #ff4444; border-radius: 50%; margin-left: 6px; box-shadow: 0 0 8px #ff4444; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); } }
+
+        .wp-btn { position:fixed; bottom:120px; right:25px; background:#25D366; color:#fff; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:35px; box-shadow:0 10px 20px rgba(0,0,0,0.5); z-index:9999; text-decoration:none; transition:0.3s; }
+        .wp-btn:hover { transform:scale(1.1); }
+        .chat-btn { position:fixed; bottom:200px; right:25px; background:var(--gold); color:#000; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:30px; box-shadow:0 10px 20px rgba(0,0,0,0.5); z-index:9999; cursor:pointer; transition:0.3s; }
+        .chat-btn:hover { transform:scale(1.1); }
+        
+        .chat-window { position:fixed; bottom:100px; right:35px; width:350px; background:#111118; border-radius:20px; border:1px solid var(--gold); box-shadow:0 20px 50px rgba(0,0,0,0.8); z-index:10000; display:none; flex-direction:column; overflow:hidden; }
+        .chat-header { background:var(--gold); color:#000; padding:15px; font-weight:900; display:flex; justify-content:space-between; align-items:center; }
+        .chat-body { padding:15px; height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; background:#050507; position:relative;}
+        .chat-input-area { padding:15px; background:#111118; display:flex; gap:10px; border-top:1px solid #333; flex-direction:column; }
+        .chat-msg { max-width:80%; padding:10px 15px; border-radius:15px; font-size:13px; line-height:1.4; }
+        .msg-user { background:var(--gold); color:#000; align-self:flex-end; border-bottom-right-radius:2px; }
+        .msg-admin { background:#333; color:#fff; align-self:flex-start; border-bottom-left-radius:2px; }
+        
+        .typing-indicator { font-size:11px; color:var(--gold); padding:5px 15px; background:#0a0a0c; display:none; text-align:left; font-style:italic;}
+
+        footer { background: #0a0a0c; padding: 50px 6% 80px 6%; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
+        .copyright { width: 100%; text-align: center; margin-top: 40px; color: #444; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+        .page-custom-layer { position:absolute; top:0; left:0; width:100%; pointer-events:none; z-index:40; }
+        .page-custom-element { position:absolute; pointer-events:auto; }
+        .page-custom-text { padding:10px 12px; color:#fff; font-weight:800; text-shadow:0 2px 12px rgba(0,0,0,0.45); }
+        .page-custom-button { display:inline-flex; align-items:center; justify-content:center; padding:14px 18px; border-radius:14px; font-weight:900; text-decoration:none; }
+        .page-custom-input { width:100%; padding:14px 16px; border-radius:14px; border:1px solid #2f3440; background:rgba(11,13,19,0.92); color:#f1f3f8; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes studioPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.86; } }
+        @keyframes studioSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @media (max-width: 980px) {
+            nav { padding: 16px 20px; flex-wrap: wrap; gap: 14px; }
+            .nav-toggle { display:flex; }
+            .nav-links { display:none; width:100%; flex-direction:column; align-items:stretch; gap:8px; padding-top:12px; }
+            .nav-links.open { display:flex; }
+            .nav-links li, .nav-links li a { width:100%; }
+            .nav-links li a { padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.04); }
+            .header-section { padding: 56px 20px 36px 20px; }
+            .header-section h1 { font-size: clamp(32px, 9vw, 46px); }
+            .header-section p { font-size: 15px; }
+            .category-slider-box { margin-left: 20px; margin-right: 20px; }
+            footer { padding: 40px 20px 90px 20px; }
+            .chat-window { right:12px; width:calc(100vw - 24px); max-width:420px; }
+            .chat-btn, .wp-btn { right:12px; }
+        }
+        @media (max-width: 640px) {
+            .logo-text { font-size:22px; }
+            .header-section img { width: 92px; }
+            .category-title { font-size: 18px; padding-left: 18px; }
+            .game-card { width: 186px; min-height: 278px; height: 278px; margin-left: 10px; padding: 12px; }
+            .game-card img { width: 54px; height: 54px; }
+            .game-card-title { font-size: 15px; min-height: 32px; }
+            .game-rtp { font-size: 15px; }
+            .chat-window { bottom:84px; }
+            .chat-btn { bottom:154px; }
+            .wp-btn { bottom:84px; }
+        }
+        @media (max-width: 430px) {
+            nav { padding: 12px 14px; }
+            .logo-img { width: 30px; height: 30px; }
+            .logo-text { font-size: 18px; letter-spacing: 1px; }
+            .nav-toggle { width: 40px; height: 40px; border-radius: 12px; font-size: 15px; }
+            .nav-links li a { padding: 10px 12px; font-size: 12px; }
+            .header-section { padding: 30px 12px 22px 12px; }
+            .header-section img { width: 72px; margin-bottom: 14px; }
+            .header-section h1 { font-size: clamp(24px, 8.2vw, 32px); margin-bottom: 10px; }
+            .header-section p { font-size: 12px; line-height: 1.45; }
+            .category-slider-box { margin: 0 10px 20px 10px; padding: 12px 0; border-radius: 14px; }
+            .category-title { font-size: 14px; margin-bottom: 12px; padding-left: 12px; border-left-width: 3px; }
+            .game-card { width: 150px; min-height: 244px; height: 244px; margin-left: 8px; padding: 9px; border-radius: 12px; }
+            .game-card img { width: 44px; height: 44px; margin-bottom: 8px; }
+            .game-card-title { font-size: 13px; min-height: 28px; }
+            .game-provider { font-size: 9px; }
+            .game-rtp { font-size: 14px; margin-top: 6px; }
+            .accordion-btn { padding: 9px 10px; border-radius: 10px; margin-top: 10px; font-size: 10px; }
+            .accordion-content { padding: 12px; border-radius: 12px; font-size: 11px; line-height: 1.55; }
+            .accordion-actions { gap: 8px; margin-top: 10px; padding-top: 10px; }
+            .game-link-btn { padding: 6px 10px; font-size: 10px; }
+            .blur-lock-screen { font-size: 12px; gap: 10px; padding: 12px; }
+            footer { padding: 28px 12px 90px 12px; }
+            .footer-content { gap: 16px; }
+            .copyright { margin-top: 20px; font-size: 10px; }
+            .chat-btn { width: 48px; height: 48px; right: 8px; bottom: 120px; font-size: 22px; }
+            .wp-btn { width: 46px; height: 46px; right: 8px; bottom: 62px; font-size: 26px; }
+            .chat-window { right: 8px; bottom: 58px; width: calc(100vw - 16px); border-radius: 16px; }
+            .chat-header { padding: 11px 12px; font-size: 13px; }
+            .chat-body { padding: 11px; height: min(34vh, 230px); gap: 8px; }
+            .chat-input-area { padding: 11px; gap: 8px; }
+            .chat-msg { font-size: 12px; padding: 9px 11px; }
+        }
+        @media (max-width: 375px) {
+            .header-section h1 { font-size: 22px; }
+            .game-card { width: 140px; min-height: 234px; height: 234px; }
+            .category-slider-box { margin-left: 8px; margin-right: 8px; }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div id="duyuruBar" class="announcement-bar"></div>
+    <nav>
+        <a href="/" class="logo-area" onclick="trackClick('Logo: Ana Sayfa')"><img id="logoImg" class="logo-img"><span id="logoTxt" class="logo-text"></span></a>
+        <ul class="nav-links" id="nav-links"></ul>
+        <button id="navToggle" class="nav-toggle" type="button" onclick="toggleSiteNav()" aria-label="Menüyü aç" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+    </nav>
+
+    <div class="header-section">
+        <img id="aImg" src="">
+        <h1 id="aTitle"></h1>
+        <p id="aSub"></p>
+    </div>
+
+    <div id="dynamicSlidersArea"></div>
+
+
+    <footer id="footerBox">
+        <div class="footer-content"></div>
+        <div class="copyright" id="fCopyText"></div>
+    </footer>
+
+
+    <a id="wpLink" href="#" target="_blank" class="wp-btn" style="display:none;" onclick="trackClick('WhatsApp Yönlendirme')"><i class="fa-brands fa-whatsapp"></i></a>
+    <div id="chatBtn" class="chat-btn" onclick="toggleChat(); trackClick('Canlı Destek Açıldı');" style="display:none;"><i class="fa-solid fa-comment-dots"></i></div>
+
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header"><span><i class="fa-solid fa-headset"></i> <span id="chatTitleName">Canlı Destek</span></span> <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="toggleChat()"></i></div>
+        <div class="chat-body" id="chatBody"></div>
+        <div id="typingIndicator" class="typing-indicator"><span id="agentTypingName">Müşteri Temsilcisi</span> yazıyor...</div>
+        
+        <div class="chat-input-area" id="chatAuthArea">
+            <input id="chatName" placeholder="Adınız Soyadınız" required style="padding:10px; margin:0; border-radius:8px; margin-bottom:5px;">
+            <input id="chatPhone" type="tel" placeholder="Telefon Numaranız" required style="padding:10px; margin:0; border-radius:8px; margin-bottom:5px;">
+            <input id="chatSubject" placeholder="Hangi konuda yazıyorsunuz?" required style="padding:10px; margin:0; border-radius:8px;">
+            <button onclick="startChat()" style="background:var(--gold); border:none; color:#000; padding:12px; font-weight:bold; border-radius:8px; cursor:pointer; margin-top:5px;">Görüşmeye Bağlan</button>
+        </div>
+        
+        <div class="chat-input-area" id="chatMsgArea" style="display:none; flex-direction:row;">
+            <input id="chatInput" placeholder="Mesajınızı yazın..." style="margin:0; padding:10px; flex:1; border-radius:8px;">
+            <button onclick="sendChatMsg()" style="background:var(--gold); border:none; padding:0 15px; border-radius:8px; color:#000; font-weight:bold; cursor:pointer;"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div class="chat-input-area" id="chatCloseActionArea" style="display:none; padding-top:0;">
+            <button onclick="closeVisitorChat()" style="background:#2a2d35; border:none; color:#fff; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold; width:100%;">GÖRÜŞMEYİ SONLANDIR</button>
+        </div>
+        
+        <div class="chat-input-area" id="chatClosedArea" style="display:none; flex-direction:column;">
+            <div style="color:#ff4444; font-weight:bold; text-align:center; padding:5px;">Görüşme sonlandırıldı.</div>
+            <button onclick="resetChat()" style="background:var(--gold); border:none; color:#000; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold; width:100%;">YENİ GÖRÜŞME BAŞLAT</button>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    const nocache = '?_=' + new Date().getTime(); 
+    let globalBlurEnabled = false;
+    let chatInterval = null;
+    const genericAgentName = "Canlı Destek";
+    const genericTypingName = "Temsilci";
+    let agentName = genericAgentName;
+
+    let lastUserChatMsgs = 0;
+    let isUserWindowActive = true;
+    let documentTitleOriginal = "Canlı Analizler | VIP";
+    let blurWarningText = "Oyunları görmek için bilgileri girin.";
+    let userNotificationSound = null;
+    let visitorMessageNotificationSound = null;
+    let userAudioUnlocked = false;
+    let deviceFingerprint = '';
+    let visitorBanNoticeActive = false;
+    let visitorBanRedirectTimer = null;
+    let slidersRefreshTimer = null;
+    let sliderRenderSignature = '';
+    let slidersFetchInFlight = false;
+    let sliderCardOrderMap = {};
+
+    function syncResponsiveNav() {
+        const navUl = document.getElementById('nav-links');
+        const navToggle = document.getElementById('navToggle');
+        if (!navUl || !navToggle) return;
+        if (window.innerWidth > 980) navUl.classList.remove('open');
+        const isOpen = navUl.classList.contains('open');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        navToggle.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+    }
+    function toggleSiteNav() {
+        const navUl = document.getElementById('nav-links');
+        if (!navUl || window.innerWidth > 980) return;
+        navUl.classList.toggle('open');
+        syncResponsiveNav();
+    }
+    function closeSiteNav() {
+        const navUl = document.getElementById('nav-links');
+        if (!navUl) return;
+        navUl.classList.remove('open');
+        syncResponsiveNav();
+    }
+    window.addEventListener('resize', syncResponsiveNav);
+    document.addEventListener('click', event => {
+        if (window.innerWidth > 980) return;
+        const nav = document.querySelector('nav');
+        if (nav && !nav.contains(event.target)) closeSiteNav();
+    });
+
+    function setDeviceFingerprintCookie(value) {
+        document.cookie = `device_fp=${encodeURIComponent(value)}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    function arrayBufferToHex(buffer) {
+        return Array.from(new Uint8Array(buffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+    function getStorageStatus() {
+        try {
+            const key = '__storage_probe__';
+            localStorage.setItem(key, '1');
+            localStorage.removeItem(key);
+            return 'localStorage aktif';
+        } catch (e) {
+            return 'localStorage kapalı';
+        }
+    }
+    function collectClientEnvironment() {
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const language = Array.isArray(navigator.languages) && navigator.languages.length > 0 ? navigator.languages.join(', ') : (navigator.language || 'Bilinmiyor');
+        const dpr = window.devicePixelRatio || 1;
+        return {
+            screenResolution: `${window.screen.width}x${window.screen.height} @${dpr}x`,
+            browserLanguage: language,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Bilinmiyor',
+            referrerUrl: document.referrer || 'Direkt Giris',
+            networkType: connection ? [connection.effectiveType || '', connection.downlink ? `${connection.downlink}mbps` : '', connection.rtt ? `${connection.rtt}ms` : ''].filter(Boolean).join(' / ') || 'Bilinmiyor' : 'Bilinmiyor',
+            cookieStatus: navigator.cookieEnabled ? 'Cookie aktif' : 'Cookie kapalı',
+            storageStatus: getStorageStatus()
+        };
+    }
+    async function ensureDeviceFingerprint() {
+        if (deviceFingerprint) return deviceFingerprint;
+        const stored = localStorage.getItem('device_fingerprint');
+        if (stored) {
+            deviceFingerprint = stored;
+            setDeviceFingerprintCookie(deviceFingerprint);
+            return deviceFingerprint;
+        }
+        const fingerprintSource = [navigator.userAgent, navigator.language, navigator.platform, window.screen.width, window.screen.height, window.devicePixelRatio || 1, navigator.hardwareConcurrency || 0, Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown'].join('||');
+        if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+            const encoded = new TextEncoder().encode(fingerprintSource);
+            deviceFingerprint = arrayBufferToHex(await window.crypto.subtle.digest('SHA-256', encoded));
+        } else {
+            deviceFingerprint = btoa(unescape(encodeURIComponent(fingerprintSource))).replace(/=/g, '').slice(0, 64);
+        }
+        localStorage.setItem('device_fingerprint', deviceFingerprint);
+        setDeviceFingerprintCookie(deviceFingerprint);
+        return deviceFingerprint;
+    }
+    async function postJsonWithDeviceFingerprint(url, payload) {
+        const fingerprint = await ensureDeviceFingerprint();
+        const environment = collectClientEnvironment();
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fingerprint },
+            body: JSON.stringify({ ...(payload || {}), ...environment, deviceFingerprint: fingerprint })
+        });
+        await handleBannedApiResponse(response);
+        return response;
+    }
+    function sendTracking(url, payload) {
+        ensureDeviceFingerprint().then(fingerprint => {
+            const body = JSON.stringify({ ...(payload || {}), ...collectClientEnvironment(), deviceFingerprint: fingerprint });
+            const blob = new Blob([body], { type: 'application/json' });
+            const beaconSent = typeof navigator.sendBeacon === 'function' ? navigator.sendBeacon(url, blob) : false;
+            if (!beaconSent) {
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fingerprint },
+                    body,
+                    keepalive: true
+                }).catch(() => {});
+            }
+        }).catch(() => {});
+    }
+    function showVisitorBanNotice(message) {
+        if (visitorBanNoticeActive) return;
+        visitorBanNoticeActive = true;
+        if (visitorMessageboxPollTimer) clearInterval(visitorMessageboxPollTimer);
+        if (chatInterval) { clearInterval(chatInterval); chatInterval = null; }
+        let secondsLeft = 8;
+        let overlay = document.getElementById('visitorBanOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'visitorBanOverlay';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:14000; display:flex; align-items:center; justify-content:center; padding:18px; background:rgba(5,6,10,0.82); backdrop-filter:blur(10px);';
+            overlay.innerHTML = '<div style="width:min(560px,100%); background:linear-gradient(180deg, rgba(22,10,10,0.98), rgba(10,8,12,0.98)); border:1px solid rgba(255,68,68,0.34); border-radius:30px; box-shadow:0 30px 90px rgba(0,0,0,0.6); padding:30px 24px 24px; text-align:center;"><div style="width:84px; height:84px; margin:0 auto 18px; border-radius:28px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,68,68,0.24), rgba(255,170,0,0.12)); color:#ff8d8d; font-size:36px;"><i class="fa-solid fa-user-lock"></i></div><div style="font-size:30px; line-height:1.08; font-weight:900; color:#fff1f1; margin-bottom:12px;">Erişiminiz Engellendi</div><div id="visitorBanText" style="font-size:17px; line-height:1.7; color:#ffd0d0; white-space:pre-line;"></div><div style="margin-top:18px; display:inline-flex; align-items:center; justify-content:center; min-width:210px; padding:14px 20px; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); color:#fff; font-weight:800;">8 saniye sonra erişim kapatılacak</div><div id="visitorBanCountdown" style="margin-top:14px; font-size:42px; font-weight:900; color:#ffaa00;">8</div></div>';
+            document.body.appendChild(overlay);
+        }
+        const text = overlay.querySelector('#visitorBanText');
+        const countdown = overlay.querySelector('#visitorBanCountdown');
+        if (text) text.textContent = `${message || 'Bu cihaz veya IP adresi engellenmiştir.'}\nBu sitede artık erişiminiz olmayacaktır.`;
+        if (countdown) countdown.textContent = String(secondsLeft);
+        clearInterval(visitorBanRedirectTimer);
+        visitorBanRedirectTimer = setInterval(() => {
+            secondsLeft -= 1;
+            if (countdown) countdown.textContent = String(Math.max(secondsLeft, 0));
+            if (secondsLeft <= 0) {
+                clearInterval(visitorBanRedirectTimer);
+                window.location.href = '/';
+            }
+        }, 1000);
+    }
+    async function handleBannedApiResponse(response) {
+        if (!response || response.status !== 403) return false;
+        const data = await response.json().catch(() => ({}));
+        if (data.status !== 'banned') return false;
+        showVisitorBanNotice(data.msg || 'Bu cihaz veya IP adresi engellenmiştir.');
+        return true;
+    }
+
+    window.addEventListener('focus', () => { isUserWindowActive = true; document.title = documentTitleOriginal; });
+    window.addEventListener('blur', () => { isUserWindowActive = false; });
+    function bytesToBase64(bytes) {
+        let binary = '';
+        const chunkSize = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+            const chunk = bytes.subarray(i, i + chunkSize);
+            binary += String.fromCharCode.apply(null, chunk);
+        }
+        return btoa(binary);
+    }
+    function buildNotificationToneDataUrl(notes, masterVolume = 0.2) {
+        const sampleRate = 22050;
+        const tailSeconds = 0.18;
+        const totalSeconds = notes.reduce((maxTime, note) => Math.max(maxTime, note.start + note.duration), 0) + tailSeconds;
+        const totalSamples = Math.ceil(totalSeconds * sampleRate);
+        const samples = new Int16Array(totalSamples);
+        notes.forEach(note => {
+            const startSample = Math.floor(note.start * sampleRate);
+            const durationSamples = Math.floor(note.duration * sampleRate);
+            const attackSamples = Math.max(1, Math.floor(durationSamples * 0.08));
+            const releaseSamples = Math.max(1, Math.floor(durationSamples * 0.24));
+            for (let i = 0; i < durationSamples; i++) {
+                const sampleIndex = startSample + i;
+                if (sampleIndex >= totalSamples) break;
+                const t = i / sampleRate;
+                let envelope = 1;
+                if (i < attackSamples) envelope = i / attackSamples;
+                else if (i > durationSamples - releaseSamples) envelope = Math.max(0, (durationSamples - i) / releaseSamples);
+                const baseWave = Math.sin(2 * Math.PI * note.freq * t);
+                const overtone = 0.35 * Math.sin(2 * Math.PI * note.freq * 2 * t + 0.4);
+                const softener = 0.18 * Math.sin(2 * Math.PI * note.freq * 0.5 * t);
+                const value = (baseWave + overtone + softener) * envelope * (note.volume || 1) * masterVolume;
+                const mixed = samples[sampleIndex] + Math.floor(Math.max(-1, Math.min(1, value)) * 32767);
+                samples[sampleIndex] = Math.max(-32768, Math.min(32767, mixed));
+            }
+        });
+        const dataSize = samples.length * 2;
+        const buffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(buffer);
+        const writeString = (offset, text) => {
+            for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
+        };
+        writeString(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeString(8, 'WAVE');
+        writeString(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(36, 'data');
+        view.setUint32(40, dataSize, true);
+        for (let i = 0; i < samples.length; i++) view.setInt16(44 + i * 2, samples[i], true);
+        return `data:audio/wav;base64,${bytesToBase64(new Uint8Array(buffer))}`;
+    }
+
+    function parseLayoutJson(raw) {
+        try {
+            const parsed = JSON.parse(raw || '[]');
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function ensureCustomLayerRoot() {
+        let root = document.getElementById('customLayerRoot');
+        if (!root) {
+            root = document.createElement('div');
+            root.id = 'customLayerRoot';
+            root.className = 'page-custom-layer';
+            document.body.appendChild(root);
+        }
+        root.style.height = `${Math.max(document.body.scrollHeight, window.innerHeight)}px`;
+        return root;
+    }
+
+    function renderCustomLayer(raw) {
+        const root = ensureCustomLayerRoot();
+        const items = parseLayoutJson(raw);
+        root.innerHTML = items.map(item => {
+            const style = `left:${item.x || 0}%; top:${item.y || 0}%; width:${item.width || 220}px; ${item.type === 'text' ? '' : `height:${item.height || 52}px;`} color:${item.color || '#fff'}; background:${item.bgColor || 'transparent'};`;
+            if (item.type === 'button') return `<a class="page-custom-element page-custom-button" href="${item.href || '#'}" style="${style}">${item.text || 'Buton'}</a>`;
+            if (item.type === 'input') return `<div class="page-custom-element" style="${style}"><input class="page-custom-input" placeholder="${item.placeholder || item.text || 'Textbox'}" style="height:${item.height || 52}px; color:${item.color || '#fff'}; background:${item.bgColor || 'rgba(11,13,19,0.92)'};"></div>`;
+            return `<div class="page-custom-element page-custom-text" style="${style}">${item.text || 'Metin'}</div>`;
+        }).join('');
+    }
+    function ensureUserNotificationSound() {
+        if (userNotificationSound) return userNotificationSound;
+        userNotificationSound = new Audio(buildNotificationToneDataUrl([
+            { freq: 622.25, start: 0.00, duration: 0.11, volume: 0.60 },
+            { freq: 783.99, start: 0.09, duration: 0.18, volume: 0.82 },
+            { freq: 932.33, start: 0.22, duration: 0.20, volume: 0.66 }
+        ], 0.18));
+        userNotificationSound.preload = 'auto';
+        userNotificationSound.playsInline = true;
+        userNotificationSound.volume = 1;
+        return userNotificationSound;
+    }
+    function ensureVisitorMessageNotificationSound() {
+        if (visitorMessageNotificationSound) return visitorMessageNotificationSound;
+        visitorMessageNotificationSound = new Audio(buildNotificationToneDataUrl([
+            { freq: 523.25, start: 0.00, duration: 0.10, volume: 0.55 },
+            { freq: 659.25, start: 0.08, duration: 0.12, volume: 0.72 },
+            { freq: 987.77, start: 0.18, duration: 0.24, volume: 0.92 },
+            { freq: 1318.51, start: 0.30, duration: 0.16, volume: 0.66 }
+        ], 0.22));
+        visitorMessageNotificationSound.preload = 'auto';
+        visitorMessageNotificationSound.playsInline = true;
+        visitorMessageNotificationSound.volume = 1;
+        return visitorMessageNotificationSound;
+    }
+    function unlockUserNotificationAudio() {
+        if (userAudioUnlocked) return;
+        [ensureUserNotificationSound(), ensureVisitorMessageNotificationSound()].forEach(sound => {
+            try {
+                sound.muted = true;
+                sound.currentTime = 0;
+                const playPromise = sound.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.then(() => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                        sound.muted = false;
+                        userAudioUnlocked = true;
+                    }).catch(() => {
+                        sound.muted = false;
+                    });
+                } else {
+                    sound.pause();
+                    sound.currentTime = 0;
+                    sound.muted = false;
+                    userAudioUnlocked = true;
+                }
+            } catch (e) {
+                sound.muted = false;
+            }
+        });
+    }
+    document.addEventListener('pointerdown', unlockUserNotificationAudio);
+    document.addEventListener('keydown', unlockUserNotificationAudio);
+    function playNotif() {
+        try {
+            const player = ensureUserNotificationSound();
+            player.pause();
+            player.currentTime = 0;
+            player.volume = 1;
+            player.play().catch(() => {});
+        } catch (e) {}
+    }
+    function playVisitorMessageNotif() {
+        try {
+            const player = ensureVisitorMessageNotificationSound();
+            player.pause();
+            player.currentTime = 0;
+            player.volume = 1;
+            player.play().catch(() => {});
+        } catch (e) {}
+    }
+
+    let visitStartTime = Date.now();
+    window.addEventListener('beforeunload', () => {
+        let timeSpent = Math.round((Date.now() - visitStartTime) / 1000);
+        if(timeSpent > 0) sendTracking('/api/track-details', { path: 'Analizler', time: timeSpent, isClick: false });
+    });
+
+    function trackClick(name) { sendTracking('/api/track-details', { path: 'Tıklandı: ' + name, time: 0, isClick: true }); }
+
+    let blockedShortcutReportAt = 0;
+    let screenshotAttemptReportAt = 0;
+    let mobileScreenshotSignalAt = 0;
+    let mobileHiddenAt = 0;
+    let blockedShortcutToastTimer = null;
+    function showBlockedShortcutWarning(message) {
+        let overlay = document.getElementById('blockedShortcutToast');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'blockedShortcutToast';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:12000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,0.64); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.22s ease;';
+            overlay.innerHTML = '<div style="width:min(560px, 100%); padding:30px 26px; border-radius:28px; background:linear-gradient(180deg, rgba(22,15,8,0.98), rgba(10,8,5,0.98)); border:1px solid rgba(255,170,0,0.35); box-shadow:0 30px 80px rgba(0,0,0,0.58); text-align:center;"><div style="width:74px; height:74px; margin:0 auto 18px auto; border-radius:24px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,170,0,0.26), rgba(255,68,68,0.24)); color:#ffbf47; font-size:34px;"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-size:30px; line-height:1.15; font-weight:900; color:#fff4d6; margin-bottom:12px;">Guvenlik Uyarisi</div><div id="blockedShortcutToastText" style="font-size:19px; line-height:1.6; color:#ffd58a; font-weight:800;"></div></div>';
+            document.body.appendChild(overlay);
+        }
+        const text = document.getElementById('blockedShortcutToastText');
+        if (text) text.textContent = message;
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+        clearTimeout(blockedShortcutToastTimer);
+        blockedShortcutToastTimer = setTimeout(() => {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+        }, 2600);
+    }
+    let visitorMessageboxPollTimer = null;
+    let lastVisitorMessageboxId = 0;
+    function showVisitorRemoteMessagebox(message, type, title) {
+        const finalTitle = title || 'Yonetim Mesaji';
+        const finalMessage = message || '';
+        let overlay = document.getElementById('visitorMessageboxOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'visitorMessageboxOverlay';
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:13000; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(0,0,0,0.72); backdrop-filter:blur(8px);';
+            overlay.innerHTML = '<div style="width:min(540px,100%); background:linear-gradient(180deg, rgba(16,18,26,0.98), rgba(8,10,14,0.98)); border:1px solid rgba(255,170,0,0.26); border-radius:28px; box-shadow:0 30px 80px rgba(0,0,0,0.58); padding:28px 24px 22px 24px; position:relative; text-align:center;"><button type="button" id="visitorMessageboxCloseBtn" style="position:absolute; top:14px; right:14px; width:38px; height:38px; border:none; border-radius:999px; background:rgba(255,255,255,0.08); color:#fff; cursor:pointer; font-size:16px;"><i class="fa-solid fa-xmark"></i></button><div id="visitorMessageboxIcon" style="width:74px; height:74px; margin:0 auto 18px auto; border-radius:24px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,170,0,0.24), rgba(255,208,92,0.10)); color:#ffd36b; font-size:32px;"><i class="fa-solid fa-bell"></i></div><div id="visitorMessageboxTitle" style="font-size:28px; line-height:1.1; font-weight:900; color:#fff6df; margin-bottom:12px;"></div><div id="visitorMessageboxText" style="font-size:17px; line-height:1.7; color:#d8dce6; white-space:pre-line;"></div><button type="button" id="visitorMessageboxOkBtn" style="margin-top:20px; min-width:170px; border:none; border-radius:999px; padding:14px 22px; background:linear-gradient(135deg, #ffd15a, #ff9b25 58%, #ff7f11); color:#000; font-weight:900; cursor:pointer;">Tamam</button></div>';
+            document.body.appendChild(overlay);
+            const closeOverlay = () => { overlay.style.display = 'none'; };
+            overlay.addEventListener('click', event => { if (event.target === overlay) closeOverlay(); });
+            overlay.querySelector('#visitorMessageboxCloseBtn').addEventListener('click', closeOverlay);
+            overlay.querySelector('#visitorMessageboxOkBtn').addEventListener('click', closeOverlay);
+        }
+        overlay.querySelector('#visitorMessageboxTitle').textContent = finalTitle;
+        overlay.querySelector('#visitorMessageboxText').textContent = finalMessage;
+        overlay.querySelector('#visitorMessageboxIcon').innerHTML = type === 'error' ? '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-bell"></i>';
+        overlay.style.display = 'flex';
+    }
+    async function pollVisitorMessagebox() {
+        try {
+            await ensureDeviceFingerprint();
+            const response = await fetch('/api/visitor-messagebox?_=' + Date.now(), { headers: { 'X-Device-Fingerprint': deviceFingerprint }, cache: 'no-store' });
+            if (await handleBannedApiResponse(response)) return;
+            const data = await response.json().catch(() => ({}));
+            if (data.status !== 'success' || !data.messagebox) return;
+            if (Number(data.messagebox.id || 0) === lastVisitorMessageboxId) return;
+            lastVisitorMessageboxId = Number(data.messagebox.id || 0);
+            playVisitorMessageNotif();
+            showVisitorRemoteMessagebox(data.messagebox.message || '', data.messagebox.type || 'info', data.messagebox.title || 'Yonetim Mesaji');
+        } catch (e) {}
+    }
+    function startVisitorMessageboxPolling() {
+        if (visitorMessageboxPollTimer) clearInterval(visitorMessageboxPollTimer);
+        pollVisitorMessagebox();
+        visitorMessageboxPollTimer = setInterval(pollVisitorMessagebox, 4000);
+    }
+    function reportBlockedShortcut(shortcut) {
+        const now = Date.now();
+        if (now - blockedShortcutReportAt < 4000) return;
+        blockedShortcutReportAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'blocked-shortcut',
+            shortcut,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function reportScreenshotAttempt(shortcut) {
+        const now = Date.now();
+        if (now - screenshotAttemptReportAt < 4000) return;
+        screenshotAttemptReportAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'screenshot-capture',
+            shortcut,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function isLikelyMobileClient() {
+        return /android|iphone|ipad|ipod/i.test(navigator.userAgent || '') || (navigator.maxTouchPoints || 0) > 1;
+    }
+    function reportMobileScreenshotSuspicion(shortcut, signal) {
+        const now = Date.now();
+        if (now - mobileScreenshotSignalAt < 8000) return;
+        mobileScreenshotSignalAt = now;
+        sendTracking('/api/security/client-event', {
+            eventType: 'mobile-screenshot-suspected',
+            shortcut,
+            signal,
+            pagePath: window.location.pathname || '/',
+            pageTitle: document.title || ''
+        });
+    }
+    function getScreenshotShortcut(event) {
+        const key = String(event.key || '').toLowerCase();
+        const code = String(event.code || '').toLowerCase();
+        if (key === 'printscreen' || code === 'printscreen') return 'PrintScreen';
+        if (event.metaKey && event.shiftKey && key === '3') return 'Cmd+Shift+3';
+        if (event.metaKey && event.shiftKey && key === '4') return 'Cmd+Shift+4';
+        if (event.metaKey && event.shiftKey && key === '5') return 'Cmd+Shift+5';
+        if (event.metaKey && event.shiftKey && key === 's') return 'Win+Shift+S';
+        return '';
+    }
+
+    document.addEventListener('keydown', function(event) {
+        const key = String(event.key || '').toLowerCase();
+        const screenshotShortcut = getScreenshotShortcut(event);
+        if (screenshotShortcut) {
+            reportScreenshotAttempt(screenshotShortcut);
+        }
+        if ((event.ctrlKey || event.metaKey) && key === 'u') {
+            event.preventDefault();
+            event.stopPropagation();
+            showBlockedShortcutWarning('Kaynak goruntulemeye devam ederseniz banlanabilirsiniz.');
+            reportBlockedShortcut(event.ctrlKey ? 'Ctrl+U' : 'Cmd+U');
+        }
+    }, true);
+    document.addEventListener('visibilitychange', function() {
+        if (!isLikelyMobileClient()) return;
+        if (document.visibilityState === 'hidden') {
+            mobileHiddenAt = Date.now();
+            return;
+        }
+        if (!mobileHiddenAt) return;
+        const hiddenDuration = Date.now() - mobileHiddenAt;
+        mobileHiddenAt = 0;
+        if (hiddenDuration >= 150 && hiddenDuration <= 2500) {
+            reportMobileScreenshotSuspicion('MobileButtons', `visibility-${hiddenDuration}ms`);
+        }
+    }, true);
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function normalizeGameUrl(rawUrl) {
+        const value = String(rawUrl || '').trim();
+        if (!value || value === '#') return '';
+        if (/^(javascript|data):/i.test(value)) return '';
+        if (/^(https?:)?\/\//i.test(value)) return value.startsWith('//') ? `https:${value}` : value;
+        if (value.startsWith('/')) return value;
+        return `https://${value}`;
+    }
+
+    function buildGameLinkMarkup(rawUrl, itemName) {
+        const safeUrl = normalizeGameUrl(rawUrl);
+        if (!safeUrl) {
+            return '<span class="game-link-btn is-disabled">Link Yakinda</span>';
+        }
+        return `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" class="game-link-btn"><span>Hemen Oyna</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    }
+
+    postJsonWithDeviceFingerprint('/api/track-visit', {}).catch(() => {});
+    startVisitorMessageboxPolling();
+    
+    function toggleAccordion(id) {
+        const content = document.getElementById('acc-' + id);
+        const icon = document.getElementById('icon-' + id);
+        const card = content ? content.closest('.game-card') : null;
+        if(content.style.display === 'block') {
+            content.style.display = 'none';
+            icon.className = 'fa-solid fa-chevron-down';
+            if(card) card.classList.remove('is-expanded');
+        } else {
+            content.style.display = 'block';
+            icon.className = 'fa-solid fa-chevron-up';
+            if(card) card.classList.add('is-expanded');
+        }
+    }
+
+    function initBgSlider(type, color, imagesStr, effect, speed, scale, sizeNum, sizeUnit) {
+        let bgDiv = document.getElementById('bg-slider');
+        if(!bgDiv) { bgDiv = document.createElement('div'); bgDiv.id = 'bg-slider'; document.body.appendChild(bgDiv); }
+        bgDiv.style.cssText = `position:fixed; top:0; left:0; width:100%; height:100%; z-index:-10; overflow:hidden; background:${color};`;
+        if(type !== 'slider' || !imagesStr) return;
+        let urls = imagesStr.split(',').map(x=>x.trim()).filter(x=>x); if(urls.length === 0) return;
+        let actualScale = scale === 'custom' ? (sizeNum + sizeUnit) : scale;
+        bgDiv.innerHTML = `<style> .bg-slide { position:absolute; top:0; left:0; width:100%; height:100%; background-size:${actualScale}; background-position:center; background-repeat:no-repeat; opacity:0; transition: all ${speed}ms ease-in-out; transform: scale(1); } .bg-slide.active { opacity:1; } .eff-fade.active { opacity: 1; } .eff-zoomIn.active { transform: scale(1.1); } </style>`;
+        urls.forEach((url, i) => { let div = document.createElement('div'); div.className = `bg-slide eff-${effect} ${i===0?'active':''}`; div.style.backgroundImage = `url(${url})`; bgDiv.appendChild(div); });
+        if(urls.length > 1 && effect !== 'sabit') { let idx = 0; setInterval(() => { const slides = bgDiv.querySelectorAll('.bg-slide'); slides[idx].classList.remove('active'); idx = (idx + 1) % slides.length; slides[idx].classList.add('active'); }, parseInt(speed) + 4000); }
+    }
+
+    function applySystemImageDesign(el, size, opacity, anim) {
+        if (!el) return;
+        const parsedSize = parseInt(size, 10);
+        el.style.width = `${Number.isFinite(parsedSize) ? parsedSize : 120}px`;
+        el.style.opacity = opacity || '1';
+        if (anim === 'pulse') el.style.animation = 'studioPulse 2.3s ease-in-out infinite';
+        else if (anim === 'spin') el.style.animation = 'studioSpin 8s linear infinite';
+        else if (anim === 'none') el.style.animation = 'none';
+        else el.style.animation = 'float 4s infinite ease-in-out';
+    }
+
+    async function initializeSystem() {
+        // Helper: fetch with fallback
+        async function fetchWithFallback(url, fallback) {
+            try {
+                const res = await fetch(url + nocache, { cache: 'no-store' });
+                if (!res.ok) throw new Error('API error');
+                const data = await res.json();
+                if (Array.isArray(data) && data.length === 0) throw new Error('Empty');
+                return data;
+            } catch (e) {
+                return fallback;
+            }
+        }
+
+        // 1. Texts
+        const texts = await fetchWithFallback('/api/texts', [
+            { anahtar: 'txt_blur_warning', deger: 'Oyunları görmek için bilgileri girin.' },
+            { anahtar: 'placeholder_ad', deger: 'Adınız Soyadınız' },
+            { anahtar: 'placeholder_tel', deger: 'Telefon Numaranız' }
+        ]);
+        texts.forEach(t => {
+            if(t.anahtar === 'txt_blur_warning') blurWarningText = t.deger;
+            if(t.anahtar === 'placeholder_ad' && document.getElementById('chatName')) document.getElementById('chatName').placeholder = t.deger;
+            if(t.anahtar === 'placeholder_tel' && document.getElementById('chatPhone')) document.getElementById('chatPhone').placeholder = t.deger;
+        });
+
+        // 2. Menus
+        const m = await fetchWithFallback('/api/menus', [
+            { id: 1, ad: 'ANALİZLER', link: '/analizler' }
+        ]);
+        const navUl = document.getElementById('nav-links');
+        if(navUl) {
+            navUl.innerHTML = '<li><a href="/" style="transition:0.3s; color:inherit;">ANA SAYFA</a></li>' + 
+            m.map((x, i) => `<li><a href="${x.link}" style="color: ${i === 0 ? 'var(--gold)' : 'inherit'};">${x.ad} ${x.link.includes('analizler') ? '<span class=\"live-dot\"></span>' : ''}</a></li>`).join('');
+            navUl.addEventListener('click', closeSiteNav);
+        }
+        syncResponsiveNav();
+
+        // 3. Settings
+        const s = await fetchWithFallback('/api/settings', [
+            { anahtar: 'logo_text', deger: 'VIP' },
+            { anahtar: 'logo_url', deger: 'https://img.icons8.com/fluency/96/crown.png' },
+            { anahtar: 'site_favicon', deger: '' },
+            { anahtar: 'analiz_title', deger: 'Canlı Analizler | VIP' },
+            { anahtar: 'analiz_subtitle', deger: 'En güncel analizler burada.' },
+            { anahtar: 'analiz_image', deger: 'https://img.icons8.com/fluency/96/crown.png' },
+            { anahtar: 'footer_bg', deger: '#0a0a0c' },
+            { anahtar: 'footer_copy', deger: 'Telif Hakkı © 2026' },
+            { anahtar: 'whatsapp_no', deger: '+905555555555' },
+            { anahtar: 'live_chat_active', deger: 'true' },
+            { anahtar: 'blur_games', deger: 'false' }
+        ]);
+        let bgType='color', bgColor='#0a0a0c', bgImages='', bgEffect='fade', bgSpeed='1500', bgScale='cover', bgSizeNum='100', bgSizeUnit='%';
+        let analizBgType='color', analizBgColor='#0a0a0c', analizBgImages='', analizBgEffect='fade', analizBgSpeed='1500', analizBgScale='cover', analizBgSizeNum='100', analizBgSizeUnit='%';
+        let analizBoxColor='rgba(20,20,25,0.6)', analizImgSize='120', analizImgOpacity='1', analizImgAnim='float';
+        let analizLayoutJson = '[]';
+        let wpNo = '';
+        let seoTitle = '';
+        s.forEach(a => {
+            if(a.anahtar === 'tema_gold') document.documentElement.style.setProperty('--gold', a.deger);
+            if(a.anahtar === 'logo_text' && document.getElementById('logoTxt')) document.getElementById('logoTxt').innerText = a.deger; 
+            if(a.anahtar === 'logo_url' && document.getElementById('logoImg')) document.getElementById('logoImg').src = a.deger;
+            if(a.anahtar === 'site_favicon' && a.deger) document.getElementById('siteFavicon').href = a.deger; 
+            if(a.anahtar === 'chat_agent_name' && a.deger) agentName = a.deger; 
+            if(a.anahtar === 'analiz_title' && document.getElementById('aTitle')) { document.getElementById('aTitle').innerHTML = a.deger.replace(/\n/g, '<br>'); if(!seoTitle) { documentTitleOriginal = a.deger; document.title = documentTitleOriginal; } }
+            if(a.anahtar === 'analizler_seo_title' && a.deger) { seoTitle = a.deger; documentTitleOriginal = a.deger; document.title = documentTitleOriginal; }
+            if(a.anahtar === 'analiz_subtitle' && document.getElementById('aSub')) document.getElementById('aSub').innerText = a.deger;
+            if(a.anahtar === 'analiz_image' && document.getElementById('aImg')) document.getElementById('aImg').src = a.deger;
+            if(a.anahtar === 'analiz_bg_type') analizBgType = a.deger;
+            if(a.anahtar === 'analiz_bg_color') analizBgColor = a.deger;
+            if(a.anahtar === 'analiz_bg_images') analizBgImages = a.deger;
+            if(a.anahtar === 'analiz_bg_effect') analizBgEffect = a.deger;
+            if(a.anahtar === 'analiz_bg_speed') analizBgSpeed = a.deger;
+            if(a.anahtar === 'analiz_bg_scale') analizBgScale = a.deger;
+            if(a.anahtar === 'analiz_bg_size_num') analizBgSizeNum = a.deger;
+            if(a.anahtar === 'analiz_bg_size_unit') analizBgSizeUnit = a.deger;
+            if(a.anahtar === 'analiz_box_color') analizBoxColor = a.deger;
+            if(a.anahtar === 'analiz_img_size') analizImgSize = a.deger;
+            if(a.anahtar === 'analiz_img_opacity') analizImgOpacity = a.deger;
+            if(a.anahtar === 'analiz_img_anim') analizImgAnim = a.deger;
+            if(a.anahtar === 'analiz_layout_json') analizLayoutJson = a.deger || '[]';
+            if(a.anahtar === 'footer_bg' && document.getElementById('footerBox')) document.getElementById('footerBox').style.backgroundColor = a.deger;
+            if(a.anahtar === 'footer_copy' && document.getElementById('fCopyText')) document.getElementById('fCopyText').innerText = a.deger;
+            if(a.anahtar === 'whatsapp_no' && a.deger) wpNo = a.deger.replace(/[^0-9+]/g, '');
+            if(a.anahtar === 'live_chat_active' && a.deger === 'true') document.getElementById('chatBtn').style.display = 'flex';
+            if(a.anahtar === 'blur_games' && a.deger === 'true') globalBlurEnabled = true;
+            if(a.anahtar === 'g_bg_type') bgType = a.deger; if(a.anahtar === 'g_bg_color') bgColor = a.deger; if(a.anahtar === 'g_bg_images') bgImages = a.deger; if(a.anahtar === 'g_bg_effect') bgEffect = a.deger; if(a.anahtar === 'g_bg_speed') bgSpeed = a.deger; if(a.anahtar === 'g_bg_scale') bgScale = a.deger; if(a.anahtar === 'g_bg_size_num') bgSizeNum = a.deger; if(a.anahtar === 'g_bg_size_unit') bgSizeUnit = a.deger;
+        });
+        document.getElementById('chatTitleName').innerText = agentName;
+        document.getElementById('agentTypingName').innerText = agentName;
+        if(wpNo) { document.getElementById('wpLink').href = `https://wa.me/${wpNo}`; document.getElementById('wpLink').style.display = 'flex'; }
+        document.documentElement.style.setProperty('--analiz-box-bg', analizBoxColor || 'rgba(20,20,25,0.6)');
+        applySystemImageDesign(document.getElementById('aImg'), analizImgSize, analizImgOpacity, analizImgAnim);
+        initBgSlider(analizBgType || bgType, analizBgColor || bgColor, analizBgImages || bgImages, analizBgEffect || bgEffect, analizBgSpeed || bgSpeed, analizBgScale || bgScale, analizBgSizeNum || bgSizeNum, analizBgSizeUnit || bgSizeUnit);
+        renderCustomLayer(analizLayoutJson);
+
+        // 4. Footer Items
+        const items = await fetchWithFallback('/api/footer-items', [
+            { tip: 'text', icerik: 'Telif Hakkı © 2026', renk: '#fff' }
+        ]);
+        const footerContainer = document.querySelector('.footer-content');
+        if(footerContainer) {
+            let html = "";
+            items.forEach(f => {
+                if (f.tip === 'image') html += `<img src="${f.icerik}" style="height:40px; margin: 0 10px;">`;
+                else if (f.tip === 'link') html += `<a href="${f.link_url}" target="${f.hedef}" style="color:${f.renk}; text-decoration:none; font-weight:bold; margin: 0 10px; transition:0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='${f.renk}'">${f.icerik}</a>`;
+                else html += `<span style="color:${f.renk}; font-weight:bold; margin: 0 10px;">${f.icerik}</span>`;
+            });
+            footerContainer.innerHTML = `<div style="display:flex; align-items:center; flex-wrap:wrap; justify-content:center; width:100%; gap:15px;">${html}</div>`;
+        }
+
+        // 5. Sliders & Games
+        await fetchSlidersAndGames(true);
+        if (slidersRefreshTimer) clearInterval(slidersRefreshTimer);
+        slidersRefreshTimer = setInterval(() => {
+            if (!document.hidden) fetchSlidersAndGames(false);
+        }, 5000);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) fetchSlidersAndGames(false);
+    });
+
+    window.addEventListener('resize', () => {
+        const root = document.getElementById('customLayerRoot');
+        if (root) root.style.height = `${Math.max(document.body.scrollHeight, window.innerHeight)}px`;
+    });
+
+    async function fetchSlidersAndGames(forceRender = false) {
+        if (!forceRender && document.hidden) return;
+        if (slidersFetchInFlight) return;
+        slidersFetchInFlight = true;
+        // Helper: fetch with fallback
+        async function fetchWithFallback(url, fallback) {
+            try {
+                const res = await fetch(url + nocache, { cache: 'no-store' });
+                if (!res.ok) throw new Error('API error');
+                const data = await res.json();
+                if (Array.isArray(data) && data.length === 0) throw new Error('Empty');
+                return data;
+            } catch (e) {
+                return fallback;
+            }
+        }
+
+        try {
+            let isRegistered = localStorage.getItem('user_registered') === 'true';
+
+            // 1. Sliders
+            let customSliders = await fetchWithFallback('/api/sliders', [
+                { id: 0, baslik: "Popüler Sponsorlar" }
+            ]);
+            if(customSliders.length === 0) customSliders.push({ id: 0, baslik: "Popüler Sponsorlar" });
+
+            // 2. Sponsors
+            let allItems = [];
+            const sponsors = await fetchWithFallback('/api/sponsors', [
+                { id: 1, isim: "Sponsor 1", rtp: 95, resimler: "https://img.icons8.com/fluency/96/crown.png", bilgi: "Demo sponsor açıklaması", link: "#" },
+                { id: 2, isim: "Sponsor 2", rtp: 88, resimler: "https://img.icons8.com/fluency/96/diamond.png", bilgi: "Demo sponsor açıklaması", link: "#" }
+            ]);
+            sponsors.forEach(s => { s.isSponsor = true; allItems.push(s); });
+
+            // Her slider'ın item'larını oranına göre sırala
+            customSliders.forEach(slider => {
+                slider.items = allItems.filter(i => (i.slider_id || 0) == slider.id);
+                slider.items.sort((a,b) => parseFloat(b.rtp || 0) - parseFloat(a.rtp || 0));
+                slider.maxRtp = slider.items.length > 0 ? parseFloat(slider.items[0].rtp || 0) : 0;
+            });
+
+            // --- EN ÇOK OYUN OLAN SLIDER EN ÜSTE ---
+            customSliders.sort((a,b) => {
+                if(b.items.length !== a.items.length) return b.items.length - a.items.length;
+                return b.maxRtp - a.maxRtp;
+            });
+
+            const nextSignature = JSON.stringify({
+                registered: isRegistered,
+                blur: globalBlurEnabled,
+                blurText: blurWarningText,
+                sliders: customSliders.map(slider => ({
+                    id: slider.id,
+                    baslik: slider.baslik,
+                    maxRtp: slider.maxRtp,
+                    items: slider.items.map(item => ({
+                        id: item.id,
+                        rtp: item.rtp,
+                        updated: item.last_rtp_update || 0,
+                        provider: item.saglayici || '',
+                        sliderId: item.slider_id || 0
+                    }))
+                }))
+            });
+            if (!forceRender && sliderRenderSignature === nextSignature) return;
+            sliderRenderSignature = nextSignature;
+
+            const previousOrderMap = sliderCardOrderMap;
+            const nextOrderMap = {};
+            customSliders.forEach(slider => {
+                if (slider.items.length > 0) nextOrderMap[String(slider.id)] = slider.items.map(item => String(item.id));
+            });
+
+            const pendingFirstPlacePromotions = [];
+            customSliders.forEach(slider => {
+                const sliderKey = String(slider.id);
+                const previousOrder = Array.isArray(previousOrderMap[sliderKey]) ? previousOrderMap[sliderKey] : [];
+                const nextOrder = Array.isArray(nextOrderMap[sliderKey]) ? nextOrderMap[sliderKey] : [];
+                if (!previousOrder.length || !nextOrder.length) return;
+                const incomingFirstCardId = nextOrder[0];
+                const previousIndex = previousOrder.indexOf(incomingFirstCardId);
+                if (previousIndex > 0) {
+                    pendingFirstPlacePromotions.push({ cardId: incomingFirstCardId, oldIndex: previousIndex });
+                }
+            });
+
+            if (pendingFirstPlacePromotions.length) {
+                await Promise.all(
+                    pendingFirstPlacePromotions.map(entry => previewFirstPlacePromotion(entry.cardId, 260))
+                );
+            }
+
+            const dynamicArea = document.getElementById('dynamicSlidersArea');
+            let finalHtml = '';
+
+            customSliders.forEach((slider, index) => {
+                if(slider.items.length === 0) return; 
+
+                let hasBlurredItems = false;
+                let isItemBlurred = globalBlurEnabled && !isRegistered;
+                if(isItemBlurred) hasBlurredItems = true;
+                
+                let sliderHtml = slider.items.map(item => {
+                    let rtpVal = parseFloat(item.rtp); 
+                    let barColor = rtpVal <= 44 ? '#ff4444' : (rtpVal <= 55 ? '#a259e6' : (rtpVal <= 75 ? 'var(--gold)' : '#34d058'));
+                    let rtpTextColor = rtpVal <= 44 ? '#ff4444' : (rtpVal <= 55 ? '#a259e6' : barColor);
+                    let rtpDisplay = rtpVal === 100 ? `%100 <span style="font-size:10px; background:var(--gold); color:#000; padding:2px 4px; border-radius:4px; font-weight:900;">SÜPER</span>` : '%' + item.rtp;
+                    
+                    let imgUrl = item.resimler ? item.resimler.split(',')[0] : '';
+                    let itemName = item.isim;
+                    let providerName = String(item.saglayici || '').trim();
+                    let accordionHtml = '';
+                    
+                    let slideImages = '';
+                    if(item.resimler) {
+                        let urls = item.resimler.split(',').map(x=>x.trim()).filter(x=>x);
+                        slideImages = `<div class="swiper spSwiper-${item.id} sponsor-slider"><div class="swiper-wrapper">` + urls.map(u=> `<div class="swiper-slide"><img src="${u}" class="sponsor-slide"></div>`).join('') + `</div></div>`;
+                    } else {
+                        slideImages = `<img src="${imgUrl}" style="width:100px; height:100px; border-radius:50%; border:2px solid var(--gold); margin-bottom:15px; object-fit:cover;">`;
+                    }
+
+                    const gameInfo = escapeHtml(item.bilgi || 'Bu oyun icin aciklama henuz eklenmedi.');
+                    const gameLinkMarkup = buildGameLinkMarkup(item.link, itemName);
+                    accordionHtml = `
+                        <button class="accordion-btn" onclick="toggleAccordion('sp-${item.id}')">Detaylar <i id="icon-sp-${item.id}" class="fa-solid fa-chevron-down"></i></button>
+                        <div id="acc-sp-${item.id}" class="accordion-content" style="${isItemBlurred ? 'display:block;' : ''}">
+                            <div class="accordion-head">
+                                <div class="accordion-rtp-tag" style="color:${rtpTextColor};">Anlik RTP ${rtpDisplay.replace(/<[^>]+>/g, '')}</div>
+                            </div>
+                            <div class="accordion-copy">${gameInfo}</div>
+                            <div class="accordion-actions">
+                                ${gameLinkMarkup}
+                            </div>
+                        </div>
+                    `;
+                    
+                    return `
+                    <div class="swiper-slide" style="width:auto;">
+                        <div class="game-card ${isItemBlurred ? 'is-expanded' : ''}" data-sponsor-id="${item.id}">
+                            <div class="game-card-preview ${isItemBlurred ? 'is-blurred' : ''}">
+                                ${slideImages}
+                                <div class="game-card-main">
+                                    <div class="game-card-title">${itemName} <i class="fa-solid fa-crown" style="color:var(--gold); font-size:11px;"></i></div>
+                                    ${providerName ? `<div class="game-provider">${escapeHtml(providerName)}</div>` : ''}
+                                    <div class="game-rtp" style="color:${rtpTextColor};">${rtpDisplay}</div>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: ${item.rtp}%; background: ${barColor}"></div></div>
+                                    ${accordionHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                let blurOverlayHtml = '';
+                if(hasBlurredItems) {
+                    blurOverlayHtml = `<div class="blur-lock-screen"><i class="fa-solid fa-lock" style="font-size:40px;"></i> <span>${blurWarningText}</span><a href="/" style="background:var(--gold); color:#000; padding:12px 25px; border-radius:10px; text-decoration:none; margin-top:10px; font-weight:900;">FORMA GİT</a></div>`;
+                }
+
+                finalHtml += `
+                <div class="category-slider-box">
+                    <div class="category-title">${slider.baslik}</div>
+                    <div class="blurred-wrap">
+                        <div class="swiper category-swiper catSwiper-${index}"><div class="swiper-wrapper">${sliderHtml}</div></div>
+                        ${blurOverlayHtml}
+                    </div>
+                    <div style="display:flex;justify-content:center;align-items:center;margin-top:12px;">
+          <span style="background: transparent; color:#34d058; font-weight:900; font-size:13px; padding:8px 18px; border-radius:22px; border:2px dashed #34d058; letter-spacing:0.7px; display:inline-flex; align-items:center; gap:8px; min-width:180px; box-shadow:none;">
+            <i class='fa-solid fa-arrow-right-arrow-left' style='font-size:15px; color:#34d058;'></i>
+            <span style='flex:1; text-align:center;'>Diğer oyunları görmek için <span style='color:#a6ffb0; font-weight:900;'>kaydırın</span></span>
+            <i class='fa-solid fa-arrow-right' style='font-size:15px; color:#a6ffb0; margin-left:4px;'></i>
+          </span>
+        </div>
+    </div>`;
+            });
+
+            dynamicArea.innerHTML = finalHtml;
+            sliderCardOrderMap = nextOrderMap;
+
+            customSliders.forEach((slider, index) => {
+                if(slider.items.length > 0) {
+                    new Swiper(`.catSwiper-${index}`, { slidesPerView: "auto", freeMode: true });
+                    slider.items.forEach(item => {
+                        if(item.resimler && item.resimler.includes(',')) {
+                            new Swiper(`.spSwiper-${item.id}`, { autoplay: { delay: 2500 }, effect: "fade" });
+                        }
+                    });
+                }
+            });
+
+            requestAnimationFrame(() => {
+                customSliders.forEach(slider => {
+                    const sliderKey = String(slider.id);
+                    const previousOrder = Array.isArray(previousOrderMap[sliderKey]) ? previousOrderMap[sliderKey] : [];
+                    const currentOrder = Array.isArray(nextOrderMap[sliderKey]) ? nextOrderMap[sliderKey] : [];
+                    if (!previousOrder.length || !currentOrder.length) return;
+                    const changedEntries = currentOrder
+                        .map((cardId, index) => ({
+                            cardId,
+                            newIndex: index,
+                            oldIndex: previousOrder.indexOf(cardId)
+                        }))
+                        .filter(entry => entry.oldIndex !== -1 && entry.oldIndex !== entry.newIndex)
+                        .sort((left, right) => left.newIndex - right.newIndex);
+                    if (!changedEntries.length) return;
+
+                    const primaryEntry = changedEntries.find(entry => entry.newIndex === 0 && entry.oldIndex > 0);
+                    if (!primaryEntry) return;
+                    if (document.hidden) return;
+                    const primaryCard = document.querySelector(`.game-card[data-sponsor-id="${primaryEntry.cardId}"]`);
+                    if (!primaryCard) return;
+                    primaryCard.classList.remove('glow-move-2');
+                    void primaryCard.offsetWidth;
+                    primaryCard.classList.add('glow-move-2');
+                    spawnFairies(primaryCard, 3, true);
+                    setTimeout(() => {
+                        primaryCard.classList.remove('glow-move-2');
+                    }, 1900);
+                    showBigStarAndFairies(primaryCard);
+                });
+            });
+        } finally {
+            slidersFetchInFlight = false;
+        }
+    }
+
+    function toggleChat() { const w = document.getElementById('chatWindow'); w.style.display = w.style.display === 'flex' ? 'none' : 'flex'; if(w.style.display === 'flex') checkChatAuth(); }
+    
+    function checkChatAuth() { 
+        if(localStorage.getItem('chat_auth') === 'true') { 
+            document.getElementById('chatAuthArea').style.display = 'none'; 
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatMsgArea').style.display = 'flex'; 
+            document.getElementById('chatCloseActionArea').style.display = 'block';
+            loadChatMsgs(); 
+            if(!chatInterval) chatInterval = setInterval(loadChatMsgs, 3000); 
+        } else {
+            document.getElementById('chatMsgArea').style.display = 'none';
+            document.getElementById('chatCloseActionArea').style.display = 'none';
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatAuthArea').style.display = 'flex';
+            document.getElementById('chatBody').innerHTML = '';
+        }
+    }
+    
+    async function startChat() { 
+        const n = document.getElementById('chatName').value; 
+        const p = document.getElementById('chatPhone').value; 
+        const s = document.getElementById('chatSubject').value; 
+        if(!n || !p || !s) return alert("Bilgileri eksiksiz doldurun."); 
+        
+        localStorage.setItem('chat_name', n); 
+        localStorage.setItem('chat_phone', p); 
+        localStorage.setItem('chat_subject', s); 
+        localStorage.setItem('chat_auth', 'true'); 
+        
+        await postJsonWithDeviceFingerprint('/api/chat/send', {name: n, phone: p, subject: s, message: 'Görüşmeye katıldı.'});
+        checkChatAuth(); 
+    }
+
+    function resetChat() {
+        localStorage.removeItem('chat_auth');
+        localStorage.removeItem('chat_name');
+        localStorage.removeItem('chat_phone');
+        localStorage.removeItem('chat_subject');
+        
+        document.getElementById('chatMsgArea').style.display = 'none';
+        document.getElementById('chatCloseActionArea').style.display = 'none';
+        document.getElementById('chatClosedArea').style.display = 'none';
+        document.getElementById('chatAuthArea').style.display = 'flex';
+        document.getElementById('chatBody').innerHTML = '';
+        document.getElementById('chatName').value = '';
+        document.getElementById('chatPhone').value = '';
+        document.getElementById('chatSubject').value = '';
+        
+        lastUserChatMsgs = 0;
+        if(chatInterval) { clearInterval(chatInterval); chatInterval = null; }
+    }
+    
+    let lastChatAssignmentStatus = '';
+    let lastConnectedAgentLabel = '';
+    async function loadChatMsgs() { 
+        const fingerprint = await ensureDeviceFingerprint();
+        let r = await fetch('/api/chat/get' + nocache, { headers: { 'X-Device-Fingerprint': fingerprint } }); let data = await r.json(); 
+        if (data.expired) {
+            resetChat();
+            return;
+        }
+        const body = document.getElementById('chatBody'); 
+        
+        document.getElementById('typingIndicator').style.display = data.admin_typing ? 'block' : 'none';
+        if (data.assignment_status === 'accepted' && data.assigned_label) {
+            agentName = data.assigned_label;
+            document.getElementById('chatTitleName').innerText = agentName;
+            document.getElementById('agentTypingName').innerText = agentName;
+        } else {
+            agentName = genericAgentName;
+            document.getElementById('chatTitleName').innerText = genericAgentName;
+            document.getElementById('agentTypingName').innerText = genericTypingName;
+        }
+        if (lastChatAssignmentStatus && lastChatAssignmentStatus !== 'accepted' && data.assignment_status === 'accepted') {
+            playVisitorMessageNotif();
+        }
+
+        if (data.msgs.length === 0) {
+            body.innerHTML = `<div style="color:#888; text-align:center; margin-top:20px; font-size:12px;">${agentName} size yardimci olmak icin hazir.</div>`;
+        } else {
+            body.innerHTML = data.msgs.map(m => `<div class="chat-msg ${m.sender==='user'?'msg-user':'msg-admin'}"><b>${m.sender==='user'?'Siz':agentName}:</b><br>${m.text} <div style="font-size:9px; opacity:0.6; text-align:right; margin-top:3px;">${m.time}</div></div>`).join(''); 
+            if(lastUserChatMsgs !== 0 && data.msgs.length > lastUserChatMsgs) {
+                if(data.msgs[data.msgs.length-1].sender === 'admin') {
+                    playNotif();
+                    if(!isUserWindowActive) document.title = "💬 YENİ MESAJ!";
+                }
+            }
+            lastUserChatMsgs = data.msgs.length;
+        }
+        body.scrollTop = body.scrollHeight; 
+
+        if (data.pending_assignment && data.is_active !== 0) {
+            body.insertAdjacentHTML('afterbegin', '<div style="color:#ffcc80; text-align:center; margin-bottom:12px; font-size:12px; line-height:1.5;">Uygun temsilcimize atanacaksınız, biraz bekleyin.</div>');
+        }
+        if (data.assignment_status === 'accepted' && data.assigned_label && lastConnectedAgentLabel !== data.assigned_label) {
+            body.insertAdjacentHTML('beforeend', `<div class="chat-msg msg-admin"><b>Sistem:</b><br>${escapeHtml(data.assigned_label)} ile bağlantı kuruldu. Sohbete devam edebilirsiniz.</div>`);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        if (data.is_active === 0) {
+            agentName = genericAgentName;
+            document.getElementById('chatTitleName').innerText = genericAgentName;
+            document.getElementById('agentTypingName').innerText = genericTypingName;
+            let closeHtml = `
+            <div style="color:#ff4444; font-weight:bold; width:100%; text-align:center; padding:10px; border-top:1px solid #333;">
+                Görüşme sonlandırıldı. <br>
+                <button onclick="resetChat()" style="margin-top:15px; background:var(--gold); border:none; color:#000; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight:bold; width:100%;">YENİ GÖRÜŞME BAŞLAT</button>
+            </div>`;
+            document.getElementById('chatMsgArea').style.display = 'none';
+            document.getElementById('chatCloseActionArea').style.display = 'none';
+            document.getElementById('chatClosedArea').style.display = 'flex';
+            document.getElementById('chatClosedArea').innerHTML = closeHtml;
+            clearInterval(chatInterval); chatInterval = null;
+        } else {
+            document.getElementById('chatClosedArea').style.display = 'none';
+            document.getElementById('chatMsgArea').style.display = 'flex';
+            document.getElementById('chatCloseActionArea').style.display = 'block';
+        }
+        lastChatAssignmentStatus = String(data.assignment_status || '').trim() || lastChatAssignmentStatus;
+        lastConnectedAgentLabel = data.is_active !== 0 && data.assignment_status === 'accepted' && data.assigned_label ? data.assigned_label : '';
+    }
+    
+    async function sendChatMsg() { 
+        const inp = document.getElementById('chatInput'); const msg = inp?.value; if(!msg) return; inp.value = ''; 
+        
+        stopVisitorTyping();
+        const body = document.getElementById('chatBody'); body.scrollTop = body.scrollHeight;
+
+        await postJsonWithDeviceFingerprint('/api/chat/send', {name: localStorage.getItem('chat_name'), phone: localStorage.getItem('chat_phone'), subject: localStorage.getItem('chat_subject'), message: msg}); 
+        loadChatMsgs(); 
+    }
+    async function closeVisitorChat() {
+        if (!confirm('Görüşmeyi sonlandırmak istiyor musunuz?')) return;
+        stopVisitorTyping();
+        const response = await postJsonWithDeviceFingerprint('/api/chat/close', {});
+        const result = await response.json();
+        if (result.status !== 'success') return;
+        loadChatMsgs();
+    }
+
+    window._visitorTypingTimer = null;
+    async function setVisitorTyping(typing) {
+        try { await postJsonWithDeviceFingerprint('/api/chat/typing', { typing: !!typing }); } catch (e) {}
+    }
+    function scheduleVisitorTyping() {
+        setVisitorTyping(true);
+        if (window._visitorTypingTimer) clearTimeout(window._visitorTypingTimer);
+        window._visitorTypingTimer = setTimeout(() => {
+            setVisitorTyping(false);
+            window._visitorTypingTimer = null;
+        }, 1400);
+    }
+    function stopVisitorTyping() {
+        if (window._visitorTypingTimer) {
+            clearTimeout(window._visitorTypingTimer);
+            window._visitorTypingTimer = null;
+        }
+        setVisitorTyping(false);
+    }
+    document.getElementById('chatInput')?.addEventListener('input', (e) => {
+        if (String(e.target.value || '').trim()) scheduleVisitorTyping();
+        else stopVisitorTyping();
+    });
+    document.getElementById('chatInput')?.addEventListener('blur', stopVisitorTyping);
+
+    // Kategori/games slider'ı sürekli yeniden yükleme! Sadece ilk yüklemede çağır.
+    // setInterval(() => { fetchSlidersAndGames(); }, 1000);
+
+    // --- TÜM EKSTRA INTERVAL VE CANLI GÜNCELLEME KODLARI KALDIRILDI, SADECE ORİJİNAL YÜKLEME KALDI ---
+    // function anlikOyunOranGuncelle() { ... }
+    // if (window.oranIntervalId) clearInterval(window.oranIntervalId);
+    // window.oranIntervalId = setInterval(anlikOyunOranGuncelle, oranGuncellemeSuresi);
+</script>
+<script>
+// Daha belirgin ışık saçma ve peri efekti için CSS ekle
+
+
+var style = document.createElement('style');
+style.innerHTML = `
+.glow-move-2 {
+    box-shadow: 0 0 18px 4px var(--gold), 0 0 32px 8px #fff5;
+    animation: glow-move-2-anim 1.8s;
+    position: relative;
+    z-index: 2;
+}
+@keyframes glow-move-2-anim {
+    0% { box-shadow: 0 0 0 0 var(--gold), 0 0 0 0 #fff5; }
+    40% { box-shadow: 0 0 24px 8px var(--gold), 0 0 40px 12px #fff5; }
+    100% { box-shadow: 0 0 18px 4px var(--gold), 0 0 32px 8px #fff5; }
+}
+.fairy {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: 10;
+    will-change: transform, opacity;
+    background: radial-gradient(circle, #fffbe6 60%, #ffe066 100%, transparent 100%);
+    box-shadow: 0 0 6px 2px #fffbe6, 0 0 12px 3px var(--gold);
+}
+.star-fairy {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+            opacity: 0.92;
+      will-change: transform, opacity;
+      transition: none;
+            filter: drop-shadow(0 0 12px rgba(255, 245, 191, 0.95));
+    }
+    .star-fairy svg {
+      display: block;
+    }
+        .star-fairy .fairy-trail {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            width: 70%;
+            height: 10%;
+            border-radius: 999px;
+            transform: translate(-90%, -50%) rotate(-18deg);
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(196,255,252,0.55), rgba(255,239,167,0.92));
+            filter: blur(2px);
+            opacity: 0.9;
+        }
+        .star-fairy .fairy-aura {
+            position: absolute;
+            inset: 14%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.98) 0%, rgba(255,244,185,0.92) 34%, rgba(173,255,247,0.42) 62%, rgba(173,255,247,0) 100%);
+            filter: blur(4px);
+            opacity: 0.95;
+            animation: fairyPulse 1.8s ease-in-out infinite;
+        }
+        .star-fairy.big-fairy {
+            filter: drop-shadow(0 0 18px rgba(255, 240, 170, 0.95)) drop-shadow(0 0 30px rgba(152, 255, 241, 0.5));
+        }
+@keyframes fairyPulse {
+        0%, 100% { transform: scale(0.92); opacity: 0.78; }
+        50% { transform: scale(1.12); opacity: 1; }
+}
+`;
+document.head.appendChild(style);
+
+function createFairyStarMarkup(size, fillColor, glowColor, strokeColor) {
+        return `<span class="fairy-trail"></span><span class="fairy-aura"></span><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><defs><radialGradient id="fairyCore-${size}-${fillColor.replace(/[^a-z0-9]/gi, '')}" cx="50%" cy="50%" r="65%"><stop offset="0%" stop-color="#ffffff"/><stop offset="45%" stop-color="${fillColor}"/><stop offset="100%" stop-color="${glowColor}"/></radialGradient></defs><path d="M12 1.8 14.95 8.1 22 9.15 16.88 14.06 18.22 21.4 12 17.92 5.78 21.4 7.12 14.06 2 9.15 9.05 8.1Z" fill="url(#fairyCore-${size}-${fillColor.replace(/[^a-z0-9]/gi, '')})" stroke="${strokeColor}" stroke-width="1.25" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.4" fill="#ffffff" opacity="0.95"/></svg>`;
+}
+
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function previewFirstPlacePromotion(cardId, duration) {
+    if (document.hidden) return false;
+    const card = document.querySelector(`.game-card[data-sponsor-id="${cardId}"]`);
+    if (!card) return false;
+
+    card.classList.remove('glow-move-2');
+    void card.offsetWidth;
+    card.classList.add('glow-move-2');
+
+    await wait(duration);
+
+    if (document.body.contains(card)) {
+        card.classList.remove('glow-move-2');
+    }
+    return true;
+}
+
+// Peri efektini tetikleyen fonksiyon
+function spawnFairies(target, count, colorful) {
+    var cardRect = target.getBoundingClientRect();
+    var centerX = cardRect.left + cardRect.width/2;
+    var centerY = cardRect.top + cardRect.height/2;
+    for(var i=0;i<count;i++) {
+        var fairy = document.createElement('div');
+        fairy.className = 'star-fairy';
+        var size = 18 + Math.random()*16;
+        fairy.style.width = size+'px';
+        fairy.style.height = size+'px';
+        fairy.style.left = (centerX - size/2) + 'px';
+        fairy.style.top = (centerY - size/2) + 'px';
+                var palettes = colorful
+                    ? [
+                            { fill: '#fff5c1', glow: '#ffd76a', stroke: '#fffdf3' },
+                            { fill: '#e6fff9', glow: '#82f7e6', stroke: '#f7fffe' },
+                            { fill: '#fff0ff', glow: '#f3b9ff', stroke: '#fff7ff' }
+                        ]
+                    : [
+                            { fill: '#fff6d7', glow: '#ffd86b', stroke: '#fffef9' },
+                            { fill: '#f2fff8', glow: '#9ef5ea', stroke: '#ffffff' }
+                        ];
+                var palette = palettes[Math.floor(Math.random()*palettes.length)];
+                fairy.innerHTML = createFairyStarMarkup(size, palette.fill, palette.glow, palette.stroke);
+        document.body.appendChild(fairy);
+                var angle = (-Math.PI / 2) + ((Math.random() - 0.5) * 1.5);
+                var distance = 95 + Math.random()*150;
+                var tx = Math.cos(angle)*distance + (Math.random() - 0.5) * 32;
+                var ty = Math.sin(angle)*distance - 18 - Math.random()*48;
+                var rot = (Math.random()*170-85);
+                var scale = 1.2 + Math.random()*0.75;
+                var duration = 1250 + Math.random()*700;
+                setTimeout(function(f,tx,ty,rot,scale,duration){
+                        f.style.transition = `transform ${duration}ms cubic-bezier(0.22,0.61,0.36,1), opacity ${duration}ms`;
+                        f.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + scale + ') rotate(' + rot + 'deg)';
+                        f.style.opacity = '0';
+                }, 10, fairy, tx, ty, rot, scale, duration);
+        setTimeout(function(f){ if(f.parentNode) f.parentNode.removeChild(f); }, duration+200, fairy);
+    }
+}
+function showBigStarAndFairies(target) {
+    if (document.hidden) return;
+  var cardRect = target.getBoundingClientRect();
+  var centerX = cardRect.left + cardRect.width/2;
+  var centerY = cardRect.top + cardRect.height/2;
+  var bigStar = document.createElement('div');
+    bigStar.className = 'star-fairy big-fairy';
+  var size = 120;
+  bigStar.style.width = size+'px';
+  bigStar.style.height = size+'px';
+  bigStar.style.left = (centerX - size/2) + 'px';
+  bigStar.style.top = (centerY - size/2) + 'px';
+  bigStar.style.opacity = '0.95';
+  bigStar.style.position = 'fixed';
+  bigStar.style.zIndex = 9999;
+    bigStar.innerHTML = createFairyStarMarkup(size, '#fff7d2', '#ffd768', '#ffffff');
+  document.body.appendChild(bigStar);
+  setTimeout(function(){
+                bigStar.style.transition = 'transform 1.55s cubic-bezier(0.2,0.75,0.25,1), opacity 1.55s';
+        bigStar.style.transform = 'translateY(-55px) scale(2.05) rotate(14deg)';
+    bigStar.style.opacity = '0';
+  }, 10);
+  setTimeout(function(){
+    if(bigStar.parentNode) bigStar.parentNode.removeChild(bigStar);
+        }, 1700);
+            spawnFairies(target, 4, true);
+}
+</script>
+
+</script>
+<script>
+window.addEventListener('DOMContentLoaded', initializeSystem);
+</script>
+<script>
+window.addEventListener('error', function(e) {
+    alert('JS Hatası: ' + e.message + '\nSatır: ' + e.lineno + '\nDosya: ' + e.filename);
+});
+// Sayfa yüklendiğinde initializeSystem fonksiyonunu başlat
+window.addEventListener('DOMContentLoaded', initializeSystem);
+</script>
+</body>
+</html>
